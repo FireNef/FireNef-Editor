@@ -128,6 +128,7 @@ export class Renderer {
         this.ctx.fillText("FPS: "+Math.floor(this.fps), this.canvas.width/2, this.canvas.height/2);
         this.ctx.fillText("1% Lows: "+Math.floor(this.fpsLow), this.canvas.width/2, this.canvas.height/2-100);
         this.ctx.fillText("1% Highs: "+Math.floor(this.fpsHigh), this.canvas.width/2, this.canvas.height/2+100);
+
     }
 }
 
