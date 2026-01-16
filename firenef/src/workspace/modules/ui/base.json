@@ -1,0 +1,28 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/base.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/base.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/overlay.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/selectProject/selectProject.json"
+        }
+    ]
+}

@@ -1,16 +1,37 @@
+@import url(catppuccin.css);
+
 :host {
-    color: white;
+    --current-rosewater: var(--ctp-mocha-rosewater);
+    --current-flamingo:  var(--ctp-mocha-flamingo);
+    --current-pink:      var(--ctp-mocha-pink);
+    --current-mauve:     var(--ctp-mocha-mauve);
+    --current-red:       var(--ctp-mocha-red);
+    --current-maroon:    var(--ctp-mocha-maroon);
+    --current-peach:     var(--ctp-mocha-peach);
+    --current-yellow:    var(--ctp-mocha-yellow);
+    --current-green:     var(--ctp-mocha-green);
+    --current-teal:      var(--ctp-mocha-teal);
+    --current-sky:       var(--ctp-mocha-sky);
+    --current-sapphire:  var(--ctp-mocha-sapphire);
+    --current-blue:      var(--ctp-mocha-blue);
+    --current-lavender:  var(--ctp-mocha-lavender);
+    --current-text:      var(--ctp-mocha-text);
+    --current-subtext1:  var(--ctp-mocha-subtext1);
+    --current-subtext0:  var(--ctp-mocha-subtext0);
+    --current-overlay2:  var(--ctp-mocha-overlay2);
+    --current-overlay1:  var(--ctp-mocha-overlay1);
+    --current-overlay0:  var(--ctp-mocha-overlay0);
+    --current-surface2:  var(--ctp-mocha-surface2);
+    --current-surface1:  var(--ctp-mocha-surface1);
+    --current-surface0:  var(--ctp-mocha-surface0);
+    --current-base:      var(--ctp-mocha-base);
+    --current-mantle:    var(--ctp-mocha-mantle);
+    --current-crust:     var(--ctp-mocha-crust);
+    --current-accent:    var(--current-peach);
 }
 
-#fpsCounter {
-    width: fit-content;
-    font-family: monospace;
-    font-size: 20px;
-    padding: 10px 15px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 0 0 15px 0;
-    user-select: none;
-    pointer-events: none;
-    z-index: 1;
+:host {
+    font-family: Ubuntu;
+    color: var(--current-text);
+    background-color: var(--current-base);
 }

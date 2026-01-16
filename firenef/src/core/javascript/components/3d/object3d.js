@@ -59,7 +59,7 @@ export class Object3d extends Component {
     }
 
     visiblityChanged() {
-        this.object3D.visible = this.actualVisible;
+        this.object3D.visible = this.visible;
     }
 
     findNearestSpatialParent() {

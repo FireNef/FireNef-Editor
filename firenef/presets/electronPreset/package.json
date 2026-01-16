@@ -1,0 +1,21 @@
+{
+  "name": "project",
+  "productName": "",
+  "version": "0.0.0",
+  "description": "",
+  "build": {
+    "win": {
+      "icon": "build/icon.ico"
+    }
+  },
+  "license": "",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^39.2.7"
+  }
+}

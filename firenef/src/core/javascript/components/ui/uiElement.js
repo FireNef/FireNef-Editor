@@ -12,8 +12,9 @@ export class UiElement extends Component {
 
         this.element = document.createElement('div');
         this.element.name = name;
+        this.element.id = "element";
 
-        this.host = null;
+        this.host = document.createElement('div');
         this.shadow = null;
         this.style = null;
         this.inneritedStyles = [];
@@ -33,36 +34,53 @@ export class UiElement extends Component {
 
     updateElement() {
         const nodes = this.host.children;
+        const slots = this.element.querySelectorAll("slot");
+
+        const validSlots = new Set(
+            Array.from(slots)
+                .map(s => s.getAttribute("name"))
+                .filter(Boolean)
+        );
 
         for (let i = 0; i < nodes.length; i++) {
-            nodes[i].slot = `c${i + 1}`;
+            const desired = `c${i + 1}`;
+
+            if (validSlots.has(desired)) {
+                nodes[i].slot = desired;
+            } else {
+                nodes[i].slot = "default";
+            }
         }
     }
 
     parentRemoved() {
-        if (this.host) this.parent.removeElement(this.host);
+        if (this.shadow) this.parent.removeElement(this.host);
     }
 
     parentAdded() {
-        if (this.host) this.parent.appendElement(this.host);
+        if (this.shadow) this.parent.appendElement(this.host);
     }
 
     visiblityChanged() {
-        if (this.actualVisible) {
-            if (!this.host || this.host.isConnected) return;
+        this.host.style.display = this.visible ? null : "none";
+    }
+
+    enableChanged() {
+        if (!this.parent || !this.shadow) return;
+        if (this.enable) {
+            if (this.host.isConnected) return;
             this.parent.appendElement(this.host);
         } else {
-            if (this.host && this.host.isConnected) this.parent.removeElement(this.host);
+            if (!this.host.isConnected) return;
+            this.parent.removeElement(this.host);
         }
     }
 
     start() {
-        
         this.inneritedStyles = this.parent?.inneritedStyles ?? [];
         this.inneritedStyles.push(this.parent?.style);
         if (this.getAttributeFieldValue(0, 2)) this.inneritedStyles = [];
 
-        this.host = document.createElement('div');
         this.shadow = this.host.attachShadow({ mode: "open" });
 
         this.style = new CSSStyleSheet();
@@ -78,6 +96,7 @@ export class UiElement extends Component {
         this.element.appendChild(template.content);
         this.shadow.append(this.element);
 
+        if (!this.enable) return;
         this.parent.appendElement(this.host);
     }
 }

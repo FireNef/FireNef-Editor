@@ -6,12 +6,16 @@ export class Component {
         this.parent = null;
 
         this.started = false;
+
         this._enable = true;
+        this.targetEnable = true;
 
         this._visible = true;
-        this.actualVisible = true;
+        this.targetVisible = true;
+        this._hidden = false;
 
         this.attributes = [];
+        this.attributeDisableValue = 0;
     }
 
     appendChild(child) {
@@ -77,6 +81,22 @@ export class Component {
         return await this.attributes[attribute].fields[field].setValue(value, type);
     }
 
+    setNonAsyncAttributeFieldValue(attribute = 0, field = 0, value, type, disableComponent = false) {
+        if (disableComponent) {
+            this.enable = false;
+            this.attributeDisableValue++;
+        };
+        this.attributes[attribute].fields[field].setValue(value, type).then(() => {
+            if (disableComponent) {
+                this.attributeDisableValue--;
+                if (this.attributeDisableValue <= 0) {
+                    this.attributeDisableValue = 0;
+                    this.enable = true;
+                }
+            };
+        });
+    }
+
     get highestParent() {
         return this.parent ? (this.parent?.highestParent ?? this.parent) : this;
     }
@@ -91,19 +111,48 @@ export class Component {
     }
 
     set visible(visible = true) {
-        this._visible = visible;
+        if (this._visible === visible) return;
+        this.targetVisible = visible;
         this.updateVisiblity();
     }
 
+    get visible() {
+        return this._visible && this._enable && !this.hidden;
+    }
+
+    set hidden(hidden = false) {
+        if (this._hidden === hidden) return;
+        this._hidden = hidden;
+        this.updateVisiblity();
+    }
+
+    get hidden() {
+        return this._hidden;
+    }
+
     updateVisiblity() {
-        if (this._visible && this._enable && (!this.parent || this.parent.actualVisible)) {
-            this.actualVisible = true;
+        if (this.targetVisible && (!this.parent || this.parent._visible)) {
+            this._visible = true;
             this.visiblityChanged();
             if (this.children.length > 0) this.children.forEach(c => c.updateVisiblity());
         } else {
-            this.actualVisible = false;
+            this._visible = false;
             this.visiblityChanged();
             if (this.children.length > 0) this.children.forEach(c => c.updateVisiblity());
+        }
+    }
+
+    updateEnable() {
+        if (this.targetEnable && (!this.parent || this.parent._enable)) {
+            this._enable = true;
+            this.enableChanged();
+            this.visiblityChanged();
+            if (this.children.length > 0) this.children.forEach(c => c.updateEnable());
+        } else {
+            this._enable = false;
+            this.enableChanged();
+            this.visiblityChanged();
+            if (this.children.length > 0) this.children.forEach(c => c.updateEnable());
         }
     }
 
@@ -111,13 +160,14 @@ export class Component {
 
     }
 
-    get visible() {
-        return this._visible;
+    enableChanged() {
+
     }
 
     set enable(enable = true) {
-        this._enable = enable;
-        this.updateVisiblity();
+        if (this._enable === enable) return;
+        this.targetEnable = enable;
+        this.updateEnable();
     }
 
     get enable() {

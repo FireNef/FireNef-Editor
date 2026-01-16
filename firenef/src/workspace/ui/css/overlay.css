@@ -1,0 +1,23 @@
+.overlay {
+    position: absolute;
+    top: 35px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 35px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 100;
+}
+
+#element {
+    width: 0;
+    height: 0;
+}
+
+:host {
+    width: 0;
+    height: 0;
+}

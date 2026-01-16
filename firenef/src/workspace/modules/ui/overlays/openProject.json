@@ -1,0 +1,29 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "openProject",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/overlays/openProject.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/overlays/openProject.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "OpenProjectOverlayScript"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/selectProject/selectProject.json"
+        }
+    ]
+}

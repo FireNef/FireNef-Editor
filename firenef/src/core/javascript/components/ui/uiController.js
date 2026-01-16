@@ -8,6 +8,7 @@ export class UiController extends Component {
         const uiControllerAttribute = new Attribute("Ui Controller");
         uiControllerAttribute.addField("css", "path", "");
         uiControllerAttribute.addField("Ui Scale", "number", 1);
+        uiControllerAttribute.addField("Isolate Scale", "boolean", true);
 
         this.attributes.push(uiControllerAttribute);
 
@@ -21,6 +22,7 @@ export class UiController extends Component {
         this.host = null;
         this.shadow = null;
         this.style = null;
+        this.inneritedStyles = [];
 
         this.updateStartCounter = 0;
 
@@ -75,7 +77,7 @@ export class UiController extends Component {
     }
 
     visiblityChanged() {
-        if (this.actualVisible) {
+        if (this._visible) {
             if (!this.host || this.host.isConnected) return;
             this.engine = this.highestParent;
             this.root = this.engine.root;
@@ -93,11 +95,23 @@ export class UiController extends Component {
         }
         
         this.resolution = this.engine.renderer.resolution;
+
+        if (!this.getAttributeFieldValue(0, 2)) {
+            this.element.style.width = "100%";
+            this.element.style.height = "100%";
+            return;
+        }
+
         this.element.style.width = this.resolution.width / this.getAttributeFieldValue(0, 1) + "px";
         this.element.style.height = this.resolution.height / this.getAttributeFieldValue(0, 1) + "px";
     }
 
     resize() {
+        if (!this.getAttributeFieldValue(0, 2)) {
+            this.element.style.transform = `scale(1)`;
+            return;
+        }
+
         if (!this.host) return;
         const scaleX = this.host.clientWidth / (this.resolution.width / this.getAttributeFieldValue(0, 1));
         const scaleY = this.host.clientHeight / (this.resolution.height / this.getAttributeFieldValue(0, 1));
@@ -107,7 +121,38 @@ export class UiController extends Component {
     }
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
-        super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 0 && field == 1) this.resize();
+        await super.setAttributeFieldValue(attribute, field, value, type);
+        if (attribute == 0) {
+            if (field == 0) {
+                this.attributes[0].fields[0].value = await this.resolveImports(this.attributes[0].fields[0].value, value.slice(0, value.lastIndexOf("/") + 1));
+                //console.log(this.getAttributeFieldValue(0, 0));
+            }
+            if (field == 1) this.resize();
+            if (field == 2) this.resize();
+        }
+    }
+
+    async resolveImports(cssText, basePath = "") {
+        const importRegex = /@import\s+(?:url\()?["']?([^"')]+)["']?\)?\s*;/g;
+
+        const fetchPromises = [];
+
+        const replacedCSS = cssText.replace(importRegex, (fullMatch, importPath) => {
+            const promise = fetch(basePath + importPath)
+                .then(r => r.text())
+                .catch(() => "")
+            fetchPromises.push(promise);
+            return `__IMPORT_PLACEHOLDER_${fetchPromises.length - 1}__`;
+        });
+
+        const results = await Promise.all(fetchPromises);
+
+        let finalCSS = replacedCSS;
+        results.forEach((css, i) => {
+            const placeholder = `__IMPORT_PLACEHOLDER_${i}__`;
+            finalCSS = finalCSS.replace(placeholder, css);
+        });
+
+        return finalCSS;
     }
 }   

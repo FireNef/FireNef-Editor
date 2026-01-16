@@ -1,0 +1,42 @@
+{
+    "type": "component",
+    "class": "UiController",
+    "attributes": [
+        [
+            {
+                "comment": "Main Css",
+                "type": "file",
+                "value": "./src/workspace/ui/css/main.css"
+            },
+            {},
+            {
+                "comment": "Isolated Scale",
+                "type": "boolean",
+                "value": false
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "FontLoaderScript",
+            "attributes": [
+                [
+                    {
+                        "comment": "Font Config",
+                        "type": "file",
+                        "value": "./src/workspace/ui/fonts/fonts.json"
+                    }
+                ]
+            ]
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/titlebar.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/base.json"
+        }
+    ]
+}

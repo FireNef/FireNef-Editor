@@ -1,0 +1,163 @@
+:host {
+    background: none;
+    opacity: 1.0;
+    height: 100%;
+    width: 100%;
+}
+
+#element {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background {
+    background-color: var(--current-surface0);
+    width: 350px;
+    height: 200px;
+    border-radius: 15px;
+    z-index: 1000;
+    box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.topBar {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    height: min-content;
+}
+
+.bottomBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+
+#close {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--current-accent);
+    padding: 0px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#close svg {
+    width: 70%;
+    height: 70%;
+}
+
+#close:hover {
+    background-color: var(--current-overlay0);
+    border-radius: 5px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+input {
+    font-family: Ubuntu;
+    width: 80%;
+    height: 25px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+}
+
+input:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+input::placeholder {
+    color: var(--current-subtext0);
+}
+
+input::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}
+
+.primaryButton {
+    display: block;
+    font-family: Ubuntu;
+    width: 80%;
+    height: 25px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-accent);
+    color: var(--current-surface0);
+    cursor: pointer;
+    margin: 5px;
+    user-select: none;
+}
+
+.primaryButton:hover {
+    background-color: color-mix(in srgb, var(--current-accent) 70%, white);
+}
+
+h1 {
+    margin: 0px;
+    user-select: none;
+}
+
+#error {
+    margin: 0px;
+    color: var(--current-red);
+    user-select: none;
+}
+
+.loader-container {
+    display: none;
+    width: 80%;
+    height: 20px;
+    background: var(--current-surface1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.loader-bar {
+    height: 100%;
+    width: 20%;
+    border-radius: 6px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--current-accent),
+        var(--current-accent),
+        var(--current-accent),
+        transparent
+    );
+    filter: blur(0.3px);
+    animation: slide 1.0s ease-in-out infinite;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-100%) scaleX(100%);
+    }
+    100% {
+        transform: translateX(600%) scaleX(130%);
+    }
+}

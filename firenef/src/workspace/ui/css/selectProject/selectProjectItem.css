@@ -1,0 +1,91 @@
+#element {
+    display: block;
+}
+
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    width: 100%;
+    height: 180px;
+    background-color: var(--current-surface1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    border-radius: 10px;
+    -webkit-user-drag: none;
+}
+
+.iconContainer {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    user-select: none;
+    font-size: smaller;
+    color: var(--current-subtext0);
+    margin: 4px 0px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#deleteButton {
+    background: transparent;
+    border: var(--current-accent) 2px solid;
+    box-sizing: border-box; 
+    cursor: pointer;
+    font-family: Ubuntu;
+    border-radius: 4px;
+    color: var(--current-text);
+    margin: 5px;
+    width: 80px;
+    user-select: none;
+    padding: 5px 10px;
+}
+
+#deleteButton:hover {
+    background-color: var(--current-red);
+    border-color: transparent;
+    color: var(--current-surface0);
+}
+
+#openButton {
+    background: var(--current-accent);
+    border: none;
+    cursor: pointer;
+    font-family: Ubuntu;
+    border-radius: 4px;
+    color: var(--current-surface0);
+    margin: 5px;
+    width: 80px;
+    user-select: none;
+    padding: 5px 10px;
+}
+
+#openButton:hover {
+    background-color: color-mix(in srgb, var(--current-accent) 70%, white);;
+}

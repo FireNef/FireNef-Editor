@@ -1,8 +1,12 @@
 {
     "imports": [
-        "workspace/scripts/FPSCounterScript.js",
-        "workspace/scripts/cameraRotateScript.js",
-        "workspace/scripts/cubeRotateScript.js"
+        "workspace/scripts/ui/titlebar.js",
+        "workspace/scripts/ui/fontLoader.js",
+        "workspace/scripts/ui/overlay.js",
+        "workspace/scripts/ui/overlays/newProject.js",
+        "workspace/scripts/ui/overlays/openProject.js",
+        "workspace/scripts/ui/overlays/confirm.js",
+        "workspace/scripts/ui/selectProject/selectProject.js"
     ],
 
     "updater": [
@@ -11,32 +15,8 @@
             "class": "ComponentController",
             "children": [
                 {
-                    "type": "component",
-                    "class": "UiController",
-                    "attributes": [
-                        [
-                            {
-                                "comment": "Main CSS Path",
-                                "value": "./src/workspace/ui/css/main.css",
-                                "type": "file"
-                            },
-                            {
-                                "comment": "Ui Scale",
-                                "value": "2",
-                                "type": "number"
-                            }
-                        ]
-                    ],
-                    "children": [
-                        {
-                            "type": "module",
-                            "path": "workspace/modules/ui/fpsCounter.json"
-                        }
-                    ]
-                },
-                {
                     "type": "module",
-                    "path": "workspace/modules/3d/sceneController.json"
+                    "path": "workspace/modules/ui/uiMain.json"
                 }
             ]
         }

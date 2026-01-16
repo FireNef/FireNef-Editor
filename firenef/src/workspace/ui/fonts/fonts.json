@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Ubuntu",
+        "style": "normal",
+        "weight": 700,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-Bold.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "normal",
+        "weight": 500,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-Medium.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "normal",
+        "weight": 400,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-Regular.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "normal",
+        "weight": 300,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-Light.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "italic",
+        "weight": 700,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-BoldItalic.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "italic",
+        "weight": 500,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-MediumItalic.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "italic",
+        "weight": 400,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-Italic.ttf"
+    },
+    {
+        "name": "Ubuntu",
+        "style": "italic",
+        "weight": 300,
+        "display": "swap",
+        "src": "./src/workspace/ui/fonts/Ubuntu/Ubuntu-LightItalic.ttf"
+    }
+]

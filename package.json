@@ -1,42 +1,27 @@
 {
-  "name": "firenef",
+  "name": "firenef-editor",
   "productName": "FireNef",
   "version": "0.1.0",
   "description": "A powerfull JavaScript 3D engine",
-  "homepage": "https://github.com/Minecat300/FireNef#readme",
+  "homepage": "https://github.com/FireNef/FireNef-Editor#readme",
   "bugs": {
-    "url": "https://github.com/Minecat300/FireNef/issues"
+    "url": "https://github.com/FireNef/FireNef-Editor/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Minecat300/FireNef.git"
+    "url": "git+https://github.com/FireNef/FireNef-Editor.git"
   },
-  "build": {
-    "win": {
-      "icon": "build/icon.ico"
-    }
-  },
-  "license": "ISC",
+  "license": "MIT",
   "author": "Minecat300",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "start": "electron ."
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.10.2",
-    "@electron-forge/maker-deb": "^7.10.2",
-    "@electron-forge/maker-rpm": "^7.10.2",
-    "@electron-forge/maker-squirrel": "^7.10.2",
-    "@electron-forge/maker-zip": "^7.10.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
-    "@electron-forge/plugin-fuses": "^7.10.2",
-    "@electron/fuses": "^1.8.0",
-    "electron": "^39.1.2"
+    "electron": "^39.2.7"
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.1"
+    "fast-folder-size": "^2.4.0"
   }
 }

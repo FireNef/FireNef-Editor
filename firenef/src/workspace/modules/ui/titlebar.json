@@ -1,0 +1,24 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/titlebar.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/titlebar.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "TitlebarScript"
+        }
+    ]
+}

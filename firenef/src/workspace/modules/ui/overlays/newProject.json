@@ -1,0 +1,25 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "newProject",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/overlays/newProject.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/overlays/newProject.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "NewProjectOverlayScript"
+        }
+    ]
+}
