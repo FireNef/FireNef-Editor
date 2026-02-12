@@ -1,0 +1,33 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Pages",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/pages.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/pages.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "PagesScript"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/pages/startPage.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/pages/projectPage.json"
+        }
+    ]
+}

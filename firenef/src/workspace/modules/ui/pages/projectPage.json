@@ -1,0 +1,32 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Project Page",
+    "variables": {
+        "page": "project"
+    },
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/pages/projectPage.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/pages/projectPage.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "ProjectPageScript"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/menus/componentTree.json"
+        }
+    ]
+}

@@ -18,6 +18,22 @@ export class Component {
         this.attributeDisableValue = 0;
     }
 
+    static icon = ["component"];
+    static group = "General";
+    
+    static #HIDE = Symbol("hideInGroup");
+
+    static get hideInGroup() {
+        if (this === Component) return true;
+        return Object.hasOwn(this, Component.#HIDE)
+            ? this[Component.#HIDE]
+            : false;
+    }
+
+    static set hideInGroup(value) {
+        this[Component.#HIDE] = Boolean(value);
+    }
+
     appendChild(child) {
         if (this.children.includes(child)) return console.warn("Cannot add same child to Component twice.");
         if (child.parent) return console.warn("Cannot add component to multiple parents.");

@@ -6,7 +6,7 @@ export class UiController extends Component {
         super(name);
 
         const uiControllerAttribute = new Attribute("Ui Controller");
-        uiControllerAttribute.addField("css", "path", "");
+        uiControllerAttribute.addField("css", "text", "");
         uiControllerAttribute.addField("Ui Scale", "number", 1);
         uiControllerAttribute.addField("Isolate Scale", "boolean", true);
 
@@ -28,6 +28,9 @@ export class UiController extends Component {
 
         this.resolution = { width: 1920, height: 1080 };
     }
+
+    static icon = ["uiController", ...super.icon];
+    static group = "UI Elements";
 
     appendElement(element) {
         this.element.appendChild(element);

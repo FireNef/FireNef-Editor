@@ -1,0 +1,28 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Component List",
+    "variables": {
+        "contextMenu": "componentList"
+    },
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/contextMenu/genericAutoContextMenu.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/contextMenu/componentListContextMenu.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "ComponentListContextMenuScript"
+        }
+    ]
+}

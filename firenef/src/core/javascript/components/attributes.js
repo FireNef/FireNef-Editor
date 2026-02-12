@@ -3,13 +3,19 @@ export class Field {
         this.name = name;
         this.type = type;
         this.value = null;
+        this.rawValue = null;
         this.setType = null;
     }
 
     async setValue(value, type) {
         if (type) this.setType = type;
+        this.rawValue = value;
         if (type === "file") {
             this.value = await getExternalFile(value);
+            return;
+        }
+        if (type === "jsonFile") {
+            this.value = JSON.parse(await getExternalFile(value));
             return;
         }
         this.value = value;

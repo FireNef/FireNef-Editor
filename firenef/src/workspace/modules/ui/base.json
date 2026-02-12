@@ -1,6 +1,7 @@
 {
     "type": "component",
     "class": "UiElement",
+    "name": "Base",
     "attributes": [
         [
             {
@@ -22,7 +23,11 @@
         },
         {
             "type": "module",
-            "path": "workspace/modules/ui/selectProject/selectProject.json"
+            "path": "workspace/modules/ui/pages.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/contextMenu/contextMenu.json"
         }
     ]
 }

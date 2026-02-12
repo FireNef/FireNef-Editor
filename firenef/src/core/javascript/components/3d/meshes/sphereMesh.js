@@ -1,6 +1,6 @@
 import { MeshComponent } from "../mesh.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class SphereMeshComponent extends MeshComponent {
     constructor(name = "Sphere Mesh") {

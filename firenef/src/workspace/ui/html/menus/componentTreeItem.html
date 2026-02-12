@@ -1,0 +1,14 @@
+<div class="background">
+    <div class="spacer" id="lines"></div>
+    <div class="arrows">
+        <slot name="c1" id="closedArrow"></slot>
+        <slot name="c2" id="openArrow"></slot>
+    </div>
+    <slot name="c3" class="icon"></slot>
+    <div id="text">
+        <p id="name"></p>
+        <p id="className"></p>
+    </div>
+    <input type="text" id="rename" size="0">
+</div>
+<slot name="default"></slot>

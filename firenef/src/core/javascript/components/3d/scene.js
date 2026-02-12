@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from "#three";
 
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
@@ -9,17 +9,17 @@ export class SceneComponent extends Object3d {
     constructor(name = "Scene") {
         super(name, false); // disable transform attributes
 
-        this.object3D = new THREE.Scene()
-        this.object3D.name = name
+        this.object3D = new THREE.Scene();
+        this.object3D.name = name;
 
-        this.object3D.matrixAutoUpdate = false
-        this.object3D.updateMatrix()
+        this.object3D.matrixAutoUpdate = false;
+        this.object3D.updateMatrix();
 
         const sceneAttribute = new Attribute("Scene");
-        sceneAttribute.addField("Background", "any", new THREE.Color(0x000000));
+        sceneAttribute.addField("Background", "any", "#000000");
         sceneAttribute.addField("Environment", "texture", null);
         sceneAttribute.addField("Fog Enabled", "boolean", false);
-        sceneAttribute.addField("Fog Color", "color", new THREE.Color(0x000000));
+        sceneAttribute.addField("Fog Color", "color", "#000000");
         sceneAttribute.addField("Fog Near", "number", 1);
         sceneAttribute.addField("Fog Far", "number", 1000);
         sceneAttribute.addField("Override Material", "material", null);
@@ -121,22 +121,22 @@ export class SceneComponent extends Object3d {
     }
 
     updateBackground() {
-        const bg = this.getAttributeFieldValue(0, 0)
+        const bg = this.getAttributeFieldValue(0, 0);
 
         if (bg === null) {
-            this.object3D.background = null
-        } else if (bg instanceof THREE.Color) {
+            this.object3D.background = null;
+        } else if (typeof bg === "string") {
             if (!(this.object3D.background instanceof THREE.Color)) {
-                this.object3D.background = bg.clone()
+                this.object3D.background = new THREE.Color(bg);
             } else {
-                this.object3D.background.copy(bg)
+                this.object3D.background.set(bg);
             }
         } else if (bg?.texture instanceof THREE.Texture) {
             if (bg.texture && this.object3D.background !== bg.texture) {
                 this.object3D.background = bg.texture;
             }
         } else {
-            console.warn("SceneComponent: Invalid background type", bg)
+            console.warn("SceneComponent: Invalid background type", bg);
         }
     }
 }

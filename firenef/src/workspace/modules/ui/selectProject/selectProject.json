@@ -1,6 +1,7 @@
 {
     "type": "component",
     "class": "UiElement",
+    "name": "Select Project",
     "visible": false,
     "attributes": [
         [
@@ -23,7 +24,8 @@
         },
         {
             "type": "component",
-            "class": "UiElement",
+            "class": "SvgElement",
+            "name": "Refresh Icon",
             "attributes": [
                 [
                     {

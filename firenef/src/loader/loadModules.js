@@ -1,5 +1,5 @@
-import * as FIRENEF from "firenef";
-import * as THREE from "three";
+import * as FIRENEF from "#firenef";
+import * as THREE from "#three";
 import { fetchLocalJSON } from "./utils.js";
 
 const globalVariables = { FIRENEF, THREE };
@@ -46,6 +46,12 @@ async function manageSingleModule(components, sourcePath, module, engine) {
             component = await new FIRENEF[module.class](module.name ?? undefined, ...module.params ?? []);
         } else if (THREE[module.class]) {
             component = await new THREE[module.class](...module.params ?? []);
+        }
+
+        if (module.variables) {
+            for (const variable in module.variables) {
+                component[variable] = module.variables[variable];
+            }
         }
 
         if (module.visible) component.visible = module.visible;

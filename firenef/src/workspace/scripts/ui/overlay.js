@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 
 export class OverlayScript extends FIRENEF.Script {
     constructor(name = "Overlay Script") {
@@ -22,7 +22,7 @@ export class OverlayScript extends FIRENEF.Script {
         this.overlay.visible = this.editor.overlay;
         if (this.editor.currentOverlay) {
             for (const child of this.overlay.children) {
-                if (child.name == this.editor.currentOverlay) {
+                if (child.overlay == this.editor.currentOverlay) {
                     child.visible = true;
                 } else {
                     child.visible = false;

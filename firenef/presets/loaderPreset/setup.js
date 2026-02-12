@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 import { fetchLocalJSON } from "./utils.js";
 import { positionElements } from "./elementPosition.js";
 import loadModules from "./loadModules.js";

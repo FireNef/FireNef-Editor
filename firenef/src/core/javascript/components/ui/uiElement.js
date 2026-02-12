@@ -6,8 +6,8 @@ export class UiElement extends Component {
         super(name);
 
         this.attributes.push(new Attribute("Ui"));
-        this.attributes[0].addField("html", "path", "");
-        this.attributes[0].addField("css", "path", "");
+        this.attributes[0].addField("html", "text", "");
+        this.attributes[0].addField("css", "text", "");
         this.attributes[0].addField("Isolate Style", "boolean", false);
 
         this.element = document.createElement('div');
@@ -21,6 +21,9 @@ export class UiElement extends Component {
 
         this.currentChild = 1;
     }
+
+    static icon = ["uiElement", ...super.icon];
+    static group = "UI Elements";
 
     appendElement(element) {
         this.host.appendChild(element);
@@ -77,7 +80,7 @@ export class UiElement extends Component {
     }
 
     start() {
-        this.inneritedStyles = this.parent?.inneritedStyles ?? [];
+        this.inneritedStyles = (this.parent?.inneritedStyles ?? []).slice();
         this.inneritedStyles.push(this.parent?.style);
         if (this.getAttributeFieldValue(0, 2)) this.inneritedStyles = [];
 
@@ -88,7 +91,7 @@ export class UiElement extends Component {
 
         this.shadow.adoptedStyleSheets = [...this.inneritedStyles, this.style];
 
-        const htmlString = this.getAttributeFieldValue(0, 0);
+        const htmlString = this.getAttributeFieldValue(0, 0) ?? "";
         const template = document.createElement("template");
 
         template.innerHTML = htmlString.trim();

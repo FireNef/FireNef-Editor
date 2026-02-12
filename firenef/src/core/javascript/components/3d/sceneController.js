@@ -13,6 +13,8 @@ export class SceneController extends Component {
         this.attributes.push(selectedSceneAttribute);
     }
 
+    static group = "General 3D";
+
     start() {
         this.renderer = this.highestParent.renderer;
     }

@@ -1,5 +1,5 @@
-import * as FIRENEF from "firenef";
-import * as THREE from "three";
+import * as FIRENEF from "#firenef";
+import * as THREE from "#three";
 import { fetchLocalJSON } from "./utils.js";
 
 const globalVariables = { FIRENEF, THREE };

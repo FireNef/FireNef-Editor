@@ -15,6 +15,10 @@
   "scripts": {
     "start": "electron ."
   },
+  "imports": {
+    "#firenef": "./firenef/src/core/javascript/firenef.js",
+    "#three": "./firenef/src/core/three.js/v181/three.webgpu.min.js"
+  },
   "devDependencies": {
     "electron": "^39.2.7"
   }

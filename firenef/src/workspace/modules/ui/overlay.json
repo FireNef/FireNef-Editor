@@ -1,6 +1,7 @@
 {
     "type": "component",
     "class": "UiElement",
+    "name": "Overlay",
     "visible": false,
     "attributes": [
         [

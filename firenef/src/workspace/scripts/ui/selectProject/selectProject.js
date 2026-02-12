@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 import { SelectProjectItemScript } from "./selectProjectItem.js";
 
 export class SelectProjectScript extends FIRENEF.Script {

@@ -39,6 +39,10 @@ export async function installElectronPreset(presetPath, projectPath, projectName
     packageJson.name = toPackageName(projectName);
     packageJson.author = app.getName();
     packageJson.productName = projectName;
+    packageJson.imports = {
+        "#firenef": `./${projectName}/src/core/javascript/firenef.js`,
+        "#three": `./${projectName}/src/core/three.js/v181/three.webgpu.min.js`
+    },
     await fsPromises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
     await runNpmInstall(path.join(BASE_DIR, projectPath));

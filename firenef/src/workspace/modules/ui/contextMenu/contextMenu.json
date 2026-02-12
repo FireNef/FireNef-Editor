@@ -1,0 +1,41 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Context Menu",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/contextMenu/contextMenu.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/contextMenu/contextMenu.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "ContextMenuScript"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/contextMenu/componentTreeItem.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/contextMenu/componentTree.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/contextMenu/componentGroups.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/contextMenu/componentList.json"
+        }
+    ]
+}

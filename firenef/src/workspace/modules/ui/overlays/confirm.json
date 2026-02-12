@@ -1,7 +1,10 @@
 {
     "type": "component",
     "class": "UiElement",
-    "name": "confirm",
+    "name": "Confirm Overlay",
+    "variables": {
+        "overlay": "confirm"
+    },
     "attributes": [
         [
             {

@@ -1,7 +1,7 @@
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
 import { SceneComponent } from "./scene.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class PerspectiveCameraComponent extends Object3d {
     constructor(name = "Perspective Camera") {

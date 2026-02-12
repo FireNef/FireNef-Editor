@@ -1,6 +1,6 @@
 import { Component } from "../../component.js";
 import { Attribute } from "../../attributes.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class DepthMaterialComponent extends Component {
     constructor(name = "Depth Material") {
@@ -12,6 +12,8 @@ export class DepthMaterialComponent extends Component {
         wireframeAttribute.addField("Wireframe", "boolean", false);
         this.attributes.push(wireframeAttribute);
     }
+
+    static group = "3D Materials";
 
     updateWireframeMaterialProperties(attribute = 0) {
         this.material.wireframe = this.getAttributeFieldValue(attribute, 0);

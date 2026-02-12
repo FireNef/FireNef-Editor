@@ -1,7 +1,10 @@
 {
     "type": "component",
     "class": "UiElement",
-    "name": "newProject",
+    "name": "New Project Overlay",
+    "variables": {
+        "overlay": "newProject"
+    },
     "attributes": [
         [
             {

@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 import setupEngine from "./loader/setup.js";
 import { FirenefEditor } from "./workspace/scripts/firenefEditor.js";
 

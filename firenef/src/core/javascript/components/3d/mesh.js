@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import * as THREE from "#three";
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
 import { TextureComponent } from "./texture.js";
@@ -13,6 +13,11 @@ export class MeshComponent extends Object3d {
 
         this.object3D = new THREE.Mesh();
         this.object3D.name = name;
+    }
+
+    static group = "3D Meshes";
+    static {
+        this.hideInGroup = true;
     }
 
     update() {

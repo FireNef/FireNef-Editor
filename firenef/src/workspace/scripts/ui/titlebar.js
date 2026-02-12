@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 
 export class TitlebarScript extends FIRENEF.Script {
     constructor(name = "Titlebar Script") {

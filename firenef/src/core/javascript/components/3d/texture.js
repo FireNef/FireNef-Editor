@@ -1,6 +1,6 @@
 import { Component } from "../component.js";
 import { Attribute } from "../attributes.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class TextureComponent extends Component {
     static loader = new THREE.TextureLoader();
@@ -11,12 +11,14 @@ export class TextureComponent extends Component {
         this.isEnvMap = false; // mark if this is used as an environment
 
         const textureAttribute = new Attribute("Texture");
-        textureAttribute.addField("Image", "imagePath", THREE.Texture.DEFAULT_IMAGE);
+        textureAttribute.addField("Image", "image", THREE.Texture.DEFAULT_IMAGE);
         textureAttribute.addField("Mapping", "three", THREE.Texture.DEFAULT_MAPPING);
         textureAttribute.addField("Color Space", "colorSpace", THREE.NoColorSpace);
         textureAttribute.addField("Is Environment", "boolean", false); // new flag
         this.attributes.push(textureAttribute);
     }
+
+    static group = "General 3D";
 
     async setTexture(value, type) {
         if (type === "file") {

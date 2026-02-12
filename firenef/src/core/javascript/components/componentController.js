@@ -1,11 +1,13 @@
 import { Component } from "./component.js";
 
 export class ComponentController extends Component {
-    constructor(name = "componentController") {
+    constructor(name = "Component Controller") {
         super(name);
 
         this.updateDepthLimit = 100000;
     }
+
+    static icon = ["componentController", ...super.icon];
 
     update() {
         if (!this.enable) return;

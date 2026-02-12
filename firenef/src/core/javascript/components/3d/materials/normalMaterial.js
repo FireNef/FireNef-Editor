@@ -1,5 +1,5 @@
 import { StandardMaterialComponent } from "./standardMaterial.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class NormalMaterialComponent extends StandardMaterialComponent {
     constructor(name = "Normal Material") {

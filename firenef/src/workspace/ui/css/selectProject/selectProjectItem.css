@@ -87,5 +87,5 @@ p {
 }
 
 #openButton:hover {
-    background-color: color-mix(in srgb, var(--current-accent) 70%, white);;
+    background-color: color-mix(in srgb, var(--current-accent) 70%, white);
 }

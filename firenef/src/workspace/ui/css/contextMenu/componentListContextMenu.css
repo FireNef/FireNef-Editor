@@ -1,0 +1,74 @@
+:host {
+    display: flex;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: fit-content;
+    height: fit-content;
+    padding: 0px;
+    margin: 0px;
+}
+
+#element {
+    width: fit-content;
+    height: fit-content;
+    padding: 0px;
+    margin: 0px;
+}
+
+.background {
+    width: max-content;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    cursor: default;
+    resize: none;
+    -webkit-user-drag: none;
+    min-width: 160px;
+    background: var(--current-surface0);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.menu-item {
+    font-family: Ubuntu;
+    color: var(--current-text);
+    stroke: var(--current-accent);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 20px;
+    pointer-events: all;
+}
+
+.menu-item p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.menu-item:hover {
+    background-color: var(--current-surface1);
+}
+
+.background hr {
+    border: var(--current-overlay0) solid 0.5px;
+    margin: 3px;
+    height: 0px;
+    width: 90%;
+    background: none;
+}
+
+svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    fill: var(--current-accent);
+}

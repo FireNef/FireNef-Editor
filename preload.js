@@ -1,5 +1,7 @@
-const { contextBridge, ipcRenderer } = require("electron");
-const { rename } = require("original-fs");
+import { contextBridge, ipcRenderer } from "electron";
+import path from "path";
+import fs from "fs";
+import { pathToFileURL } from "url";
 
 contextBridge.exposeInMainWorld("fs", {
     list: () => ipcRenderer.invoke("fs-list"),
@@ -9,7 +11,27 @@ contextBridge.exposeInMainWorld("fs", {
     delete: (path) => ipcRenderer.invoke("fs-delete", path),
     pathInfo: (path) => ipcRenderer.invoke("fs-path-info", path),
     rename: (from, to) => ipcRenderer.invoke("fs-rename", from, to),
-    exists: (path) => ipcRenderer.invoke("fs-exists", path)
+    exists: (path) => ipcRenderer.invoke("fs-exists", path),
+    loadModule: async (modulePath) => {
+        const BASE_DIR = await ipcRenderer.invoke("get-base-dir");
+
+        if (path.isAbsolute(modulePath)) {
+            throw new Error('Absolute paths are not allowed.');
+        }
+    
+        const resolvedPath = path.resolve(BASE_DIR, modulePath);
+    
+        if (!resolvedPath.startsWith(BASE_DIR)) {
+            throw new Error('Path traversal detected.');
+        }
+    
+        if (!fs.existsSync(resolvedPath)) {
+            throw new Error('Module not found.');
+        }
+    
+        const moduleUrl = pathToFileURL(resolvedPath).href;
+        return await import(moduleUrl);
+    }
 });
 
 contextBridge.exposeInMainWorld("windowControls", {

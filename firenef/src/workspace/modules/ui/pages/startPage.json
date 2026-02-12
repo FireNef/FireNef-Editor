@@ -1,0 +1,28 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Start Page",
+    "variables": {
+        "page": "start"
+    },
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/pages/startPage.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/pages/startPage.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/selectProject/selectProject.json"
+        }
+    ]
+}

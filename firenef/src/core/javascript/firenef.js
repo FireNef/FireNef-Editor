@@ -5,6 +5,7 @@ import { Script } from "./components/script.js";
 import { Attribute, Field } from "./components/attributes.js";
 import { UiController } from "./components/ui/uiController.js";
 import { UiElement } from "./components/ui/uiElement.js";
+import { SvgElement } from "./components/ui/svgElement.js";
 import { Object3d } from "./components/3d/object3d.js";
 import { TextureComponent } from "./components/3d/texture.js";
 import { SceneComponent } from "./components/3d/scene.js";
@@ -13,7 +14,8 @@ import { StorageComponent } from "./components/storage.js";
 import { GroupComponent } from "./components/group.js";
 import { PerspectiveCameraComponent } from "./components/3d/camera.js";
 import { MeshComponent } from "./components/3d/mesh.js";
-import { DirectionalLightComponent } from "./components/3d/light.js";
+import { DirectionalLightComponent, SpotLightComponent, PointLightComponent, AmbientLightComponent, HemisphereLightComponent } from "./components/3d/light.js";
+import { Group3d } from "./components/3d/group3d.js";
 
 import { CubeMeshComponent } from "./components/3d/meshes/cubeMesh.js";
 import { SphereMeshComponent } from "./components/3d/meshes/sphereMesh.js";
@@ -39,10 +41,12 @@ export {
     Engine, Component, ComponentController, Script, Attribute, Field,
 
     StorageComponent, GroupComponent,
-    UiController, UiElement,
+    UiController, UiElement, SvgElement,
 
     TextureComponent, Object3d, SceneComponent, SceneController,
-    PerspectiveCameraComponent, DirectionalLightComponent,
+    PerspectiveCameraComponent, Group3d,
+
+    DirectionalLightComponent, SpotLightComponent, PointLightComponent, AmbientLightComponent, HemisphereLightComponent,
 
     MeshComponent, 
     CubeMeshComponent, SphereMeshComponent, PlaneMeshComponent, ConeMeshComponent,
@@ -50,4 +54,4 @@ export {
 
     StandardMaterialComponent, PhysicalMaterialComponent, PhongMaterialComponent, ToonMaterialComponent,
     BasicMaterialComponent, LambertMaterialComponent, MapcapMaterialComponent, NormalMaterialComponent, DepthMaterialComponent
-}; 
+};

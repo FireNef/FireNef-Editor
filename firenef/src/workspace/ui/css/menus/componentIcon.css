@@ -1,0 +1,4 @@
+svg {
+    fill: color-mix(in srgb, var(--current-accent) 50%, var(--current-text));
+    stroke: color-mix(in srgb, var(--current-accent) 50%, var(--current-text));
+}

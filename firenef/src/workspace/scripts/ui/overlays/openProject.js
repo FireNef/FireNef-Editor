@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 
 export class OpenProjectOverlayScript extends FIRENEF.Script {
     constructor(name = "Open Project Overlay Script") {

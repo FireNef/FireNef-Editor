@@ -3,7 +3,7 @@ import fsPromises from 'fs/promises';
 import ffs from "fast-folder-size";
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { spawn } from "child_process";
 
 import { installElectronPreset, installMainPreset, installLoaderPreset, checkNpmOrDie } from './firenefEditorTools.js';
@@ -151,6 +151,10 @@ ipcMain.handle("fs-rename", async (_, from, to) => {
     const dst = resolveSafe(to);
     await fsPromises.rename(src, dst);
     return true;
+});
+
+ipcMain.handle("get-base-dir", async (_) => {
+    return BASE_DIR;
 });
 
 ipcMain.handle("install-electron-preset", async (_, presetPath, projectPath, projectName) => await installElectronPreset(presetPath, projectPath, projectName));

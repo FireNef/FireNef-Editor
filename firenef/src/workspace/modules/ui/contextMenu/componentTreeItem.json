@@ -1,0 +1,28 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Component Tree Item",
+    "variables": {
+        "contextMenu": "componentTreeItem"
+    },
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/contextMenu/componentTreeItem.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/contextMenu/genericContextMenu.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "ComponentTreeItemContextMenuScript"
+        }
+    ]
+}

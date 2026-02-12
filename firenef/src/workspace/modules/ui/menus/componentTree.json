@@ -1,0 +1,25 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Component Tree",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/menus/componentTree.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/menus/componentTree.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "ComponentTreeScript"
+        }
+    ]
+}

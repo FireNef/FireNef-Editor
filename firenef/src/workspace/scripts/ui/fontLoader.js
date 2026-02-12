@@ -1,4 +1,4 @@
-import * as FIRENEF from "firenef";
+import * as FIRENEF from "#firenef";
 
 export class FontLoaderScript extends FIRENEF.Script {
     constructor(name = "Font Loader Script") {

@@ -1,6 +1,6 @@
 import { Component } from "../component.js";
 import { Attribute } from "../attributes.js";
-import * as THREE from "three";
+import * as THREE from "#three";
 
 export class Object3d extends Component {
     constructor(name = "Object 3D", allowTransform = true) {
@@ -37,6 +37,11 @@ export class Object3d extends Component {
             this.renderQuaternion = new THREE.Quaternion();
 
         }
+    }
+
+    static group = "General 3D";
+    static {
+        this.hideInGroup = true;
     }
 
     appendChild(child) {

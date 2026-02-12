@@ -1,7 +1,10 @@
 {
     "type": "component",
     "class": "UiElement",
-    "name": "openProject",
+    "name": "Open Project Overlay",
+    "variables": {
+        "overlay": "openProject"  
+    },
     "attributes": [
         [
             {
