@@ -28,7 +28,7 @@ export class FirenefEditor {
         this.dragInputs = {};
 
         document.addEventListener("mouseup", () => { this.clearDrag(); });
-        document.addEventListener("keypress", (e) => { 
+        document.addEventListener("keydown", (e) => { 
             if (e.key == "Escape") {
                 this.clearContextMenu(); 
                 this.clearOverlay();
