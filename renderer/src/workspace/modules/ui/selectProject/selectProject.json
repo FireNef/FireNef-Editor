@@ -1,0 +1,39 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Select Project",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/selectProject/selectProject.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/selectProject/selectProject.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "SelectProjectScript"
+        },
+        {
+            "type": "component",
+            "class": "SvgElement",
+            "name": "Refresh Icon",
+            "attributes": [
+                [
+                    {
+                        "comment": "Svg File",
+                        "type": "file",
+                        "value": "./assets/svgs/refresh.svg"
+                    }
+                ]
+            ]
+        }
+    ]
+}

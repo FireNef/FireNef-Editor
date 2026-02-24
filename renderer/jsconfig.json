@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "firenef": ["src/core/javascript/firenef.js"],
+            "three": ["src/core/three.js/v181/three.webgpu.min.js"]
+        }
+    },
+    "include": ["src/**/*"]
+}

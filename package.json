@@ -14,13 +14,9 @@
   "license": "MIT",
   "author": "Minecat300",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "electron ."
-  },
-  "imports": {
-    "#firenef": "./firenef/src/core/javascript/firenef.js",
-    "#three": "./firenef/src/core/three.js/v181/three.webgpu.min.js"
   },
   "devDependencies": {
     "electron": "^39.2.7"

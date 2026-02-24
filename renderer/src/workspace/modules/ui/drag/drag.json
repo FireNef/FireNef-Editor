@@ -1,0 +1,29 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Drag",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/drag/drag.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/drag/drag.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "class": "DragScript"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/drag/componentTreeItemDrag.json"
+        }
+    ]
+}

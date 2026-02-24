@@ -8,10 +8,12 @@
         "autoHideMenuBar": true,
         "frame": false,
         "titleBarStyle": "hidden",
-        "icon": "firenef/assets/icon.ico",
+        "icon": "renderer/assets/icon.ico",
         "webPreferences": {
-            "preload": "preload.js",
-            "nodeIntegration": true,
+            "preload": "src/preload.js",
+            "nodeIntegration": false,
+            "contextIsolation": true,
+            "sandbox": false,
             "webgpu": true
         }
     }
