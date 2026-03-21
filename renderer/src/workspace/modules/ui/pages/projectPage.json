@@ -22,11 +22,15 @@
     "children": [
         {
             "type": "component",
-            "class": "ProjectPageScript"
+            "path": "workspace/scripts/ui/pages/projectPage.js"
         },
         {
             "type": "module",
-            "path": "workspace/modules/ui/menus/componentTree.json"
+            "path": "workspace/modules/ui/panel/leftPanel.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/panel/rightPanel.json"
         }
     ]
 }

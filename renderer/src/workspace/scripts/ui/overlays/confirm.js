@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class ConfirmOverlayScript extends FIRENEF.Script {
+export default class ConfirmOverlayScript extends FIRENEF.Script {
     constructor(name = "Confirm Overlay Script") {
         super(name);
 
@@ -12,6 +12,8 @@ export class ConfirmOverlayScript extends FIRENEF.Script {
         this.confirm = null;
         this.cancel = null;
     }
+
+    static type = "confirmOverlayScript";
 
     start() {
         this.element = this.parent.element;

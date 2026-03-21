@@ -19,7 +19,7 @@
     "children": [
         {
             "type": "component",
-            "class": "TitlebarScript"
+            "path": "workspace/scripts/ui/titlebar.js"
         }
     ]
 }

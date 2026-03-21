@@ -10,4 +10,7 @@ export class Script extends Component {
     static {
         this.hideInGroup = true;
     }
+
+    static baseType = "script";
+    static type = "script";
 }

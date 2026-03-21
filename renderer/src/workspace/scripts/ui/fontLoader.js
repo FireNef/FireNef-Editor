@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class FontLoaderScript extends FIRENEF.Script {
+export default class FontLoaderScript extends FIRENEF.Script {
     constructor(name = "Font Loader Script") {
         super(name);
 
@@ -10,6 +10,8 @@ export class FontLoaderScript extends FIRENEF.Script {
 
         this.style = null;
     }
+
+    static type = "fontLoaderScript";
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);

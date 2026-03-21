@@ -9,6 +9,8 @@ export class MeshComponent extends Object3d {
         const meshAttribute = new Attribute("Mesh");
         meshAttribute.addField("Geometry", "three", null);
         meshAttribute.addField("Material", "three", null);
+        meshAttribute.addField("Cast Shadows", "boolean", true);
+        meshAttribute.addField("Receive Shadows", "boolean", true);
         this.attributes.push(meshAttribute);
 
         this.object3D = new THREE.Mesh();
@@ -20,11 +22,23 @@ export class MeshComponent extends Object3d {
         this.hideInGroup = true;
     }
 
-    update() {
-        super.update(); // Update transform if allowed
-        const geometry = this.getAttributeFieldValue(1, 0);
-        const materialComponent = this.getAttributeFieldValue(1, 1);
-        this.object3D.geometry = geometry;
-        this.object3D.material = materialComponent?.material ?? null;
+    static baseType = "mesh"
+    static type = "mesh"
+
+    start() {
+        super.start();
+        this.updateMesh();
+    }
+
+    updateMesh() {
+        this.object3D.geometry = this.getAttributeFieldValue(1, 0);
+        this.object3D.material = this.getAttributeFieldValue(1, 1)?.material ?? null;
+        this.object3D.castShadow = this.getAttributeFieldValue(1, 2);
+        this.object3D.receiveShadow = this.getAttributeFieldValue(1, 3);
+    }
+
+    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
+        await super.setAttributeFieldValue(attribute, field, value, type, inputs);
+        if (attribute == 1) this.updateMesh();
     }
 }

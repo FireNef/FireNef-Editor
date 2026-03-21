@@ -1,9 +1,11 @@
 import * as FIRENEF from "firenef";
 
-export class DragScript extends FIRENEF.Script {
+export default class DragScript extends FIRENEF.Script {
     constructor(name = "Drag Script") {
         super(name);
     }
+
+    static type = "dragScript"
 
     start() {
         this.editor = window.firenefEditor;

@@ -7,4 +7,6 @@ export class BasicMaterialComponent extends StandardMaterialComponent {
 
         this.material = new THREE.MeshBasicMaterial();
     }
+
+    static type = "basicMaterial";
 }

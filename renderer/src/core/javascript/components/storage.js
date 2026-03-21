@@ -8,4 +8,7 @@ export class StorageComponent extends Component {
     getChildrenRunOrder() {
         return [];
     }
+
+    static baseType = "storage";
+    static type = "storage";
 }

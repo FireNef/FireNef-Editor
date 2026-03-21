@@ -9,4 +9,6 @@ export class ConeMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.ConeGeometry(1, 2, 32));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "coneMesh";
 }

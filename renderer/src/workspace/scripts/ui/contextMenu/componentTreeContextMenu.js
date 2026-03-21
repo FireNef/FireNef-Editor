@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class ComponentTreeContextMenuScript extends FIRENEF.Script {
+export default class ComponentTreeContextMenuScript extends FIRENEF.Script {
     constructor(name = "Component Tree Context Menu Script") {
         super(name);
 
@@ -14,6 +14,8 @@ export class ComponentTreeContextMenuScript extends FIRENEF.Script {
         this.deleteElement = null;
         this.backgroundElement = null;
     }
+
+    static type = "componentTreeContextMenuScript"
 
     start() {
         this.editor = window.firenefEditor;
@@ -35,7 +37,7 @@ export class ComponentTreeContextMenuScript extends FIRENEF.Script {
             const rect = this.newComponentElement.getBoundingClientRect();
             const menuX = rect.left + rect.width;
             const menuY = rect.top;
-            this.editor.addContextMenu("componentGroups", { x: menuX, y: menuY }, undefined, { hoverAmount: 1, hoverCooldown: 500, callback: { newComponent: (className) => this.editor.contextMenu["componentTree"].inputs.callback.newComponent(className) } });
+            this.editor.addContextMenu("componentGroups", { x: menuX, y: menuY }, undefined, { hoverAmount: 1, hoverCooldown: 500, callback: { newComponent: (className, classObject) => this.editor.contextMenu["componentTree"].inputs.callback.newComponent(className, classObject) } });
         });
 
         this.newComponentElement.addEventListener("mouseleave", () => {

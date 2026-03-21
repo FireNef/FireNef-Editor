@@ -1,0 +1,29 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Left Panel",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/panel/leftPanel.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/panel/leftPanel.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "path": "workspace/scripts/ui/panel/leftPanel.js"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/panel/componentTree.json"
+        }
+    ]
+}

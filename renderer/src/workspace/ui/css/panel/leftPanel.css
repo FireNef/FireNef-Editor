@@ -1,0 +1,59 @@
+.background {
+    height: 100%;
+    width: 350px;
+    min-width: 200px;
+    max-width: none;
+    resize: horizontal;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--current-mantle);
+}
+
+.resizer {
+    background-color: var(--current-mantle);
+    transition: background-color 0.3s ease;
+    height: 100%;
+    width: 6px;
+    min-width: 4px;
+    cursor: ew-resize;
+}
+
+.resizer:hover {
+    background-color: var(--current-accent);
+}
+
+#element {
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+:host {
+    width: fit-content;
+    height: 100%;
+}
+
+.background::-webkit-scrollbar {
+    width: 16px;
+}
+
+.background::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.background::-webkit-scrollbar-thumb {
+    background-color: var(--current-overlay0);
+    border-radius: 8px;
+    background-clip: content-box;
+    border: transparent solid 4px;
+}
+
+.background::-webkit-scrollbar-button:single-button {
+    background: transparent;
+    background-size: 0 0;
+    height: 0;
+    display: block;
+}

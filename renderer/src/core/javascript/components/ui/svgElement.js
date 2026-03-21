@@ -6,4 +6,6 @@ export class SvgElement extends UiElement {
     }
 
     static icon = ["svgElement", ...super.icon];
+
+    static type = "svgElement";
 }

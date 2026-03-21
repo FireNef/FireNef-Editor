@@ -1,11 +1,9 @@
-import { Renderer } from "./mainRender.js";
 import { EngineLogger } from "./components/engineLogger.js";
 
 export class Engine {
-    constructor(root, canvas) {
-        this.root = root;
+    constructor() {
         this.running = false;
-        this.renderer = new Renderer(this, canvas);
+        
         this.logger = new EngineLogger();
         this.maxUPS = 60;
 
@@ -28,16 +26,12 @@ export class Engine {
 
     start() {
         this.running = true;
-        this.renderer.running = true;
         this.startUpdateLoop();
-        this.renderer.startRenderLoop();
     }
 
     stop() {
         this.running = false;
-        this.renderer.running = false;
         this.stopUpdateLoop();
-        this.renderer.stopRenderLoop();
     }
 
     setMaxUps(maxUps) {
@@ -66,5 +60,9 @@ export class Engine {
             if (typeof item.update !== "function") continue;
             item.update();
         }
+    }
+
+    getViewportCapableComponent() {
+        return document.body;
     }
 }

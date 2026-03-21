@@ -8,7 +8,11 @@
                 "type": "file",
                 "value": "./src/workspace/ui/css/main.css"
             },
-            {},
+            {
+                "comment": "Ui Scale",
+                "type": "number",
+                "value": 1
+            },
             {
                 "comment": "Isolated Scale",
                 "type": "boolean",
@@ -19,7 +23,7 @@
     "children": [
         {
             "type": "component",
-            "class": "FontLoaderScript",
+            "path": "workspace/scripts/ui/fontLoader.js",
             "attributes": [
                 [
                     {

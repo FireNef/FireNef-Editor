@@ -22,7 +22,7 @@
     "children": [
         {
             "type": "component",
-            "class": "ConfirmOverlayScript"
+            "path": "workspace/scripts/ui/overlays/confirm.js"
         }
     ]
 }

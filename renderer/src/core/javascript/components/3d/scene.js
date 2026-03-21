@@ -2,8 +2,9 @@ import * as THREE from "three";
 
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
-import { ComponentController } from "../componentController.js";
-
+import { ComponentController } from "../component.js";
+import { Renderer3D } from "../renderer3D.js";
+import { TextureComponent } from "./texture.js";
 
 export class SceneComponent extends Object3d {
     constructor(name = "Scene") {
@@ -16,25 +17,43 @@ export class SceneComponent extends Object3d {
         this.object3D.updateMatrix();
 
         const sceneAttribute = new Attribute("Scene");
-        sceneAttribute.addField("Background", "any", "#000000");
-        sceneAttribute.addField("Environment", "texture", null);
-        sceneAttribute.addField("Fog Enabled", "boolean", false);
-        sceneAttribute.addField("Fog Color", "color", "#000000");
-        sceneAttribute.addField("Fog Near", "number", 1);
-        sceneAttribute.addField("Fog Far", "number", 1000);
+        sceneAttribute.addField("Background", "texture,color", "#000000");
+        sceneAttribute.addField("Background Blurriness", "number", 0, { min: 0 });
+        sceneAttribute.addField("Background Intensity", "number", 1, { min: 0 });
+        sceneAttribute.addField("Background Rotation", "euler", { x: 0, y: 0, z: 0, order: "XYZ" });
         sceneAttribute.addField("Override Material", "material", null);
         sceneAttribute.addField("Auto Update", "boolean", true);
-
         this.attributes.push(sceneAttribute);
+
+        const enviormentAttribute = new Attribute("Environment");
+        enviormentAttribute.addField("Environment", "texture", null);
+        enviormentAttribute.addField("Environment Intensity", "number", 1, { min: 0 });
+        enviormentAttribute.addField("Environment Rotation", "euler", { x: 0, y: 0, z: 0, order: "XYZ" });
+        this.attributes.push(enviormentAttribute);
+
+        const fogAttribute = new Attribute("Fog");
+        fogAttribute.addField("Fog Enabled", "boolean", false);
+        fogAttribute.addField("Fog Type", "string", "linear", { defaultValue: "linear", options: ["linear", "exponential2"] });
+        fogAttribute.addField("Fog Color", "color", new THREE.Color("#000000"), { defaultValue: "#000000" });
+        fogAttribute.addField("Fog Near", "number", 1, { min: 0 });
+        fogAttribute.addField("Fog Far", "number", 1000, { min: 0 });
+        fogAttribute.addField("Fog Density", "number", 1, { min: 0 });
+        this.attributes.push(fogAttribute);
 
         this.currentCamera = null;
 
-    
         this.updateDepthLimit = 100000;
     }
 
-    async updateEnvironment(renderer) {
-        const texComp = this.getAttributeFieldValue(0, 1);
+    static baseType = "scene";
+    static type = "scene";
+
+    async updateEnvironment() {
+        const renderer = this.getFirstParentOfType(Renderer3D);
+
+        if (!renderer.initialized) return;
+
+        const texComp = this.getAttributeFieldValue(1, 0);
         if (!texComp || !texComp.texture) {
             this.object3D.environment = null;
             return;
@@ -42,9 +61,14 @@ export class SceneComponent extends Object3d {
 
         let envMap = texComp.texture;
 
-        if (texComp.isEnvMap) {
+        if (texComp.getAttributeFieldValue(0, 1) == "environment") {
             // Only generate PMREM once per environment texture
             if (!texComp.pmremTexture) {
+                if (texComp.texture !== texComp._lastTexture) {
+                    texComp.pmremTexture = null;
+                    texComp._lastTexture = texComp.texture;
+                }
+
                 if (!renderer.pmremGenerator) {
                     console.warn("Renderer PMREMGenerator not found!");
                 } else {
@@ -57,48 +81,37 @@ export class SceneComponent extends Object3d {
         }
 
         this.object3D.environment = envMap;
+        this.object3D.environmentIntensity = this.getAttributeFieldValue(1, 1);
+
+        const envRotation = this.getAttributeFieldValue(1, 2);
+        this.object3D.environmentRotation.set(THREE.MathUtils.degToRad(envRotation.x), THREE.MathUtils.degToRad(envRotation.y), THREE.MathUtils.degToRad(envRotation.z));
 
         // Update all child materials so reflections take effect
         this.object3D.traverse((obj) => {
-            if (obj.material) obj.material.needsUpdate = true;
+            if (!obj.material) return;
+
+            if (Array.isArray(obj.material)) {
+                obj.material.forEach(m => m.needsUpdate = true);
+            } else {
+                obj.material.needsUpdate = true;
+            }
         });
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, engine) {
-        await super.setAttributeFieldValue(attribute, field, value, type, engine);
-        if (attribute == 0) {
-            if (field == 0) this.updateBackground();
-            if (field == 1) await this.updateEnvironment(engine.renderer);
-        }
+    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
+        await super.setAttributeFieldValue(attribute, field, value, type);
+        if (attribute == 0) this.updateScene();
+        if (attribute == 1) this.updateEnvironment();
+        if (attribute == 2) this.updateFog();
     }
 
     start() {
         this.updateDepthLimit = this.getFirstParentOfType(ComponentController)?.updateDepthLimit || 100000;
+        this.updateEnvironment();
     }
 
     update() {
-        this.object3D.overrideMaterial = this.getAttributeFieldValue(0, 6);
-
-        const fogEnabled = this.getAttributeFieldValue(0, 2);
-        if (fogEnabled) {
-            const color = this.getAttributeFieldValue(0, 3);
-            const near = this.getAttributeFieldValue(0, 4);
-            const far = this.getAttributeFieldValue(0, 5);
-
-            if (
-                !this.object3D.fog ||
-                this.object3D.fog.near !== near ||
-                this.object3D.fog.far !== far
-            ) {
-                this.object3D.fog = new THREE.Fog(color, near, far);
-            } else {
-                this.object3D.fog.color.set(color);
-            }
-        } else {
-            this.object3D.fog = null;
-        }
-
-        if (this.getAttributeFieldValue(0, 7)) {
+        if (this.getAttributeFieldValue(0, 5)) {
             this.object3D.updateMatrixWorld();
         }
     }
@@ -120,23 +133,31 @@ export class SceneComponent extends Object3d {
         }
     }
 
-    updateBackground() {
-        const bg = this.getAttributeFieldValue(0, 0);
-
-        if (bg === null) {
-            this.object3D.background = null;
-        } else if (typeof bg === "string") {
-            if (!(this.object3D.background instanceof THREE.Color)) {
-                this.object3D.background = new THREE.Color(bg);
-            } else {
-                this.object3D.background.set(bg);
-            }
-        } else if (bg?.texture instanceof THREE.Texture) {
-            if (bg.texture && this.object3D.background !== bg.texture) {
-                this.object3D.background = bg.texture;
-            }
+    updateScene() {
+        if (this.getAttributeFieldValue(0, 0) instanceof TextureComponent) {
+            this.object3D.background = this.getAttributeFieldValue(0, 0)?.texture ?? null;
         } else {
-            console.warn("SceneComponent: Invalid background type", bg);
+            this.object3D.background = new THREE.Color(this.getAttributeFieldValue(0, 0));
+        }
+        this.object3D.backgroundBlurriness = this.getAttributeFieldValue(0, 1);
+        this.object3D.backgroundIntensity = this.getAttributeFieldValue(0, 2);
+
+        const backgroundRotation = this.getAttributeFieldValue(0, 3);
+        this.object3D.backgroundRotation.set(THREE.MathUtils.degToRad(backgroundRotation.x), THREE.MathUtils.degToRad(backgroundRotation.y), THREE.MathUtils.degToRad(backgroundRotation.z));
+    
+        this.object3D.overrideMaterial = this.getAttributeFieldValue(0, 4);
+    }
+
+    updateFog() {
+        if (!this.getAttributeFieldValue(2, 0)) {
+            this.object3D.fog = null;
+            return;
+        }
+
+        if (this.getAttributeFieldValue(2, 1) === "linear") {
+            this.object3D.fog = new THREE.Fog(this.getAttributeFieldValue(2, 2), this.getAttributeFieldValue(2, 3), this.getAttributeFieldValue(2, 4));
+        } else {
+            this.object3D.fog = new THREE.FogExp2(this.getAttributeFieldValue(2, 2), this.getAttributeFieldValue(2, 5));
         }
     }
 }

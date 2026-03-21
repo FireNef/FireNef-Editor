@@ -9,4 +9,6 @@ export class TorusMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.TorusGeometry(1, 0.4, 16, 100));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "torusMesh";
 }

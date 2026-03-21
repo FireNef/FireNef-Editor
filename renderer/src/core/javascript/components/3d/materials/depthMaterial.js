@@ -15,6 +15,9 @@ export class DepthMaterialComponent extends Component {
 
     static group = "3D Materials";
 
+    static baseType = "material";
+    static type = "depthMaterial";
+
     updateWireframeMaterialProperties(attribute = 0) {
         this.material.wireframe = this.getAttributeFieldValue(attribute, 0);
         this.material.needsUpdate = true;

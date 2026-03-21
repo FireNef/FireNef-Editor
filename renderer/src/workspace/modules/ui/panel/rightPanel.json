@@ -1,0 +1,29 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Right Panel",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/panel/rightPanel.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/panel/rightPanel.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "path": "workspace/scripts/ui/panel/rightPanel.js"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/panel/componentInspector.json"
+        }
+    ]
+}

@@ -1,13 +1,14 @@
 import { Component } from "../component.js";
-import { Attribute, Field } from "../attributes.js";
+import { Attribute } from "../attributes.js";
+import { Viewport } from "../viewport.js";
 
 export class UiController extends Component {
     constructor (name = "UI Controller") {
         super(name);
 
         const uiControllerAttribute = new Attribute("Ui Controller");
-        uiControllerAttribute.addField("css", "text", "");
-        uiControllerAttribute.addField("Ui Scale", "number", 1);
+        uiControllerAttribute.addField("css", "text", "", { fileSelect: "text/css", textField: "wide" });
+        uiControllerAttribute.addField("Ui Scale", "number", 1, { min: 0 });
         uiControllerAttribute.addField("Isolate Scale", "boolean", true);
 
         this.attributes.push(uiControllerAttribute);
@@ -16,8 +17,7 @@ export class UiController extends Component {
         this.element.name = name;
         this.element.style.transformOrigin = "top left";
 
-        this.engine = null;
-        this.root = null;
+        this.viewport = null;
 
         this.host = null;
         this.shadow = null;
@@ -32,6 +32,9 @@ export class UiController extends Component {
     static icon = ["uiController", ...super.icon];
     static group = "UI Elements";
 
+    static baseType = "uiController";
+    static type = "uiController";
+
     appendElement(element) {
         this.element.appendChild(element);
     }
@@ -45,9 +48,11 @@ export class UiController extends Component {
     }
 
     start() {
-        this.engine = this.highestParent;
-
-        this.root = this.engine.root;
+        this.viewport = this.getFirstParentOfType(Viewport);
+        if (!this.viewport) {
+            this.enable = false;
+            return;
+        }
 
         this.host = document.createElement('div');
         this.shadow = this.host.attachShadow({ mode: "open" });
@@ -58,7 +63,7 @@ export class UiController extends Component {
         this.shadow.adoptedStyleSheets = [this.style];
         this.shadow.append(this.element);
 
-        this.root.appendChild(this.host);
+        this.viewport.viewportElement.appendChild(this.host);
 
         window.addEventListener('resize', () => {
             this.resize();
@@ -72,19 +77,21 @@ export class UiController extends Component {
     parentAdded() {
         if (!this.host) return;
 
-        this.engine = this.highestParent;
+        this.viewport = this.getFirstParentOfType(Viewport);
+        if (!this.viewport) {
+            this.enable = false;
+            return;
+        }
 
-        this.root = this.engine.root;
-
-        this.root.appendChild(this.host);
+        this.viewport.viewportElement.appendChild(this.host);
     }
 
     visiblityChanged() {
         if (this._visible) {
             if (!this.host || this.host.isConnected) return;
-            this.engine = this.highestParent;
-            this.root = this.engine.root;
-            this.root.appendChild(this.host);
+
+            this.viewportElement = this.viewport.viewportElement;
+            this.viewportElement.appendChild(this.host);
         } else {
             if (this.host && this.host.isConnected) this.host.remove();
         }
@@ -97,11 +104,11 @@ export class UiController extends Component {
             return;
         }
         
-        this.resolution = this.engine.renderer.resolution;
+        this.resolution = this.viewport.actualResolution;
 
         if (!this.getAttributeFieldValue(0, 2)) {
-            this.element.style.width = "100%";
-            this.element.style.height = "100%";
+            this.element.style.width = `${100/this.getAttributeFieldValue(0, 1)}%`;
+            this.element.style.height = `${100/this.getAttributeFieldValue(0, 1)}%`;
             return;
         }
 
@@ -111,7 +118,7 @@ export class UiController extends Component {
 
     resize() {
         if (!this.getAttributeFieldValue(0, 2)) {
-            this.element.style.transform = `scale(1)`;
+            this.element.style.transform = `scale(${this.getAttributeFieldValue(0, 1)})`;
             return;
         }
 

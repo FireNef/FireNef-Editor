@@ -1,12 +1,14 @@
 import * as FIRENEF from "firenef";
 
-export class OverlayScript extends FIRENEF.Script {
+export default class OverlayScript extends FIRENEF.Script {
     constructor(name = "Overlay Script") {
         super(name);
 
         this.overlay = null;
         this.editor = null;
     }
+
+    static type = "overlayScript";
 
     start() {
         this.overlay = this.parent;
@@ -15,7 +17,6 @@ export class OverlayScript extends FIRENEF.Script {
 
     update() {
         this.overlay.visible = this.editor.overlay;
-        console.log(this.overlay.visible);
         if (this.editor.currentOverlay) {
             for (const child of this.overlay.children) {
                 if (child.overlay == this.editor.currentOverlay) {

@@ -1,12 +1,14 @@
 import * as FIRENEF from "firenef";
 
-export class ContextMenuScript extends FIRENEF.Script {
+export default class ContextMenuScript extends FIRENEF.Script {
     constructor(name = "Context Menu Script") {
         super(name);
 
         this.overlay = null;
         this.editor = null;
     }
+
+    static type = "contextMenuScript";
 
     start() {
         this.editor = window.firenefEditor;
@@ -41,7 +43,12 @@ export class ContextMenuScript extends FIRENEF.Script {
                 if (this.editor.contextMenu[child.contextMenu]) {
                     const contextMenu = this.editor.contextMenu[child.contextMenu];
                     child.enable = true;
-                    child.host.style.top = contextMenu.position.y + "px";
+                    const height = child.host.offsetHeight;
+                    if (contextMenu.position.y + height > window.innerHeight) {
+                        child.host.style.top = window.innerHeight - height + "px";
+                    } else {
+                        child.host.style.top = contextMenu.position.y + "px";
+                    }
                     child.host.style.left = contextMenu.position.x + "px";
                 } else {
                     child.enable = false;

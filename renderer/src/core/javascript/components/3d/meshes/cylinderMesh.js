@@ -9,4 +9,6 @@ export class CylinderMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.CylinderGeometry(1, 1, 2, 8, 1, false));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "cylinderMesh";
 }

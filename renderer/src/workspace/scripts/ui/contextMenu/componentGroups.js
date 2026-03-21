@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class ComponentGroupScript extends FIRENEF.Script {
+export default class ComponentGroupScript extends FIRENEF.Script {
     constructor(name = "Component Group Script") {
         super(name);
 
@@ -11,6 +11,8 @@ export class ComponentGroupScript extends FIRENEF.Script {
 
         this.oldProjectGroups = {};
     }
+
+    static type = "componentGroupsContextMenuScript";
 
     updateContents() {
         this.backgroundElement.replaceChildren();
@@ -32,7 +34,7 @@ export class ComponentGroupScript extends FIRENEF.Script {
                 const rect = groupElement.getBoundingClientRect();
                 const menuX = rect.left + rect.width;
                 const menuY = rect.top;
-                this.editor.addContextMenu("componentList", { x: menuX, y: menuY }, undefined, { groupName: group, hoverAmount: 1, hoverCooldown: 500, callback: { newComponent: (className) => this.editor.contextMenu["componentGroups"].inputs.callback.newComponent(className) } });
+                this.editor.addContextMenu("componentList", { x: menuX, y: menuY }, undefined, { groupName: group, hoverAmount: 1, hoverCooldown: 500, callback: { newComponent: (className, classObject) => this.editor.contextMenu["componentGroups"].inputs.callback.newComponent(className, classObject) } });
             });
 
             groupElement.addEventListener("mouseleave", () => {

@@ -22,7 +22,7 @@
     "children": [
         {
             "type": "component",
-            "class": "OpenProjectOverlayScript"
+            "path": "workspace/scripts/ui/overlays/openProject.js"
         },
         {
             "type": "module",

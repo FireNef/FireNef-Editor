@@ -19,7 +19,7 @@
     "children": [
         {
             "type": "component",
-            "class": "PagesScript"
+            "path": "workspace/scripts/ui/pages.js"
         },
         {
             "type": "module",

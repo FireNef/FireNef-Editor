@@ -19,7 +19,7 @@
     "children": [
         {
             "type": "component",
-            "class": "OverlayScript"
+            "path": "workspace/scripts/ui/overlay.js"
         },
         {
             "type": "module",

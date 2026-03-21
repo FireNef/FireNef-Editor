@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class NewProjectOverlayScript extends FIRENEF.Script {
+export default class NewProjectOverlayScript extends FIRENEF.Script {
     constructor(name = "New Project Overlay Script") {
         super(name);
 
@@ -13,6 +13,8 @@ export class NewProjectOverlayScript extends FIRENEF.Script {
         this.error = null;
         this.loadingbar = null;
     }
+
+    static type = "newProjectOverlayScript";
 
     async tryCreateProject(name) {
         const returnValue = await window.firenefEditor.createProject(name, () => {

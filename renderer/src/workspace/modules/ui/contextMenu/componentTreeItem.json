@@ -22,7 +22,7 @@
     "children": [
         {
             "type": "component",
-            "class": "ComponentTreeItemContextMenuScript"
+            "path": "workspace/scripts/ui/contextMenu/componentTreeItemContextMenu.js"
         }
     ]
 }

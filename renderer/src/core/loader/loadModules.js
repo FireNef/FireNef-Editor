@@ -12,47 +12,33 @@ export default async function loadModules(engine, config) {
 
     if (!mainModule || typeof mainModule !== "object") throw console.error("Main Module missing or incorrect.");
 
-    const components = await importComponents(mainModule.imports, sourcePath);
-
-    for (const child of mainModule.updater ?? []) {
-        const component = await manageSingleModule(components, sourcePath, child, engine);
-        if (!component) continue;
-        component.parent = engine;
-        engine.updateList.push(component);
-    }
+    const components = await loadFullModule(mainModule.updater ?? [], sourcePath);
+    components.forEach(component => component.parent = engine );
+    engine.updateList.push(...components);
 }
 
-async function importComponents(imports, sourcePath) {
-    const componentsArray = await Promise.all(
-        imports.map(i => {
-            const path = new URL(resolvePath(sourcePath, i), document.baseURI).href;
-            return import(path);
-        })
-    );
-
-    return Object.assign({}, ...componentsArray);
+async function loadFullModule(modules, sourcePath) {
+    const components = await loadModuleSkeleton(modules, sourcePath);
+    await initializeComponents(components, modules, sourcePath);
+    return components;
 }
 
-async function manageSingleModule(components, sourcePath, module, engine) {
-    if (module.type === "module") {
-        const subModule = await fetchLocalJSON(resolvePath(sourcePath, module.path));
-        return await manageSingleModule(components, sourcePath, subModule, engine);
-    }
-    if (module.type === "component") {
-        let component;
-        if (components[module.class]) {
-            component = await new components[module.class](module.name ?? undefined, ...module.params ?? []);
-        } else if (FIRENEF[module.class]) {
-            component = await new FIRENEF[module.class](module.name ?? undefined, ...module.params ?? []);
-        } else if (THREE[module.class]) {
-            component = await new THREE[module.class](...module.params ?? []);
+async function initializeComponents(components, modules, sourcePath) {
+    for (let i = 0; i < components.length; i++) {
+        if (modules[i].type === "module") {
+            modules[i] = await fetchLocalJSON(resolvePath(sourcePath, modules[i].path));
         }
+
+        const module = modules[i];
+        const component = components[i];
 
         if (module.variables) {
             for (const variable in module.variables) {
                 component[variable] = module.variables[variable];
             }
         }
+
+        if (module.id && module.id != "") component.setID(module.id);
 
         if (module.visible === false) component.visible = false;
         if (module.enable === false) component.enable = false;
@@ -64,29 +50,68 @@ async function manageSingleModule(components, sourcePath, module, engine) {
                     const fieldValue = module.attributes[attribute][field];
                     if (!fieldValue.type) continue;
                     if (fieldValue.type === "component" || fieldValue.type === "module") {
-                        await component.setAttributeFieldValue(attribute, field, await manageSingleModule(components, sourcePath, fieldValue), fieldValue.setType, engine);
+                        const newComponent = await loadFullModule([fieldValue], sourcePath);
+                        await component.setAttributeFieldValue(attribute, field, newComponent[0], fieldValue.setType);
                     } else if (fieldValue.type === "variable") {
-                        await component.setAttributeFieldValue(attribute, field, getVariableValue(fieldValue.value), fieldValue.setType ?? fieldValue.type, engine);
+                        await component.setAttributeFieldValue(attribute, field, getVariableValue(fieldValue.value), fieldValue.setType ?? fieldValue.type);
                     } else {
-                        await component.setAttributeFieldValue(attribute, field, fieldValue.value, fieldValue.setType ?? fieldValue.type, engine);
+                        await component.setAttributeFieldValue(attribute, field, fieldValue.value, fieldValue.setType ?? fieldValue.type);
                     }
                 }
             }
         }
 
         if (module.children) {
-            for (const child of module.children) {
-                const childComponent = await manageSingleModule(components, sourcePath, child, engine);
-                if (!childComponent) continue;
-                component.appendChild(childComponent);
-            }
-            if (component.updateVisibility && typeof component.updateVisibility === "function") component.updateVisibility();
-            if (component.updateEnable && typeof component.updateEnable === "function") component.updateEnable();
+            await initializeComponents(component.children, module.children, sourcePath);
+        }
+    }
+}
+
+async function loadModuleSkeleton(modules, sourcePath) {
+    const components = [];
+
+    for (let module of modules) {
+        if (!module) continue;
+
+        if (module.type === "module") {
+            module = await fetchLocalJSON(resolvePath(sourcePath, module.path));
         }
 
-        return component;
+        if (module.type === "component") {
+            let component;
+            if (module.path) {
+                const importClass = await importComponent(module.path, sourcePath);
+                component = await new importClass.default(module.name ?? undefined, ...module.params ?? []);
+            } else if (module.class) {
+                if (FIRENEF[module.class]) {
+                    component = await new FIRENEF[module.class](module.name ?? undefined, ...module.params ?? []);
+                } else if (THREE[module.class]) {
+                    component = await new THREE[module.class](...module.params ?? []);
+                }
+            }
+
+            if (!component) throw new Error(`Failed to load component: ${module.class ?? module.path}`);
+
+            if (module.children) {
+                const children = await loadModuleSkeleton(module.children, sourcePath);
+                for (const child of children) {
+                    component.appendChild(child);
+                }
+            }
+
+            components.push(component);
+
+        } else {
+            throw new Error(`Unknown module type: ${module.type}`);
+        }
     }
-    return;
+
+    return components;
+}
+
+async function importComponent(importPath, sourcePath) {
+    const path = new URL(resolvePath(sourcePath, importPath), document.baseURI).href;
+    return import(path);
 }
 
 function getVariableValue(variablePath) {

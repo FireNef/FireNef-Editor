@@ -19,7 +19,7 @@
     "children": [
         {
             "type": "component",
-            "class": "ContextMenuScript"
+            "path": "workspace/scripts/ui/contextMenu/contextMenu.js"
         },
         {
             "type": "module",

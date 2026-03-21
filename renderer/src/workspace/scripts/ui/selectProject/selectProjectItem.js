@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class SelectProjectItemScript extends FIRENEF.Script {
+export default class SelectProjectItemScript extends FIRENEF.Script {
     constructor(name = "Select Project Item Script") {
         super(name);
 
@@ -20,6 +20,8 @@ export class SelectProjectItemScript extends FIRENEF.Script {
         this.deleteButton = null;
         this.openButton = null;
     }
+
+    static type = "selectProjectItemScript";
 
     start() {
         this.editor = window.firenefEditor;

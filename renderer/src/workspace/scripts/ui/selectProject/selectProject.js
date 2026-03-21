@@ -1,7 +1,7 @@
 import * as FIRENEF from "firenef";
-import { SelectProjectItemScript } from "./selectProjectItem.js";
+import SelectProjectItemScript from "./selectProjectItem.js";
 
-export class SelectProjectScript extends FIRENEF.Script {
+export default class SelectProjectScript extends FIRENEF.Script {
     constructor(name = "Select Project Script") {
         super(name);
 
@@ -12,6 +12,8 @@ export class SelectProjectScript extends FIRENEF.Script {
 
         this.refreshButton = null;
     }
+
+    static type = "selectProjectScript";
 
     start() {
         this.editor = window.firenefEditor;
@@ -26,8 +28,8 @@ export class SelectProjectScript extends FIRENEF.Script {
         this.editor.getProjects().then((projects) => {
             for (const project of projects) {
                 const projectItem = new FIRENEF.UiElement("Project Item");
-                projectItem.setNonAsyncAttributeFieldValue(0, 0, "./src/workspace/ui/html/selectProject/selectProjectItem.html", "file", true);
-                projectItem.setNonAsyncAttributeFieldValue(0, 1, "./src/workspace/ui/css/selectProject/selectProjectItem.css", "file", true);
+                projectItem.setNonAsyncAttributeFieldValue(0, 0, "./src/workspace/ui/html/selectProject/selectProjectItem.html", "file", {}, true);
+                projectItem.setNonAsyncAttributeFieldValue(0, 1, "./src/workspace/ui/css/selectProject/selectProjectItem.css", "file", {}, true);
                 const projectItemScript = new SelectProjectItemScript("Project Item Script");
                 projectItemScript.setNonAsyncAttributeFieldValue(0, 0, project, "string");
                 projectItem.appendChild(projectItemScript);

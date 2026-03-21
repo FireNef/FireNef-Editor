@@ -9,4 +9,6 @@ export class CubeMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.BoxGeometry(1, 1, 1));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "cubeMesh";
 }

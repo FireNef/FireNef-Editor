@@ -1,6 +1,7 @@
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
 import { SceneComponent } from "./scene.js";
+import { Renderer3D } from "../renderer3D.js";
 import * as THREE from "three";
 
 export class PerspectiveCameraComponent extends Object3d {
@@ -25,8 +26,13 @@ export class PerspectiveCameraComponent extends Object3d {
         this.renderer = null;
     }
 
+    static baseType = "camera"
+    static type = "camera"
+
+    static group = "Cameras";
+
     start() {
-        this.renderer = this.highestParent.renderer;
+        this.renderer = this.getFirstParentOfType(Renderer3D);
     }
 
     update() {

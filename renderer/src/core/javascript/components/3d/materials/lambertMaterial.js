@@ -7,4 +7,6 @@ export class LambertMaterialComponent extends StandardMaterialComponent {
         
         this.material = new THREE.MeshLambertMaterial();
     }
+
+    static type = "lambertMaterial";
 }

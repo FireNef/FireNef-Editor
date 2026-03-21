@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class ComponentListContextMenuScript extends FIRENEF.Script {
+export default class ComponentListContextMenuScript extends FIRENEF.Script {
     constructor(name = "Component List Context Menu Script") {
         super(name);
 
@@ -13,6 +13,8 @@ export class ComponentListContextMenuScript extends FIRENEF.Script {
         this.oldGroupName = null;
     }
 
+    static type = "componentListContextMenuScript";
+
     updateContents() {
         const groupName = this.editor.contextMenu["componentList"].inputs.groupName;
         const components = this.editor.projectGroups[groupName] || [];
@@ -20,18 +22,27 @@ export class ComponentListContextMenuScript extends FIRENEF.Script {
         this.backgroundElement.replaceChildren();
 
         for (const component of components) {
+            const classObject = component.classObject;
+            
             const componentElement = document.createElement("button");
             componentElement.className = "menu-item";
             componentElement.id = "component";
 
-            componentElement.addEventListener("click", () => this.editor.contextMenu["componentList"].inputs.callback.newComponent(component));
+            componentElement.addEventListener("click", () => {
+                if (component.path) {
+                    this.editor.contextMenu["componentList"].inputs.callback.newComponent(component.path, classObject);
+                } else {
+                    this.editor.contextMenu["componentList"].inputs.callback.newComponent(component.className, classObject);
+                }
+            });
 
             const template = document.createElement("template");
-            template.innerHTML = this.editor.projectComponentIcons[component.icon[0]] || "";
+            template.innerHTML = this.editor.projectComponentIcons[classObject.icon[0]] || "";
             componentElement.appendChild(template.content.firstElementChild);
 
             const componentNameElement = document.createElement("p");
-            componentNameElement.textContent = this.editor.getClassName(component.name);
+            componentNameElement.textContent = this.editor.getClassName(classObject);
+
             componentElement.appendChild(componentNameElement);
 
             this.backgroundElement.appendChild(componentElement);

@@ -6,8 +6,8 @@ export class UiElement extends Component {
         super(name);
 
         this.attributes.push(new Attribute("Ui"));
-        this.attributes[0].addField("html", "text", "");
-        this.attributes[0].addField("css", "text", "");
+        this.attributes[0].addField("html", "text", "", { fileSelect: "text/html", textField: "wide" });
+        this.attributes[0].addField("css", "text", "", { fileSelect: "text/css", textField: "wide" });
         this.attributes[0].addField("Isolate Style", "boolean", false);
 
         this.element = document.createElement('div');
@@ -24,6 +24,9 @@ export class UiElement extends Component {
 
     static icon = ["uiElement", ...super.icon];
     static group = "UI Elements";
+
+    static baseType = "uiElement";
+    static type = "uiElement";
 
     appendElement(element) {
         this.host.appendChild(element);

@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class ComponentTreeItemDragScript extends FIRENEF.Script {
+export default class ComponentTreeItemDragScript extends FIRENEF.Script {
     constructor(name = "Component Tree Item Drag Script") {
         super(name);
 
@@ -11,6 +11,8 @@ export class ComponentTreeItemDragScript extends FIRENEF.Script {
         this.nameElement = null;
     }
 
+    static type = "componentTreeItemDragScript";
+
     updateElementContent() {
         const inputs = this.editor.dragInputs;
 
@@ -20,7 +22,6 @@ export class ComponentTreeItemDragScript extends FIRENEF.Script {
 
         this.nameElement.innerText = inputs.name;
         this.backgroundElement.style.width = `${inputs.width}px`;
-        console.log(inputs);
     }
 
     removeOldIcons() {

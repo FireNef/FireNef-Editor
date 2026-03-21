@@ -1,0 +1,177 @@
+#element {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+:host {
+    position: relative;
+    display: block;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    height: 100%;
+}
+
+.background {
+    background-color: var(--current-mantle);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    border-radius: 0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    resize: none;
+    user-select: none;
+    margin: 0px 10px;
+    padding: 0px;
+}
+
+svg {
+    width: 70px;
+    height: 70px;
+    fill: var(--current-accent);
+    stroke: var(--current-accent);
+}
+
+#icon {
+    width: 70px;
+    height: 70px;
+}
+
+.classContainer {
+    height: 100%;
+    color: var(--current-overlay0);
+    font-size: 16px;
+    font-family: Ubuntu;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+}
+
+.classContainer p {
+    margin: 0px;
+    padding: 0px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+    margin: 20px 0px;
+}
+
+.enableControll {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    width: 100%;
+    height: fit-content;
+    margin: 0px;
+    padding-left: 5px;
+}
+
+.enableControll p {
+    margin: 0px;
+    padding: 0px;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.boolSelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+    height: 30px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.boolSelect input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 6px;
+    display: inline-block;
+    position: relative;
+    background-color: var(--current-surface1);
+    transition: background-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.boolSelect input:checked + .checkmark {
+    background-color: var(--current-accent);
+}
+
+.checkmark::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+}
+
+.boolSelect input:checked + .checkmark::after {
+    opacity: 1;
+}
+
+.boolSelect:hover input:not(:checked) + .checkmark {
+    border: 2px solid var(--current-accent);
+}
+
+input[type="text"] {
+    font-family: Ubuntu;
+    font-size: 18px;
+    height: 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+    overflow: hidden;
+}
+
+input[type="text"]:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+input[type="text"]::placeholder {
+    color: var(--current-subtext0);
+}
+
+input[type="text"]::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}
+
+hr {
+    width: 100%;
+    height: 1px;
+    background-color: var(--current-overlay0);
+    border: none;
+}

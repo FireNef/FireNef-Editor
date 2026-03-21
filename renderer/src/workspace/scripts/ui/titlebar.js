@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class TitlebarScript extends FIRENEF.Script {
+export default class TitlebarScript extends FIRENEF.Script {
     constructor(name = "Titlebar Script") {
         super(name);
 
@@ -23,6 +23,8 @@ export class TitlebarScript extends FIRENEF.Script {
         this.preferences = null;
         this.exit = null;
     }
+
+    static type = "titlebarScript";
 
     start() {
         this.element = this.parent?.element;

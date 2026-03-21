@@ -7,4 +7,6 @@ export class MapcapMaterialComponent extends StandardMaterialComponent {
 
         this.material = new THREE.MeshMatcapMaterial();
     }
+
+    static type = "mapcapMaterial";
 }

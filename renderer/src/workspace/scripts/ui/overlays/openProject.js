@@ -1,6 +1,6 @@
 import * as FIRENEF from "firenef";
 
-export class OpenProjectOverlayScript extends FIRENEF.Script {
+export default class OpenProjectOverlayScript extends FIRENEF.Script {
     constructor(name = "Open Project Overlay Script") {
         super(name);
 
@@ -9,6 +9,8 @@ export class OpenProjectOverlayScript extends FIRENEF.Script {
 
         this.close = null;
     }
+
+    static type = "openProjectOverlayScript"
 
     start() {
         this.element = this.parent.element;

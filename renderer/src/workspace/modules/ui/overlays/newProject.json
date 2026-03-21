@@ -22,7 +22,7 @@
     "children": [
         {
             "type": "component",
-            "class": "NewProjectOverlayScript"
+            "path": "workspace/scripts/ui/overlays/newProject.js"
         }
     ]
 }

@@ -11,6 +11,7 @@
     width: 100%;
     height: calc(100% - 35px);
     padding-top: 35px;
+    -webkit-user-drag: none;
 }
 
 main {

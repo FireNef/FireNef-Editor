@@ -1,45 +1,45 @@
 export class EngineLogger {
-    constructor() {
-        this.logs = [];
-        this.maxLogs = 5000;
+    // constructor() {
+    //     this.logs = [];
+    //     this.maxLogs = 5000;
 
-        ["log", "warn", "error", "info"].forEach(type => {
-            const original = console[type];
+    //     ["log", "warn", "error", "info"].forEach(type => {
+    //         const original = console[type];
 
-            console[type] = (...args) => {
-                this.add(type, args);
-                original(...args);
-            };
-        });
+    //         console[type] = (...args) => {
+    //             this.add(type, args);
+    //             original(...args);
+    //         };
+    //     });
 
-        window?.addEventListener?.("error", e => {
-            this.add("crash", [e.message, e.filename, e.lineno]);
-        });
+    //     window?.addEventListener?.("error", e => {
+    //         this.add("crash", [e.message, e.filename, e.lineno]);
+    //     });
 
-        window?.addEventListener?.("unhandledrejection", e => {
-            this.add("promise", [e.reason]);
-        });
-    }
+    //     window?.addEventListener?.("unhandledrejection", e => {
+    //         this.add("promise", [e.reason]);
+    //     });
+    // }
 
-    add(type, data) {
-        const entry = {
-            type,
-            data,
-            time: performance.now()
-        };
+    // add(type, data) {
+    //     const entry = {
+    //         type,
+    //         data,
+    //         time: performance.now()
+    //     };
 
-        this.logs.push(entry);
+    //     this.logs.push(entry);
 
-        if (this.logs.length > this.maxLogs) {
-            this.logs.shift();
-        }
-    }
+    //     if (this.logs.length > this.maxLogs) {
+    //         this.logs.shift();
+    //     }
+    // }
 
-    getAll() {
-        return this.logs;
-    }
+    // getAll() {
+    //     return this.logs;
+    // }
 
-    clear() {
-        this.logs.length = 0;
-    }
+    // clear() {
+    //     this.logs.length = 0;
+    // }
 }

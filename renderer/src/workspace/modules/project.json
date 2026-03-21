@@ -9,14 +9,18 @@
         "workspace/scripts/ui/selectProject/selectProject.js",
         "workspace/scripts/ui/pages.js",
         "workspace/scripts/ui/pages/projectPage.js",
-        "workspace/scripts/ui/menus/componentTree.js",
+        "workspace/scripts/ui/panel/componentTree.js",
+        "workspace/scripts/ui/panel/componentTreeItem.js",
         "workspace/scripts/ui/contextMenu/contextMenu.js",
         "workspace/scripts/ui/contextMenu/componentTreeItemContextMenu.js",
         "workspace/scripts/ui/contextMenu/componentGroups.js",
         "workspace/scripts/ui/contextMenu/componentListContextMenu.js",
         "workspace/scripts/ui/contextMenu/componentTreeContextMenu.js",
         "workspace/scripts/ui/drag/drag.js",
-        "workspace/scripts/ui/drag/componentTreeItemDrag.js"
+        "workspace/scripts/ui/drag/componentTreeItemDrag.js",
+        "workspace/scripts/ui/panel/leftPanel.js",
+        "workspace/scripts/ui/panel/rightPanel.js",
+        "workspace/scripts/ui/panel/componentInspector.js"
     ],
 
     "updater": [
@@ -25,8 +29,23 @@
             "class": "ComponentController",
             "children": [
                 {
-                    "type": "module",
-                    "path": "workspace/modules/ui/uiMain.json"
+                    "type": "component",
+                    "class": "Viewport",
+                    "attributes": [
+                        [
+                            {
+                                "comment": "Lock Aspect Ratio",
+                                "type": "bool",
+                                "value": false
+                            }
+                        ]
+                    ],
+                    "children": [
+                        {
+                            "type": "module",
+                            "path": "workspace/modules/ui/uiMain.json"
+                        }
+                    ]
                 }
             ]
         }

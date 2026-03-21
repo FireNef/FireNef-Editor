@@ -19,7 +19,7 @@
     "children": [
         {
             "type": "component",
-            "class": "DragScript"
+            "path": "workspace/scripts/ui/drag/drag.js"
         },
         {
             "type": "module",

@@ -27,6 +27,8 @@ export class FirenefEditor {
         this.currentDrag = null;
         this.dragInputs = {};
 
+        this.currentSelection = null;
+
         document.addEventListener("mouseup", () => { this.clearDrag(); });
         document.addEventListener("keydown", (e) => { 
             if (e.key == "Escape") {
@@ -98,8 +100,32 @@ export class FirenefEditor {
         this.dragInputs = {};
     }
 
+    setCurrentSelection(selection) {
+        if (this.currentSelection?.deselect) this.currentSelection.deselect();
+        this.currentSelection = selection;
+    }
+
     async saveProject() {
-        
+        const projectName = this.currentProject;
+
+        await this.saveModules(projectName);
+    }
+
+    async saveModules(projectName) {
+        const projectPath = `projects/${projectName}/renderer`;
+
+        const engineConfig = await this.getExternalJson(`${projectPath}/src/configs/config.json`);
+        const projectModulePath = `${projectPath}/src/${engineConfig.mainModulePath}`;
+
+        await window.fs.writeFile(projectModulePath, JSON.stringify(this.projectModules.project, null, 4));
+
+        for (const modulePath in this.projectModules) {
+            if (modulePath == "project") continue;
+
+            const fullPath = `${projectPath}/src/${modulePath}`;
+
+            await window.fs.writeFile(fullPath, JSON.stringify(this.projectModules[modulePath], null, 4));
+        }
     }
 
     async createProject(name, successFunction) {
@@ -204,7 +230,10 @@ export class FirenefEditor {
         this.currentProject = projectName;
 
         this.projectModules = await this.getProjectModules(projectName);
+        
+        this.imports = {};
         await this.storeImports(this.projectModules.project.imports);
+        await this.storeImportsAsPaths(this.projectModules.project.imports);
 
         this.projectGroups = await this.getProjectGroups(this.imports);
 
@@ -225,30 +254,33 @@ export class FirenefEditor {
         const groups = {};
         for (const importName in imports) {
             const importModule = imports[importName];
+            const componentObject = { classObject: importModule, path: importName };
             if (!importModule) continue;
+            if (!importName.startsWith(".")) continue;
             if (importModule.hideInGroup == undefined || importModule.hideInGroup) continue;
             if (!importModule.group) {
                 if (!groups["Others"]) groups["Others"] = [];
-                groups["Others"].push(importModule);
+                groups["Others"].push(componentObject);
                 continue;
             }
 
             if (!groups[importModule.group]) groups[importModule.group] = [];
-            groups[importModule.group].push(importModule);
+            groups[importModule.group].push(componentObject);
         }
 
         for (const componentName in FIRENEF) {
             const componentModule = FIRENEF[componentName];
+            const componentObject = { classObject: componentModule, className: componentName };
             if (!componentModule) continue;
             if (componentModule.hideInGroup == undefined || componentModule.hideInGroup) continue;
             if (!componentModule.group) {
                 if (!groups["Others"]) groups["Others"] = [];
-                groups["Others"].push(componentModule);
+                groups["Others"].push(componentObject);
                 continue;
             }
 
             if (!groups[componentModule.group]) groups[componentModule.group] = [];
-            groups[componentModule.group].push(componentModule);
+            groups[componentModule.group].push(componentObject);
         }
 
         return groups;
@@ -323,19 +355,48 @@ export class FirenefEditor {
 
     async storeImports(imports) {
         const componentsArray = await Promise.all(
-            imports.map(i => {
+            imports.map(async i => {
                 const base = `projects/${this.currentProject}/renderer/`;
                 const child = this.resolvePath("./src/", i).replace(/^\/+/, '');
 
                 const relativePath = (base + child).replace(/\/\.\//g, '/');
-
                 const path = `firenef://${relativePath}`;
 
-                return import(path);
+                const module = await import(path);
+
+                if (!module.default) return {};
+
+                const type = module.default.type;
+
+                return {
+                    [type]: module.default
+                };
             })
         );
 
-        this.imports = Object.assign({}, ...componentsArray);
+        this.imports = Object.assign({}, this.imports, ...componentsArray);
+    }
+
+    async storeImportsAsPaths(imports) {
+        const componentsArray = await Promise.all(
+            imports.map(async i => {
+                const base = `projects/${this.currentProject}/renderer/`;
+                const child = this.resolvePath("./src/", i).replace(/^\/+/, '');
+
+                const relativePath = (base + child).replace(/\/\.\//g, '/');
+                const path = `firenef://${relativePath}`;
+
+                const module = await import(path);
+
+                if (!module.default) return {};
+
+                return {
+                    [child]: module.default
+                };
+            })
+        );
+
+        this.imports = Object.assign({}, this.imports, ...componentsArray);
     }
 
     resolvePath(sourcePath, path) {
@@ -356,13 +417,28 @@ export class FirenefEditor {
     }
 
     getClassName(className) {
+        if (typeof className === "function") {
+            const name = this.getClassNameFromClass(className);
+            if (!name) return className.type;
+            return name;
+        }
+
         if (FIRENEF[className]) {
             return this.getClassNameFromClass(FIRENEF[className]);
-        } else if (this.imports[className]) {
-            return this.getClassNameFromClass(this.imports[className]);
-        } else {
-            return className;
         }
+        return className;
+    }
+
+    getClassBaseType(className) {
+        if (typeof className === "function") {
+            return className.baseType;
+        }
+
+
+        if (FIRENEF[className]) {
+            return FIRENEF[className].baseType;
+        }
+        return className
     }
 
     getClassNameFromClass(classObject) {
@@ -379,6 +455,16 @@ export class FirenefEditor {
         return attributes;
     }
 
+    getClassObjectFromComponentJson(componentJson) {
+        if (componentJson.path) {
+            return this.imports[this.resolvePath("./src/", componentJson.path).replace(/^\/+/, '')];
+        } else if (FIRENEF[componentJson.class]) {
+            return FIRENEF[componentJson.class];
+        } else {
+            return null;
+        }
+    }
+
     getGlobalVariableFromClass(classObject) {
         const className = classObject.name;
         if (FIRENEF[className]) {
@@ -393,11 +479,16 @@ export class FirenefEditor {
         return v instanceof Object && v.constructor && v.constructor.name !== "Object";
     }
 
-    createNewComponentJson(className) {
+    createNewComponentJson(className, classObject) {
         const newComponent = {};
-        newComponent.class = className.name;
+        if (className.startsWith("./")) {
+            newComponent.path = className;
+        } else {
+            newComponent.class = className;
+        }
+        
         newComponent.type = "component";
-        newComponent.name = this.getClassNameFromClass(className);
+        newComponent.name = this.getClassNameFromClass(classObject);
 
         newComponent.enable = true;
         newComponent.visible = true;
@@ -407,7 +498,7 @@ export class FirenefEditor {
         newComponent.params = [];
         newComponent.children = [];
 
-        const defaultAttributes = this.getClassDefaultAttributes(className);
+        const defaultAttributes = this.getClassDefaultAttributes(classObject);
         const formatedAttributes = [];
         for (const attribute of defaultAttributes) {
             const defaultFields = attribute.fields;

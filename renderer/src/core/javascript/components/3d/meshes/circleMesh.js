@@ -9,4 +9,6 @@ export class CircleMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.CircleGeometry(1, 32));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "circleMesh";
 }

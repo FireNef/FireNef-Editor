@@ -1,0 +1,25 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Component Inspector",
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/panel/componentInspector.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/panel/componentInspector.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "path": "workspace/scripts/ui/panel/componentInspector.js"
+        }
+    ]
+}

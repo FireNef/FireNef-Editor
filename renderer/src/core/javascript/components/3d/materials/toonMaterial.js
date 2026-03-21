@@ -9,12 +9,14 @@ export class ToonMaterialComponent extends StandardMaterialComponent {
         this.material = new THREE.MeshToonMaterial();
 
         const surfaceAttribute = new Attribute("Surface");
-        surfaceAttribute.addField("Gradient Map", "gradientMap", null);
+        surfaceAttribute.addField("Gradient Map", "texture", null);
         this.attributes[1] = surfaceAttribute;
     }
 
+    static type = "toonMaterial";
+
     updateSurfaceMaterialProperties(attribute = 1) {
-        this.material.gradientMap = this.getAttributeFieldValue(attribute, 0);
+        this.material.gradientMap = this.getAttributeFieldValue(attribute, 0)?.texture;
         this.material.needsUpdate = true;
     }
 }

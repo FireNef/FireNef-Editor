@@ -44,10 +44,14 @@ export class Object3d extends Component {
         this.hideInGroup = true;
     }
 
+    static baseType = "object3d"
+    static type = "object3d"
+
     appendChild(child) {
         super.appendChild(child);
 
         if (!(child instanceof Object3d)) return;
+        if (!(child.object3D instanceof THREE.Object3D)) return;
 
         const parentSpatial = this.findNearestSpatialParent();
         if (!parentSpatial) return;
@@ -59,6 +63,7 @@ export class Object3d extends Component {
         super.removeChild(child);
 
         if (!(child instanceof Object3d)) return;
+        if (!(child.object3D instanceof THREE.Object3D)) return;
 
         child.object3D.parent?.remove(child.object3D);
     }
@@ -67,8 +72,8 @@ export class Object3d extends Component {
         this.object3D.visible = this.visible;
     }
 
-    findNearestSpatialParent() {
-        let p = this;
+    findNearestSpatialParent(start = this) {
+        let p = start;
         while (p) {
             if (p instanceof Object3d) return p;
             p = p.parent;
@@ -80,7 +85,14 @@ export class Object3d extends Component {
         return this.object3D;
     }
 
-    update() {
+    start() {
+        if (!this.object3D.parent && this.object3D instanceof THREE.Object3D) {
+            const parentSpatial = this.findNearestSpatialParent(this.parent);
+            if (parentSpatial) parentSpatial.object3D.add(this.object3D);
+        }
+    }
+
+    updateTransform() {
         if (!this.allowTransform) return;
 
         this.prevTransform.position.copy(this.currTransform.position);
@@ -101,6 +113,16 @@ export class Object3d extends Component {
             r.order
         );
         this.currTransform.quaternion.setFromEuler(this.currTransform.rotation);
+    }
+
+    update() {
+        this.updateTransform();
+    }
+
+    snapUpdateTransform() {
+        this.forceRenderUpdate = true;
+        this.updateTransform();
+        this.forceRenderUpdate = false;
     }
 
     renderUpdate(alpha = 1.0) {
@@ -221,6 +243,42 @@ export class Object3d extends Component {
     moveZBy(amount = 0) {
         const oldPosition = this.getAttributeFieldValue(0, 0);
         this.setAttributeFieldValue(0, 0, { x: oldPosition.x, y: oldPosition.y, z: oldPosition.z + amount });
+    }
+
+    moveForwardAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const forward = new THREE.Vector3(0, 0, -1).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: forward.x, y: forward.y, z: forward.z });
+    }
+
+    moveBackwardAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const backward = new THREE.Vector3(0, 0, 1).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: backward.x, y: backward.y, z: backward.z });
+    }
+
+    moveRightAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const right = new THREE.Vector3(1, 0, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: right.x, y: right.y, z: right.z });
+    }
+
+    moveLeftAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const left = new THREE.Vector3(-1, 0, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: left.x, y: left.y, z: left.z });
+    }
+
+    moveUpAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const up = new THREE.Vector3(0, 1, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: up.x, y: up.y, z: up.z });
+    }
+
+    moveDownAlongRotationBy(amount = 0) {
+        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const down = new THREE.Vector3(0, -1, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
+        this.setAttributeFieldValue(0, 0, { x: down.x, y: down.y, z: down.z });
     }
 
     get position() {

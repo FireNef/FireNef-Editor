@@ -23,7 +23,7 @@
     "children": [
         {
             "type": "component",
-            "class": "ComponentTreeItemDragScript"
+            "path": "workspace/scripts/ui/drag/componentTreeItemDrag.js"
         }
     ]
 }

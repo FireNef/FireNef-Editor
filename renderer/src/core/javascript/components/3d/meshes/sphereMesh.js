@@ -9,4 +9,6 @@ export class SphereMeshComponent extends MeshComponent {
         this.setAttributeFieldValue(1, 0, new THREE.SphereGeometry(1, 32, 32));
         this.setAttributeFieldValue(1, 1, new StandardMaterialComponent());
     }
+
+    static type = "sphereMesh";
 }

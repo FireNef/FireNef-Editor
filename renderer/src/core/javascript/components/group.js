@@ -4,4 +4,7 @@ export class GroupComponent extends Component {
     constructor(name = "Group") {
         super(name);
     }
+
+    static baseType = "group";
+    static type = "group";
 }
