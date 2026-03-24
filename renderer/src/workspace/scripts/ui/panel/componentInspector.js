@@ -1,5 +1,5 @@
 import * as FIRENEF from "firenef";
-import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript } from "./generalFieldInspectors.js";
+import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript, Vector2InspectorScript, Vector3InspectorScript } from "./generalFieldInspectors.js";
 
 export default class ComponentInspoectorScript extends FIRENEF.Script {
     constructor(name = "Component Inspector Script") {
@@ -191,6 +191,28 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("String Field", "./src/workspace/ui/html/panel/inspectors/stringInspector.html", "./src/workspace/ui/css/panel/inspectors/stringInspector.css");
 
             const script = new StringInspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        if (defaultField.setType == "vec3") {
+            const fieldComponent = this.newUiElement("Vec3 Field", "./src/workspace/ui/html/panel/inspectors/vec3Inspector.html", "./src/workspace/ui/css/panel/inspectors/vectorInspector.css");
+        
+            const script = new Vector3InspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        if (defaultField.setType == "vec2") {
+            const fieldComponent = this.newUiElement("Vec2 Field", "./src/workspace/ui/html/panel/inspectors/vec2Inspector.html", "./src/workspace/ui/css/panel/inspectors/vectorInspector.css");
+        
+            const script = new Vector2InspectorScript();
             script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
             script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
             script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");

@@ -78,7 +78,7 @@ export class NumberInspectorScript extends FIRENEF.Script {
                 if (this.rangeInputElement.value < inputs.min) this.rangeInputElement.value = inputs.min;
                 if (this.rangeInputElement.value > inputs.max) this.rangeInputElement.value = inputs.max;
                 if (!this.rangeInputElement.value && this.rangeInputElement.value !== 0) this.rangeInputElement.value = 0;
-                this.getAttributeFieldValue(0, 1).value = this.rangeInputElement.value;
+                this.getAttributeFieldValue(0, 1).value = Number(this.rangeInputElement.value);
                 this.numberInputElement.value = this.rangeInputElement.value;
             });
             this.rangeInputElement.min = inputs.min;
@@ -107,7 +107,7 @@ export class NumberInspectorScript extends FIRENEF.Script {
             if (inputs.min || inputs.min === 0) if (this.numberInputElement.value < inputs.min) this.numberInputElement.value = inputs.min;
             if (inputs.max || inputs.max === 0) if (this.numberInputElement.value > inputs.max) this.numberInputElement.value = inputs.max;
             if (!this.numberInputElement.value && this.numberInputElement.value !== 0) this.numberInputElement.value = 0;
-            this.getAttributeFieldValue(0, 1).value = this.numberInputElement.value;
+            this.getAttributeFieldValue(0, 1).value = Number(this.numberInputElement.value);
             if (this.rangeInputElement) this.rangeInputElement.value = this.numberInputElement.value;
         });
         if (inputs.min || inputs.min === 0) this.numberInputElement.min = inputs.min;
@@ -131,6 +131,7 @@ export class StringInspectorScript extends FIRENEF.Script {
         this.nameElement = null;
         this.textInputElement = null;
         this.spacerElement = null;
+        this.textareaElement = null;
     }
 
     static type = "stringInspectorScript";
@@ -140,14 +141,111 @@ export class StringInspectorScript extends FIRENEF.Script {
 
         this.nameElement = this.element.querySelector("#name");
         this.textInputElement = this.element.querySelector("#textInput");
+        this.textareaElement = this.element.querySelector("#textarea");
         this.spacerElement = this.element.querySelector("#spacer");
         if (!this.textInputElement) return;
 
         if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
 
+        const inputs = this.getAttributeFieldValue(0, 0).inputs;
+
         this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+
+        if (inputs.textField == "wide") {
+            this.textInputElement.style.display = "none";
+            this.textareaElement.style.display = null;
+            this.textareaElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value = this.textareaElement.value);
+            this.textareaElement.value = this.getAttributeFieldValue(0, 1).value;
+        } else {
+            this.textareaElement.style.display = "none";
+            this.textInputElement.style.display = null;
+        }
 
         this.textInputElement.value = this.getAttributeFieldValue(0, 1).value;
         this.textInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value = this.textInputElement.value);
+    }
+}
+
+export class Vector3InspectorScript extends FIRENEF.Script {
+    constructor(name = "Vector3 Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("defaultType", "object", null);
+        scriptAttribute.addField("field", "object", null);
+        scriptAttribute.addField("is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.vecXInputElement = null;
+        this.vecYInputElement = null;
+        this.vecZInputElement = null;
+    }
+
+    start() {
+        this.element = this.parent.element;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.vecXInputElement = this.element.querySelector("#vecXInput");
+        this.vecYInputElement = this.element.querySelector("#vecYInput");
+        this.vecZInputElement = this.element.querySelector("#vecZInput");
+
+        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        
+        this.vecXInputElement.value = this.getAttributeFieldValue(0, 1).value.x;
+        this.vecYInputElement.value = this.getAttributeFieldValue(0, 1).value.y;
+        this.vecZInputElement.value = this.getAttributeFieldValue(0, 1).value.z;
+
+        this.vecXInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.x = Number(this.vecXInputElement.value));
+        this.vecYInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.y = Number(this.vecYInputElement.value));
+        this.vecZInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.z = Number(this.vecZInputElement.value));
+    }
+}
+
+export class Vector2InspectorScript extends FIRENEF.Script {
+    constructor(name = "Vector2 Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("defaultType", "object", null);
+        scriptAttribute.addField("field", "object", null);
+        scriptAttribute.addField("is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.vecXInputElement = null;
+        this.vecYInputElement = null;
+    }
+    
+    start() {
+        this.element = this.parent.element;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.vecXInputElement = this.element.querySelector("#vecXInput");
+        this.vecYInputElement = this.element.querySelector("#vecYInput");
+
+        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+
+        this.vecXInputElement.value = this.getAttributeFieldValue(0, 1).value.x;
+        this.vecYInputElement.value = this.getAttributeFieldValue(0, 1).value.y;
+
+        this.vecXInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.x = Number(this.vecXInputElement.value));
+        this.vecYInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.y = Number(this.vecYInputElement.value));
     }
 }

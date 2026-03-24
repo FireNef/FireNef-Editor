@@ -58,3 +58,41 @@ p {
     margin: 4px 0px;
     padding: 0px;
 }
+
+textarea {
+    font-family: Ubuntu;
+    font-size: 16px;
+    height: 30px;
+    min-height: 30px;
+    width: calc(100% - 25px);
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+    overflow: auto;
+    resize: vertical;
+    line-height: 1.2em;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+textarea {
+    scrollbar-color: var(--current-surface0) var(--current-surface1);
+    scrollbar-width: thin;
+}
+
+textarea:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+textarea::placeholder {
+    color: var(--current-subtext0);
+}
+
+textarea::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}

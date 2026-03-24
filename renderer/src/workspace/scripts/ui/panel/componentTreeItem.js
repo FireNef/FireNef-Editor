@@ -184,7 +184,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             e.preventDefault();
             e.stopPropagation();
             this.backgroundElement.style.backgroundColor = "var(--current-surface0)";
-            this.editor.setContextMenu("componentTreeItem", {x: e.clientX, y:  e.clientY}, () => this.backgroundElement.style.backgroundColor = null, { cancel: () => this.cancel(), callback: { newComponent: (className, classObject) => this.newComponent(className, classObject), rename: () => this.rename(), delete: () => this.delete() }});
+            this.editor.setContextMenu("componentTreeItem", {x: e.clientX+1, y:  e.clientY+1}, () => this.backgroundElement.style.backgroundColor = null, { cancel: () => this.cancel(), callback: { newComponent: (className, classObject) => this.newComponent(className, classObject), rename: () => this.rename(), delete: () => this.delete() }});
         });
 
         const line = document.createElement("div");
