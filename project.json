@@ -8,7 +8,7 @@
         "autoHideMenuBar": true,
         "frame": false,
         "titleBarStyle": "hidden",
-        "icon": "renderer/assets/icon.ico",
+        "icon": "renderer/assets/icon",
         "webPreferences": {
             "preload": "src/preload.js",
             "nodeIntegration": false,

@@ -10,7 +10,7 @@ const createWindow = () => {
         minWidth: 400,
         minHeight: 270,
         autoHideMenuBar: true,
-        icon: "renderer/assets/icon.ico",
+        icon: "renderer/assets/icon",
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
@@ -19,7 +19,7 @@ const createWindow = () => {
         }
     };
 
-    if (windowSettings.icon) windowSettings.icon = path.join(projectDir, windowSettings.icon);
+    if (windowSettings.icon) windowSettings.icon = path.join(projectDir, windowSettings.icon + (process.platform == "win32" ? ".ico" : ".png"));
     if (windowSettings.webPreferences.preload) windowSettings.webPreferences.preload = path.join(projectDir, windowSettings.webPreferences.preload);
 
     const win = new BrowserWindow(windowSettings);

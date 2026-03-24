@@ -13,6 +13,3 @@ export const projectConfig = JSON.parse(fs.readFileSync(path.join(projectDir, "p
 export const projectName = projectConfig.name ?? "project";
 
 export const BASE_DIR = path.join(app.getPath("documents"), projectName);
-export const projectsPath = path.join(BASE_DIR, "projects");
-
-if (!fs.existsSync(projectsPath)) fs.mkdirSync(projectsPath, { recursive: true });

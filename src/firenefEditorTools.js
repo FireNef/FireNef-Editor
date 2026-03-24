@@ -21,7 +21,7 @@ export async function installElectronPreset(presetPath, projectName) {
             minWidth: 400,
             minHeight: 270,
             autoHideMenuBar: true,
-            icon: "renderer/assets/icon.ico",
+            icon: "renderer/assets/icon",
             webPreferences: {
                 nodeIntegration: false,
                 contextIsolation: true,
