@@ -40,23 +40,23 @@ export class UiElement extends Component {
     }
 
     updateElement() {
-        const nodes = this.host.children;
-        const slots = this.element.querySelectorAll("slot");
+        const slots = Array.from(this.element.querySelectorAll("slot"));
 
-        const validSlots = new Set(
-            Array.from(slots)
-                .map(s => s.getAttribute("name"))
-                .filter(Boolean)
+        const uiChildren = (this.children ?? []).filter(child => 
+            child instanceof UiElement && child.host
         );
 
-        for (let i = 0; i < nodes.length; i++) {
-            const desired = `c${i + 1}`;
+        for (let i = 0; i < uiChildren.length; i++) {
+            const child = uiChildren[i];
+            const slot = slots[i];
 
-            if (validSlots.has(desired)) {
-                nodes[i].slot = desired;
-            } else {
-                nodes[i].slot = "default";
+            if (!slot) {
+                child.host.slot = "default";
+                continue;
             }
+
+            const name = slot.getAttribute("name");
+            child.host.slot = name || "default";
         }
     }
 

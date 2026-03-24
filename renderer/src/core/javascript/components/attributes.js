@@ -21,7 +21,7 @@ export class Field {
             this.value = JSON.parse(await getExternalFile(value));
             return;
         }
-        if (type === "reference") {
+        if (type === "reference" && value != null) {
             const decodedPath = this.decodeComponentPath(value);
             const component = this.getComponentFromPath(decodedPath, inputs.component);
             this.value = component;

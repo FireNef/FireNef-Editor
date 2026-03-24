@@ -9,7 +9,7 @@ export class Renderer3D extends Component {
 
         const framerateAttribute = new Attribute("Frame Rate");
         framerateAttribute.addField("Cap FPS", "boolean", true);
-        framerateAttribute.addField("Max FPS", "number", 60, { min: 1, max: 250 });
+        framerateAttribute.addField("Max FPS", "number", 60, { min: 1, max: 250, step: 1 });
         framerateAttribute.addField("Use Vsync", "boolean", true);
 
         const rendererAttribute = new Attribute("Renderer");
@@ -21,7 +21,7 @@ export class Renderer3D extends Component {
         rendererAttribute.addField("Antialias", "boolean", true);
 
         const performanceAttribute = new Attribute("Performance");
-        performanceAttribute.addField("Max Texture Size", "number", 2048, { min: 1, max: 4096 });
+        performanceAttribute.addField("Max Texture Size", "number", 2048, { min: 1, max: 4096, noRange: true });
 
         this.attributes.push(framerateAttribute);
         this.attributes.push(rendererAttribute);

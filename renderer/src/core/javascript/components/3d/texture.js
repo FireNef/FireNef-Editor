@@ -20,7 +20,7 @@ export class TextureComponent extends Component {
         UVAttribute.addField("Wrap T", "three", THREE.ClampToEdgeWrapping, { defaultValue: "THREE.ClampToEdgeWrapping", options: ["THREE.RepeatWrapping", "THREE.ClampToEdgeWrapping", "THREE.MirroredRepeatWrapping"] });
         UVAttribute.addField("Repeat X", "number", 1, { min: 0 });
         UVAttribute.addField("Repeat Y", "number", 1, { min: 0 });
-        UVAttribute.addField("UV Channel", "number", 0, { min: 0, max: 3 });
+        UVAttribute.addField("UV Channel", "number", 0, { min: 0, max: 3, step: 1 });
         this.attributes.push(UVAttribute);
 
         const transformAttribute = new Attribute("Transform");
@@ -37,7 +37,7 @@ export class TextureComponent extends Component {
         advancedTextureAttribute.addField("Mag Filter", "three", THREE.LinearFilter, { defaultValue: "THREE.LinearFilter", options: ["THREE.LinearFilter", "THREE.NearestFilter"] });
         advancedTextureAttribute.addField("Min Filter", "three", THREE.LinearMipMapLinearFilter, { defaultValue: "THREE.LinearMipMapLinearFilter", options: ["THREE.LinearMipMapNearestFilter", "THREE.LinearMipMapLinearFilter"] });
         advancedTextureAttribute.addField("Type", "three", THREE.UnsignedByteType, { defaultValue: "THREE.UnsignedByteType", options: ["THREE.UnsignedByteType", "THREE.UnsignedShortType", "THREE.FloatType"] });
-        advancedTextureAttribute.addField("Anisotropy", "number", 1, { min: 1, max: 16 });
+        advancedTextureAttribute.addField("Anisotropy", "number", 1, { min: 1, max: 16, step: 1 });
         advancedTextureAttribute.addField("Generate Mipmaps", "string", "auto", { defaultValue: "auto", options: ["auto", "true", "false"] });
         advancedTextureAttribute.addField("Premultiply Alpha", "boolean", false);
         advancedTextureAttribute.addField("Matrix Auto Update", "boolean", true);
@@ -116,7 +116,7 @@ export class TextureComponent extends Component {
     }
 
     updateGenerateMipmaps() {
-        const generateMipmaps = this.getAttributeFieldValue(3, 6);
+        const generateMipmaps = this.getAttributeFieldValue(3, 5);
 
         if (generateMipmaps == "auto") {
             const preset = this.getAttributeFieldValue(0, 1);
@@ -156,7 +156,7 @@ export class TextureComponent extends Component {
         this.texture.type = this.getAttributeFieldValue(3, 3);
         this.texture.anisotropy = this.getAttributeFieldValue(3, 4);
         this.updateGenerateMipmaps();
-        this.texture.premultiplyAlpha = this.getAttributeFieldValue(3, 5);
+        this.texture.premultiplyAlpha = this.getAttributeFieldValue(3, 6);
         this.texture.matrixAutoUpdate = this.getAttributeFieldValue(3, 7);
         this.texture.needsUpdate = true;
     }

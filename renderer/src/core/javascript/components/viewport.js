@@ -7,8 +7,8 @@ export class Viewport extends Component {
 
         const viewportAttribute = new Attribute("Viewport");
         viewportAttribute.addField("Locked Aspect Ratio", "boolean", true);
-        viewportAttribute.addField("Resolution Width", "number", 1920);
-        viewportAttribute.addField("Resolution Height", "number", 1080);
+        viewportAttribute.addField("Resolution Width", "number", 1920, { min: 1 });
+        viewportAttribute.addField("Resolution Height", "number", 1080, { min: 1 });
         this.attributes.push(viewportAttribute);
 
         this.aspectRatio = 16 / 9;

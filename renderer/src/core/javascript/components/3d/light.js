@@ -8,7 +8,7 @@ export class DirectionalLightComponent extends Object3d {
         super(name);
         const lightAttribute = new Attribute("Directional Light");
         lightAttribute.addField("Color", "color", "#FFFFFF");
-        lightAttribute.addField("Intensity", "number", 1);
+        lightAttribute.addField("Intensity", "number", 1, { min: 0 });
         lightAttribute.addField("Cast Shadows", "boolean", false);
         this.attributes.push(lightAttribute);
 
@@ -47,9 +47,9 @@ export class PointLightComponent extends Object3d {
         super(name);
         const lightAttribute = new Attribute("Point Light");
         lightAttribute.addField("Color", "color", "#FFFFFF");
-        lightAttribute.addField("Intensity", "number", 1);
-        lightAttribute.addField("Distance", "number", 0);
-        lightAttribute.addField("Decay", "number", 2);
+        lightAttribute.addField("Intensity", "number", 1, { min: 0 });
+        lightAttribute.addField("Distance", "number", 0, { min: 0 });
+        lightAttribute.addField("Decay", "number", 2, { min: 0 });
         lightAttribute.addField("Cast Shadows", "boolean", false);
         this.attributes.push(lightAttribute);
 
@@ -95,11 +95,11 @@ export class SpotLightComponent extends Object3d {
 
         const lightAttribute = new Attribute("Spot Light");
         lightAttribute.addField("Color", "color", "#FFFFFF");
-        lightAttribute.addField("Intensity", "number", 1);
-        lightAttribute.addField("Distance", "number", 0);
-        lightAttribute.addField("Angle", "number", Math.PI / 6);
-        lightAttribute.addField("Penumbra", "number", 0.1);
-        lightAttribute.addField("Decay", "number", 2);
+        lightAttribute.addField("Intensity", "number", 1, { min: 0 });
+        lightAttribute.addField("Distance", "number", 0, { min: 0 });
+        lightAttribute.addField("Angle", "number", 45);
+        lightAttribute.addField("Penumbra", "number", 0.1, { min: 0 });
+        lightAttribute.addField("Decay", "number", 2, { min: 0 });
         lightAttribute.addField("Cast Shadows", "boolean", false);
 
         this.attributes.push(lightAttribute);
@@ -146,7 +146,7 @@ export class SpotLightComponent extends Object3d {
         this.object3D.color.set(color);
         this.object3D.intensity = intensity;
         this.object3D.distance = distance;
-        this.object3D.angle = angle;
+        this.object3D.angle = angle * Math.PI / 180;
         this.object3D.penumbra = penumbra;
         this.object3D.decay = decay;
         this.object3D.castShadow = castShadows;
@@ -188,7 +188,7 @@ export class AmbientLightComponent extends Object3d {
         super(name);
         const lightAttribute = new Attribute("Ambient Light");
         lightAttribute.addField("Color", "color", "#FFFFFF");
-        lightAttribute.addField("Intensity", "number", 0.5);
+        lightAttribute.addField("Intensity", "number", 0.5, { min: 0 });
         this.attributes.push(lightAttribute);
 
         this.object3D = new THREE.AmbientLight(0xffffff, 0.5);
@@ -224,7 +224,7 @@ export class HemisphereLightComponent extends Object3d {
         const lightAttribute = new Attribute("Hemisphere Light");
         lightAttribute.addField("Sky Color", "color", "#87CEEB");
         lightAttribute.addField("Ground Color", "color", "#444444");
-        lightAttribute.addField("Intensity", "number", 0.6);
+        lightAttribute.addField("Intensity", "number", 0.6, { min: 0 });
         this.attributes.push(lightAttribute);
 
         this.object3D = new THREE.HemisphereLight(0x87ceeb, 0x444444, 0.6);

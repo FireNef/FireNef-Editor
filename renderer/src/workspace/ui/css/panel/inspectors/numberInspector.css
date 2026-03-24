@@ -1,0 +1,97 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    overflow: visible;
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.background:hover {
+    background-color: var(--current-surface0);
+    border-radius: 5px;
+}
+
+p {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 4px 0px;
+    padding: 0px;
+}
+
+input[type="number"] {
+    font-family: Ubuntu;
+    font-size: 16px;
+    height: 17px;
+    width: calc(100% - 25px);
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+    overflow: hidden;
+}
+
+input[type="number"]:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+input[type="number"]::placeholder {
+    color: var(--current-subtext0);
+}
+
+input[type="number"]::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: calc(100% - 20px);
+    height: 6px;
+    background: var(--current-surface1);
+    border-radius: 5px;
+    outline: none;
+    --track-color: linear-gradient(to right, var(--current-accent) 50%, var(--current-surface1) 50%);
+    margin-top: 6px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 12px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    background: var(--track-color);
+    border-radius: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--current-accent);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+}
+
+hr {
+    width: calc(100% - 20px);
+    height: 1px;
+    min-height: 1px;
+    overflow: visible;
+    background-color: var(--current-surface0);
+    border: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

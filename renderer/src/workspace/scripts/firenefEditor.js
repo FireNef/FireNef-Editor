@@ -504,21 +504,30 @@ export class FirenefEditor {
             const defaultFields = attribute.fields;
             const formatedFields = [];
             for (const field of defaultFields) {
-                let value = field.value;
-                let type = field.type;
+                const type = field.type;
+                const setType = field.setType;
+                const value = field.value;
+                const inputs = field.inputs || {};
+                
+                const newField = {};
 
-                if (this.isClass(value)) {
-                    value = `${this.getGlobalVariableFromClass(value)}.${value.name}`;
-                    type = "variable";
-                    formatedFields.push({}); // current placeholder will be replaced with the actual variable when context is added at default value.
-                    continue;
+                newField.comment = field.name;
+                
+                newField.type = type;
+                if (setType == "three") newField.type = "variable";
+                if (setType == "component" || setType == "texture") newField.type = "reference";
+
+                if (inputs.defaultValue) {
+                    newField.value = inputs.defaultValue;
+                } else {
+                    if (this.isClass(value)) {
+                        formatedFields.push({});
+                        continue;
+                    }
+                    newField.value = value;
                 }
 
-                formatedFields.push({
-                    comment: field.name,
-                    type,
-                    value
-                });
+                formatedFields.push(newField);
             }
             formatedAttributes.push(formatedFields);
         }

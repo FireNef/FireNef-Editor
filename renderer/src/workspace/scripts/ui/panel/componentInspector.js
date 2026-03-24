@@ -1,4 +1,5 @@
 import * as FIRENEF from "firenef";
+import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript } from "./generalFieldInspectors.js";
 
 export default class ComponentInspoectorScript extends FIRENEF.Script {
     constructor(name = "Component Inspector Script") {
@@ -18,6 +19,8 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
         this.enableCheckboxElement = null;
         this.visibleCheckboxElement = null;
         this.hiddenCheckboxElement = null;
+
+        this.attributesElement = null;
     }
 
     static type = "componentInspectorScript";
@@ -90,6 +93,8 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             this.enableCheckboxElement.checked = enable;
             this.visibleCheckboxElement.checked = visible;
             this.hiddenCheckboxElement.checked = hidden;
+
+            this.addAttributeInspectors(classObject, component);
         } else {
             this.backgroundElement.style.display = "none";
         }
@@ -106,6 +111,141 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             this.selected = this.editor.currentSelection;
             if (this.selected) this.selected.inspectorRefresh = this.refresh.bind(this);
             this.refresh();
+        }
+    }
+
+    addAttributeInspectors(classObject, component) {
+        this.resolveEmptyAttributes(classObject, component);
+
+        let childIndex = 2;
+
+        if (this.attributesElement) this.attributesElement.remove();
+
+        this.attributesElement = document.createElement("div");
+        this.attributesElement.className = "attributes";
+        this.backgroundElement.appendChild(this.attributesElement);
+
+        const defaultAttributes = this.editor.getClassDefaultAttributes(classObject);
+        for (const attriIndex in defaultAttributes) {
+            const defaultAttribute = defaultAttributes[attriIndex];
+            const attribute = component.attributes[attriIndex];
+
+            const attributeElement = document.createElement("div");
+            attributeElement.className = "attributeMenu";
+
+            const attributeName = document.createElement("b");
+            attributeName.className = "attributeName";
+            attributeName.textContent = defaultAttribute.name;
+            attributeElement.appendChild(attributeName);
+
+            const attributeContainer = document.createElement("div");
+            attributeContainer.className = "attributeContainer";
+            attributeElement.appendChild(attributeContainer);
+
+            const spacer = document.createElement("hr");
+            attributeElement.appendChild(spacer);
+
+            this.attributesElement.appendChild(attributeElement);
+
+            for (const fieldIndex in defaultAttribute.fields) {
+
+                const defaultField = defaultAttribute.fields[fieldIndex];
+                const field = attribute[fieldIndex];
+
+                const fieldComponentSlot = document.createElement("slot");
+                fieldComponentSlot.name = `c${childIndex++}`;
+                attributeContainer.appendChild(fieldComponentSlot);
+
+                const fieldComponent = this.getFieldComponent(defaultField, field, fieldIndex == defaultAttribute.fields.length - 1);
+                this.parent.appendChild(fieldComponent);
+            }
+        }
+    }
+
+    getFieldComponent(defaultField, field, isLast = false) {
+
+        if (defaultField.setType == "boolean") {
+            const fieldComponent = this.newUiElement("Boolean Field", "./src/workspace/ui/html/panel/inspectors/booleanInspector.html", "./src/workspace/ui/css/panel/inspectors/booleanInspector.css");
+
+            const script = new BooleanInspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        if (defaultField.setType == "number") {
+            const fieldComponent = this.newUiElement("Number Field", "./src/workspace/ui/html/panel/inspectors/numberInspector.html", "./src/workspace/ui/css/panel/inspectors/numberInspector.css");
+
+            const script = new NumberInspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        if (defaultField.setType == "string" || defaultField.setType == "text") {
+            const fieldComponent = this.newUiElement("String Field", "./src/workspace/ui/html/panel/inspectors/stringInspector.html", "./src/workspace/ui/css/panel/inspectors/stringInspector.css");
+
+            const script = new StringInspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        
+        const fieldComponent = new FIRENEF.UiElement("Placeholder");
+        return fieldComponent;
+    }
+
+    newUiElement(name, htmlPath, cssPath) {
+        const uiElement = new FIRENEF.UiElement(name);
+        uiElement.setNonAsyncAttributeFieldValue(0, 0, htmlPath, "file", {}, true);
+        uiElement.setNonAsyncAttributeFieldValue(0, 1, cssPath, "file", {}, true);
+        return uiElement;
+    }
+
+    resolveEmptyAttributes(classObject, component) {
+        if (!component.attributes) component.attributes = [];
+        const defaultAttributes = this.editor.getClassDefaultAttributes(classObject);
+
+        for (const attriIndex in defaultAttributes) {
+            const defaultAttribute = defaultAttributes[attriIndex];
+            if (!component.attributes[attriIndex]) component.attributes[attriIndex] = [];
+            for (const fieldIndex in defaultAttribute.fields) {
+                const defaultField = defaultAttribute.fields[fieldIndex];
+                if (!component.attributes[attriIndex][fieldIndex]) component.attributes[attriIndex][fieldIndex] = {};
+
+                const originalField = component.attributes[attriIndex][fieldIndex];
+
+                const type = defaultField.type;
+                const setType = defaultField.setType;
+                const value = defaultField.value;
+                const inputs = defaultField.inputs || {};
+
+                if (originalField.type) continue;
+
+                originalField.comment = defaultField.name;
+
+                originalField.type = type;
+                if (setType == "three") originalField.type = "variable";
+                if (setType == "component" || setType == "texture") originalField.type = "reference";
+                
+                if (inputs.defaultValue) {
+                    originalField.value = inputs.defaultValue;
+                } else {
+                    if (this.editor.isClass(value)) {
+                        component.attributes[attriIndex][fieldIndex] = {};
+                        continue;
+                    }
+                    originalField.value = value;
+                }
+            }
         }
     }
 }

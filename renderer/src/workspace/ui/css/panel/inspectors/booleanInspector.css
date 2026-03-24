@@ -1,0 +1,79 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    overflow: visible;
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.background:hover {
+    background-color: var(--current-surface0);
+    border-radius: 5px;
+}
+
+.boolSelect {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 100px;
+    width: fit-content;
+    height: 30px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.boolSelect input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 6px;
+    display: inline-block;
+    position: relative;
+    background-color: var(--current-surface1);
+    transition: background-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.boolSelect input:checked + .checkmark {
+    background-color: var(--current-accent);
+}
+
+.checkmark::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+}
+
+.boolSelect input:checked + .checkmark::after {
+    opacity: 1;
+}
+
+.boolSelect:hover input:not(:checked) + .checkmark {
+    border: 2px solid var(--current-accent);
+}
+
+hr {
+    width: calc(100% - 20px);
+    height: 1px;
+    min-height: 1px;
+    overflow: visible;
+    background-color: var(--current-surface0);
+    border: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

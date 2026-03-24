@@ -15,9 +15,9 @@ export class PerspectiveCameraComponent extends Object3d {
 
         const cameraAttribute = new Attribute("Perspective Camera");
         cameraAttribute.addField("usedCamera", "boolean", false);
-        cameraAttribute.addField("FOV", "number", fov);
-        cameraAttribute.addField("Near", "number", near);
-        cameraAttribute.addField("Far", "number", far);
+        cameraAttribute.addField("FOV", "number", fov, { min: 1, max: 180, step: 1 });
+        cameraAttribute.addField("Near", "number", near, { min: 0 });
+        cameraAttribute.addField("Far", "number", far, { min: 0 });
         this.attributes.push(cameraAttribute);
 
         this.object3D = new THREE.PerspectiveCamera(fov, aspect, near, far);

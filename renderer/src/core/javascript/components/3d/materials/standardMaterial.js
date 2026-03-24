@@ -100,6 +100,18 @@ export class StandardMaterialComponent extends Component {
     static baseType = "material"
     static type = "standardMaterial"
 
+    updateAllProperties() {
+        this.updateCoreMaterialProperties();
+        this.updateSurfaceMaterialProperties();
+        this.updateEmissionMaterialProperties();
+        this.updateDetailMaterialProperties();
+        this.updateDisplacementMaterialProperties();
+        this.updateLightMaterialProperties();
+        this.updateAmbientMaterialProperties();
+        this.updateReflectionMaterialProperties();
+        this.updateOtherMaterialProperties();
+    }
+
     updateCoreMaterialProperties(attribute = 0) {
         this.material.visible = this.getAttributeFieldValue(attribute, 0);
         this.material.color.set(this.getAttributeFieldValue(attribute, 1));
@@ -123,6 +135,7 @@ export class StandardMaterialComponent extends Component {
     }
 
     updateEmissionMaterialProperties(attribute = 2) {
+        if (!this.usesEmission) return;
         this.material.emissive.set(this.getAttributeFieldValue(attribute, 0));
         this.material.emissiveIntensity = this.getAttributeFieldValue(attribute, 1);
         this.material.emissiveMap = this.getAttributeFieldValue(attribute, 2)?.texture ?? null;
@@ -140,6 +153,7 @@ export class StandardMaterialComponent extends Component {
     }
 
     updateDisplacementMaterialProperties(attribute = 4) {
+        if (!this.usesDisplacement) return;
         this.material.displacementMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
         this.material.displacementScale = this.getAttributeFieldValue(attribute, 1);
         this.material.displacementBias = this.getAttributeFieldValue(attribute, 2);
@@ -147,24 +161,28 @@ export class StandardMaterialComponent extends Component {
     }
 
     updateLightMaterialProperties(attribute = 5) {
+        if (!this.usesLight) return;
         this.material.lightMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
         this.material.lightMapIntensity = this.getAttributeFieldValue(attribute, 1);
         this.material.needsUpdate = true;
     }
 
     updateAmbientMaterialProperties(attribute = 6) {
+        if (!this.usesAmbient) return;
         this.material.aoMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
         this.material.aoMapIntensity = this.getAttributeFieldValue(attribute, 1);
         this.material.needsUpdate = true;
     }
 
     updateReflectionMaterialProperties(attribute = 7) {
+        if (!this.usesReflection) return;
         this.material.envMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
         this.material.envMapIntensity = this.getAttributeFieldValue(attribute, 1);
         this.material.needsUpdate = true;
     }
 
     updateOtherMaterialProperties(attribute = 8) {
+        if (!this.usesOther) return;
         this.material.flatShading = this.getAttributeFieldValue(attribute, 0);
         this.material.fog = this.getAttributeFieldValue(attribute, 1);
         this.material.polygonOffset = this.getAttributeFieldValue(attribute, 2);

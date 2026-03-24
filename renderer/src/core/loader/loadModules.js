@@ -115,6 +115,7 @@ async function importComponent(importPath, sourcePath) {
 }
 
 function getVariableValue(variablePath) {
+    if (variablePath == null) return null;
     const pathParts = variablePath.split(".");
     let current = globalVariables;
     for (const part of pathParts) {
