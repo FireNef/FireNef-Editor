@@ -312,7 +312,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             this.editor.setDrag("componentTreeItem", () => this.showInsides(), { component: this.getAttributeFieldValue(0, 0), name: this.nameElement.textContent, icon: this.parent.children[3].deepClone(), deleteFunction: () => this.delete() });
         });
 
-        this.backgroundElement.addEventListener("click", () => {
+        this.backgroundElement.addEventListener("click", (e) => {
             if (e.button !== 0) return;
             if (this.mouseDown) return;
 
