@@ -202,6 +202,97 @@ export function checkNpmOrDie() {
     return true;
 }
 
+
+const processes = new Map();
+
+function runProject(projectName) {
+    const projectFullPath = path.join(projectsPath, projectName);
+
+    const electronPath = path.join(
+        projectFullPath,
+        "node_modules",
+        ".bin",
+        process.platform === "win32" ? "electron.cmd" : "electron"
+    );
+
+    const child = spawn(electronPath, ["."], {
+        cwd: projectFullPath,
+        stdio: ["ignore", "pipe", "pipe"],
+        detached: false
+    });
+
+    let stdout = "";
+    let stderr = "";
+    let running = true;
+
+    processes.set(projectName, {
+        child,
+        getState: () => ({
+            stdout,
+            stderr,
+            running: running && isAlive(child.pid)
+        })
+    });
+
+    return { success: true };
+}
+
+function isAlive(pid) {
+    if (!pid) return false;
+
+    try {
+        process.kill(pid, 0); // doesn't kill, just checks
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+process.on("exit", () => {
+    for (const proc of processes.values()) {
+        try {
+            proc.child.kill(); // or tree-kill for Windows/Linux
+        } catch {}
+    }
+});
+
+// Also handle Ctrl+C or crashes
+process.on("SIGINT", () => process.exit());
+process.on("SIGTERM", () => process.exit());
+
+ipcMain.handle("run-project", (_, productName) => runProject(productName));
+
+ipcMain.handle("kill-project", (_, projectName) => {
+    const proc = processes.get(projectName);
+
+    if (!proc) return { success: false };
+
+    proc.child.kill();
+
+    return { success: true };
+});
+
+ipcMain.handle("project-status", (_, projectName) => {
+    const proc = processes.get(projectName);
+
+    if (!proc) {
+        return { exists: false, running: false };
+    }
+
+    return {
+        exists: true,
+        running: proc.getState().running
+    };
+});
+
+ipcMain.handle("project-output", (_, projectName) => {
+    const proc = processes.get(projectName);
+
+    if (!proc) return null;
+
+    return proc.getState();
+});
+
 ipcMain.handle("install-electron-preset", async (_, presetPath, projectPath, projectName) => await installElectronPreset(presetPath, projectPath, projectName));
 ipcMain.handle("install-main-preset", async (_, presetPath, projectPath, projectName, coreUrl) => await installMainPreset(presetPath, projectPath, projectName, coreUrl));
 ipcMain.handle("install-loader-preset", async (_, presetPath, projectPath, projectName) => await installLoaderPreset(presetPath, projectPath, projectName));

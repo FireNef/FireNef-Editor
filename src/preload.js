@@ -40,5 +40,9 @@ contextBridge.exposeInMainWorld("windowControls", {
 contextBridge.exposeInMainWorld("firenefEditorTools", {
     installElectronPreset: (presetPath, projectPath, projectName) => ipcRenderer.invoke("install-electron-preset", presetPath, projectPath, projectName),
     installMainPreset: (presetPath, projectPath, projectName, coreUrl) => ipcRenderer.invoke("install-main-preset", presetPath, projectPath, projectName, coreUrl),
-    installLoaderPreset: (presetPath, projectPath, projectName) => ipcRenderer.invoke("install-loader-preset", presetPath, projectPath, projectName)
+    installLoaderPreset: (presetPath, projectPath, projectName) => ipcRenderer.invoke("install-loader-preset", presetPath, projectPath, projectName),
+    runProject: (projectName) => ipcRenderer.invoke("run-project", projectName),
+    killProject: (projectName) => ipcRenderer.invoke("kill-project", projectName),
+    projectStatus: (projectName) => ipcRenderer.invoke("project-status", projectName),
+    projectOutput: (projectName) => ipcRenderer.invoke("project-output", projectName),
 });

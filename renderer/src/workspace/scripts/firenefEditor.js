@@ -19,6 +19,8 @@ export class FirenefEditor {
 
         this.onProjectLoaded = [];
 
+        this.runningProject = false;
+
         this.imports = {};
 
         this.contextMenu = {};
@@ -227,6 +229,7 @@ export class FirenefEditor {
     async openProject(projectName) {
         if (!await this.projectExists(projectName)) return;
         this.clearOverlay();
+        this.stopProject();
         this.currentProject = projectName;
 
         this.projectModules = await this.getProjectModules(projectName);
@@ -535,5 +538,34 @@ export class FirenefEditor {
         newComponent.attributes = formatedAttributes;
 
         return newComponent;
+    }
+
+    async runProject() {
+        if (this.runningProject) return;
+        if (!this.currentProject) return;
+        this.saveProject();
+        this.runningProject = await window.firenefEditorTools.runProject(this.currentProject);
+    }
+
+    restartProject() {
+        this.stopProject();
+        this.runProject();
+    }
+
+    stopProject() {
+        if (!this.runningProject) return;
+        window.firenefEditorTools.killProject(this.currentProject);
+        this.runningProject = false;
+    }
+
+    async isProjectRunning() {
+        if (!this.runningProject) return false;
+        console.log(await window.firenefEditorTools.projectStatus(this.currentProject));
+        if ((await window.firenefEditorTools.projectStatus(this.currentProject)).running) {
+            return true;
+        } else {
+            this.runningProject = false;
+            return false;
+        }
     }
 }
