@@ -208,12 +208,25 @@ const processes = new Map();
 function runProject(projectName) {
     const projectFullPath = path.join(projectsPath, projectName);
 
-    const electronPath = path.join(
-        projectFullPath,
-        "node_modules",
-        ".bin",
-        process.platform === "win32" ? "electron.cmd" : "electron"
-    );
+    let electronPath;
+
+    if (process.platform === "win32") {
+        electronPath = path.join(
+            projectFullPath,
+            "node_modules",
+            "electron",
+            "dist",
+            "electron.exe"
+        );
+    } else {
+        electronPath = path.join(
+            projectFullPath,
+            "node_modules",
+            ".bin",
+            "electron"
+        );
+    }
+
 
     const child = spawn(electronPath, ["."], {
         cwd: projectFullPath,
@@ -241,24 +254,46 @@ function isAlive(pid) {
     if (!pid) return false;
 
     try {
-        process.kill(pid, 0); // doesn't kill, just checks
+        process.kill(pid, 0);
         return true;
     } catch {
         return false;
     }
 }
 
+function killAllProcesses() {
+    for (const proc of processes.values()) {
+        try {
+            if (process.platform === "win32") {
+                spawn("taskkill", ["/pid", proc.child.pid, "/f", "/t"]);
+            } else {
+                proc.child.kill("SIGTERM");
+            }
+        } catch {}
+    }
+}
+
+process.on("SIGINT", () => {
+    killAllProcesses();
+    process.exit();
+});
+
+process.on("SIGTERM", () => {
+    killAllProcesses();
+    process.exit();
+});
+
+process.on("beforeExit", () => {
+    killAllProcesses();
+});
+
 process.on("exit", () => {
     for (const proc of processes.values()) {
         try {
-            proc.child.kill(); // or tree-kill for Windows/Linux
+            proc.child.kill();
         } catch {}
     }
 });
-
-// Also handle Ctrl+C or crashes
-process.on("SIGINT", () => process.exit());
-process.on("SIGTERM", () => process.exit());
 
 ipcMain.handle("run-project", (_, productName) => runProject(productName));
 
@@ -267,10 +302,16 @@ ipcMain.handle("kill-project", (_, projectName) => {
 
     if (!proc) return { success: false };
 
-    proc.child.kill();
+    if (process.platform === "win32") {
+        spawn("taskkill", ["/pid", proc.child.pid, "/f", "/t"]);
+    } else {
+        proc.child.kill("SIGTERM");
+    }
 
     return { success: true };
 });
+
+
 
 ipcMain.handle("project-status", (_, projectName) => {
     const proc = processes.get(projectName);
