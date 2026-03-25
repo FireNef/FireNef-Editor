@@ -69,6 +69,8 @@ export class Renderer3D extends Component {
 
     static group = "General 3D";
 
+    static icon = ["renderer3d", ...super.icon];
+
     updateResolution() {
         this.resolution.width = this.viewport.actualResolution.width;
         this.resolution.height = this.viewport.actualResolution.height;

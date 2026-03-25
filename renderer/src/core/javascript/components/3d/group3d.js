@@ -7,4 +7,6 @@ export class Group3d extends Object3d {
 
     static baseType = "group3d"
     static type = "group3d"
+
+    static icon = ["group3d", ...super.icon];
 }

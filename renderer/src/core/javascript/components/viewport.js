@@ -35,6 +35,8 @@ export class Viewport extends Component {
     static baseType = "viewport"
     static type = "viewport"
 
+    static icon = ["viewport", ...super.icon];
+
     start() {
         this.getViewportCapableComponent().appendChild(this.viewportElement);
 

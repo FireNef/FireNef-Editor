@@ -2,16 +2,6 @@ import * as FIRENEF from "firenef";
 import ComponentTreeItemScript from "./componentTreeItem.js";
 
 export default class ComponentTreeScript extends FIRENEF.Script {
-
-    static componentIconMapping = {
-        component: "./assets/svgs/componentIcons/component.svg",
-        controller: "./assets/svgs/componentIcons/controller.svg",
-        componentController: "./assets/svgs/componentIcons/componentController.svg",
-        uiElement: "./assets/svgs/componentIcons/uiElement.svg",
-        uiController: "./assets/svgs/componentIcons/uiController.svg",
-        script: "./assets/svgs/componentIcons/script.svg",
-        svgElement: "./assets/svgs/componentIcons/svg.svg"
-    };
     
     constructor(name = "Component Tree Script") {
         super(name);

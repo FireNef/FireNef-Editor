@@ -47,6 +47,8 @@ export class Object3d extends Component {
     static baseType = "object3d"
     static type = "object3d"
 
+    static icon = ["object3d", ...super.icon];
+
     appendChild(child) {
         super.appendChild(child);
 

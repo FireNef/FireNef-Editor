@@ -7,4 +7,6 @@ export class GroupComponent extends Component {
 
     static baseType = "group";
     static type = "group";
+
+    static icon = ["group", ...super.icon];
 }
