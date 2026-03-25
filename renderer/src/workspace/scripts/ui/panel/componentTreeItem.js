@@ -184,7 +184,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             e.preventDefault();
             e.stopPropagation();
             this.backgroundElement.style.backgroundColor = "var(--current-surface0)";
-            this.editor.setContextMenu("componentTreeItem", {x: e.clientX+1, y:  e.clientY+1}, () => this.backgroundElement.style.backgroundColor = null, { cancel: () => this.cancel(), callback: { newComponent: (className, classObject) => this.newComponent(className, classObject), rename: () => this.rename(), delete: () => this.delete() }});
+            this.editor.setContextMenu("componentTreeItem", {x: e.clientX, y:  e.clientY}, () => this.backgroundElement.style.backgroundColor = null, { cancel: () => this.cancel(), callback: { newComponent: (className, classObject) => this.newComponent(className, classObject), rename: () => this.rename(), delete: () => this.delete() }});
         });
 
         const line = document.createElement("div");
@@ -250,6 +250,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         });
 
         this.backgroundElement.addEventListener("mousedown", (e) => {
+            if (e.button !== 0) return;
             e.preventDefault();
             e.stopPropagation();
 
@@ -257,6 +258,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         });
 
         this.backgroundElement.addEventListener("mouseup", (e) => {
+            if (e.button !== 0) return;
             e.preventDefault();
             e.stopPropagation();
 
@@ -311,6 +313,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         });
 
         this.backgroundElement.addEventListener("click", () => {
+            if (e.button !== 0) return;
             if (this.mouseDown) return;
 
             if (this.selected) {

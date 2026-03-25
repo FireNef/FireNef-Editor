@@ -137,7 +137,7 @@ export default class ComponentTreeScript extends FIRENEF.Script {
         this.backgroundElement.addEventListener("contextmenu", (e) => {
             e.preventDefault();
             e.stopPropagation();
-            this.editor.addContextMenu("componentTree", { x: e.clientX+1, y:  e.clientY+1 }, undefined, { callback: { newComponent: (className, classObject) => this.newComponent(className, classObject) } });
+            this.editor.addContextMenu("componentTree", { x: e.clientX, y:  e.clientY }, undefined, { callback: { newComponent: (className, classObject) => this.newComponent(className, classObject) } });
         });
 
         this.editor.fetchNonAsyncFilesAsText(
