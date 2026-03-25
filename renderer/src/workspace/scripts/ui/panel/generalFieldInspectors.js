@@ -74,7 +74,7 @@ export class NumberInspectorScript extends FIRENEF.Script {
 
         if ((inputs.min || inputs.min === 0) && (inputs.max || inputs.max === 0) && !inputs.noRange) {
             this.rangeInputElement.style.display = null;
-            this.rangeInputElement.addEventListener("change", () => {
+            this.rangeInputElement.addEventListener("input", () => {
                 if (this.rangeInputElement.value < inputs.min) this.rangeInputElement.value = inputs.min;
                 if (this.rangeInputElement.value > inputs.max) this.rangeInputElement.value = inputs.max;
                 if (!this.rangeInputElement.value && this.rangeInputElement.value !== 0) this.rangeInputElement.value = 0;
