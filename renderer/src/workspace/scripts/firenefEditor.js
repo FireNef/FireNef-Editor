@@ -515,10 +515,6 @@ export class FirenefEditor {
                 const newField = {};
 
                 newField.comment = field.name;
-                
-                newField.type = type;
-                if (setType == "three") newField.type = "variable";
-                if (setType == "component" || setType == "texture") newField.type = "reference";
 
                 if (inputs.defaultValue) {
                     newField.value = inputs.defaultValue;
@@ -529,6 +525,13 @@ export class FirenefEditor {
                     }
                     newField.value = value;
                 }
+
+                newField.type = type;
+                if (setType == "three") {
+                    newField.type = "variable";
+                    if (!this.isValidVariable(newField.value)) newField.type = "string";
+                }
+                if (setType == "component" || setType == "texture") newField.type = "reference";
 
                 formatedFields.push(newField);
             }
