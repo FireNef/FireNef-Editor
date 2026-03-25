@@ -254,10 +254,6 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
                 originalField.comment = defaultField.name;
 
-                originalField.type = type;
-                if (setType == "three") originalField.type = "variable";
-                if (setType == "component" || setType == "texture") originalField.type = "reference";
-                
                 if (inputs.defaultValue) {
                     originalField.value = inputs.defaultValue;
                 } else {
@@ -267,6 +263,13 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
                     }
                     originalField.value = value;
                 }
+
+                originalField.type = type;
+                if (setType == "three") {
+                    originalField.type = "variable";
+                    if (!this.editor.isValidVariable(originalField.value)) originalField.type = "string";
+                }
+                if (setType == "component" || setType == "texture") originalField.type = "reference";
             }
         }
     }

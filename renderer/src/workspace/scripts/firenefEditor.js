@@ -568,4 +568,18 @@ export class FirenefEditor {
             return false;
         }
     }
+
+    isValidVariable(variablePath) {
+        if (variablePath == null) return null;
+        const globalVariables = { FIRENEF, THREE };
+        const pathParts = variablePath.split(".");
+        let current = globalVariables;
+        for (const part of pathParts) {
+            if (current[part] === undefined) {
+                return false;
+            }
+            current = current[part];
+        }
+        return true;
+    }
 }
