@@ -17,7 +17,7 @@ input[type="text"] {
     font-family: Ubuntu;
     font-size: 16px;
     height: 17px;
-    width: calc(100% - 60px);
+    width: calc(100% - 59px);
     border-radius: 4px;
     border: none;
     background-color: var(--current-surface1);
@@ -75,4 +75,5 @@ p {
     align-items: center;
     margin: 0px;
     padding: 0px;
+    width: 100%;
 }

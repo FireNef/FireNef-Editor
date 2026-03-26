@@ -261,6 +261,7 @@ export class ColorInspectorScript extends FIRENEF.Script {
         this.attributes.push(scriptAttribute);
 
         this.element = null;
+        this.editor = null;
 
         this.nameElement = null;
         this.spacerElement = null;
@@ -271,6 +272,7 @@ export class ColorInspectorScript extends FIRENEF.Script {
 
     start() {
         this.element = this.parent.element;
+        this.editor = window.firenefEditor;
 
         this.nameElement = this.element.querySelector("#name");
         this.spacerElement = this.element.querySelector("#spacer");
@@ -289,6 +291,14 @@ export class ColorInspectorScript extends FIRENEF.Script {
             this.textInputElement.value = this.colorToHex(this.textInputElement.value);
             this.colorPickerElement.style.backgroundColor = this.textInputElement.value;
             this.getAttributeFieldValue(0, 1).value = this.textInputElement.value;
+        });
+
+        this.colorPickerElement.addEventListener("click", () => {
+            this.editor.setOverlay("colorPicker", { color: this.getAttributeFieldValue(0, 1).value, colorSet: (hex) => {
+                this.textInputElement.value = hex;
+                this.colorPickerElement.style.backgroundColor = hex;
+                this.getAttributeFieldValue(0, 1).value = hex;
+            }});
         });
     }
 
