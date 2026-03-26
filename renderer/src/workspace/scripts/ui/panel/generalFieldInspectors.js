@@ -249,3 +249,107 @@ export class Vector2InspectorScript extends FIRENEF.Script {
         this.vecYInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.y = Number(this.vecYInputElement.value));
     }
 }
+
+export class ColorInspectorScript extends FIRENEF.Script {
+    constructor(name = "Color Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("defaultType", "object", null);
+        scriptAttribute.addField("field", "object", null);
+        scriptAttribute.addField("is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.colorPickerElement = null;
+        this.textInputElement = null;
+    }
+
+    start() {
+        this.element = this.parent.element;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.colorPickerElement = this.element.querySelector("#colorPicker");
+        this.textInputElement = this.element.querySelector("#textInput");
+
+        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+
+        this.colorPickerElement.style.backgroundColor = this.getAttributeFieldValue(0, 1).value;
+        this.textInputElement.value = this.getAttributeFieldValue(0, 1).value;
+
+        this.textInputElement.addEventListener("change", () => {
+            this.textInputElement.value = this.colorToHex(this.textInputElement.value);
+            this.colorPickerElement.style.backgroundColor = this.textInputElement.value;
+            this.getAttributeFieldValue(0, 1).value = this.textInputElement.value;
+        });
+    }
+
+    colorToHex(input) {
+        input = input.trim().toLowerCase();
+
+        if (input.startsWith("#")) {
+            return this.normalizeHex(input);
+        }
+
+        if (input.startsWith("rgb")) {
+            const values = input.match(/\d+/g).map(Number);
+            return this.rgbToHex(values[0], values[1], values[2]);
+        }
+
+        if (input.startsWith("hsl")) {
+            const values = input.match(/\d+/g).map(Number);
+            const [r, g, b] = this.hslToRgb(values[0], values[1], values[2]);
+            return this.rgbToHex(r, g, b);
+        }
+
+        return "#000000";
+    }
+
+    normalizeHex(hex) {
+        hex = hex.replace("#", "");
+
+        if (hex.length === 3) {
+            return "#" + hex.split("").map(c => c + c).join("");
+        }
+
+        if (hex.length === 6) {
+            return "#" + hex;
+        }
+
+        return "#000000";
+    }
+
+    rgbToHex(r, g, b) {
+        return (
+            "#" +
+            [r, g, b]
+            .map(x => x.toString(16).padStart(2, "0"))
+            .join("")
+        );
+    }
+
+    hslToRgb(h, s, l) {
+        s /= 100;
+        l /= 100;
+
+        const k = n => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+
+        const f = n =>
+            l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+        return [
+            Math.round(255 * f(0)),
+            Math.round(255 * f(8)),
+            Math.round(255 * f(4))
+        ];
+    }
+}

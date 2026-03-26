@@ -563,7 +563,6 @@ export class FirenefEditor {
 
     async isProjectRunning() {
         if (!this.runningProject) return false;
-        console.log(await window.firenefEditorTools.projectStatus(this.currentProject));
         if ((await window.firenefEditorTools.projectStatus(this.currentProject)).running) {
             return true;
         } else {

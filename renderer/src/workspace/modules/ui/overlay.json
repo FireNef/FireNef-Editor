@@ -32,6 +32,10 @@
         {
             "type": "module",
             "path": "workspace/modules/ui/overlays/confirm.json"
+        },
+        {
+            "type": "module",
+            "path": "workspace/modules/ui/overlays/colorPicker.json"
         }
     ]
 }

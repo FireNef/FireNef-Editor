@@ -1,0 +1,28 @@
+{
+    "type": "component",
+    "class": "UiElement",
+    "name": "Color Picker Overlay",
+    "variables": {
+        "overlay": "colorPicker"
+    },
+    "attributes": [
+        [
+            {
+                "comment": "Html File",
+                "type": "file",
+                "value": "./src/workspace/ui/html/overlays/colorPicker.html"
+            },
+            {
+                "comment": "Css File",
+                "type": "file",
+                "value": "./src/workspace/ui/css/overlays/colorPicker.css"
+            }
+        ]
+    ],
+    "children": [
+        {
+            "type": "component",
+            "path": "workspace/scripts/ui/overlays/colorPicker.js"
+        }
+    ]
+}

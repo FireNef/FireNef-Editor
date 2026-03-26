@@ -20,7 +20,8 @@
         "workspace/scripts/ui/drag/componentTreeItemDrag.js",
         "workspace/scripts/ui/panel/leftPanel.js",
         "workspace/scripts/ui/panel/rightPanel.js",
-        "workspace/scripts/ui/panel/componentInspector.js"
+        "workspace/scripts/ui/panel/componentInspector.js",
+        "workspace/scripts/ui/overlays/colorPicker.js"
     ],
 
     "updater": [
