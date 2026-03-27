@@ -154,7 +154,13 @@ export class StringInspectorScript extends FIRENEF.Script {
         if (inputs.textField == "wide") {
             this.textInputElement.style.display = "none";
             this.textareaElement.style.display = null;
-            this.textareaElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value = this.textareaElement.value);
+            this.textareaElement.addEventListener("change", () => {
+                if (this.textareaElement.value === "null") {
+                    this.getAttributeFieldValue(0, 1).value = null;
+                    return;
+                }
+                this.getAttributeFieldValue(0, 1).value = this.textareaElement.value
+            });
             this.textareaElement.value = this.getAttributeFieldValue(0, 1).value;
         } else {
             this.textareaElement.style.display = "none";
@@ -162,7 +168,13 @@ export class StringInspectorScript extends FIRENEF.Script {
         }
 
         this.textInputElement.value = this.getAttributeFieldValue(0, 1).value;
-        this.textInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value = this.textInputElement.value);
+        this.textInputElement.addEventListener("change", () => {
+            if (this.textInputElement.value === "null") {
+                this.getAttributeFieldValue(0, 1).value = null;
+                return;
+            }
+            this.getAttributeFieldValue(0, 1).value = this.textInputElement.value
+        });
     }
 }
 
@@ -361,5 +373,74 @@ export class ColorInspectorScript extends FIRENEF.Script {
             Math.round(255 * f(8)),
             Math.round(255 * f(4))
         ];
+    }
+}
+
+export class DropdownInspectorScript extends FIRENEF.Script {
+    constructor(name = "Dropdown Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("defaultType", "object", null);
+        scriptAttribute.addField("field", "object", null);
+        scriptAttribute.addField("is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+        this.editor = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.menuButtonElement = null;
+        this.dropMenuElement = null;
+    }
+
+    start() {
+        this.element = this.parent.element;
+        this.editor = window.firenefEditor;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.menuButtonElement = this.element.querySelector("#menuButton");
+        this.dropMenuElement = this.element.querySelector("#dropMenu");
+
+        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+
+        this.menuButtonElement.textContent = this.getAttributeFieldValue(0, 1).value;
+
+        for (const option of this.getAttributeFieldValue(0, 0).inputs.options) {
+            const optionElement = document.createElement("div");
+            optionElement.textContent = option;
+            optionElement.addEventListener("click", (e) => {
+                e.stopPropagation();
+                this.menuButtonElement.textContent = option;
+                this.getAttributeFieldValue(0, 1).value = option;
+                this.dropMenuElement.classList.remove("show");
+
+                if (this.getAttributeFieldValue(0, 0).setType == "three") {
+                    if (this.editor.isValidVariable(option)) {
+                        this.getAttributeFieldValue(0, 1).type = "variable";
+                    } else {
+                        this.getAttributeFieldValue(0, 1).type = "string";
+                    }
+                }
+            });
+            this.dropMenuElement.appendChild(optionElement);
+        }
+
+        this.menuButtonElement.addEventListener("click", (e) => {
+            e.stopPropagation();
+            this.dropMenuElement.classList.toggle("show");
+        });
+        
+        window.addEventListener("click", (event) => {
+            if (!event.target.matches('#menuButton')) {
+                this.dropMenuElement.classList.remove("show");
+            }
+        });
     }
 }

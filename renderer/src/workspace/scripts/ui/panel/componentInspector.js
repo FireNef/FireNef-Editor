@@ -1,5 +1,5 @@
 import * as FIRENEF from "firenef";
-import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript, Vector2InspectorScript, Vector3InspectorScript, ColorInspectorScript } from "./generalFieldInspectors.js";
+import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript, Vector2InspectorScript, Vector3InspectorScript, ColorInspectorScript, DropdownInspectorScript } from "./generalFieldInspectors.js";
 
 export default class ComponentInspoectorScript extends FIRENEF.Script {
     constructor(name = "Component Inspector Script") {
@@ -164,6 +164,18 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
     getFieldComponent(defaultField, field, isLast = false) {
 
+        if (defaultField?.inputs?.options) {
+            const fieldComponent = this.newUiElement("Option Field", "./src/workspace/ui/html/panel/inspectors/dropdownInspector.html", "./src/workspace/ui/css/panel/inspectors/dropdownInspector.css");
+
+            const script = new DropdownInspectorScript();
+            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
+            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
+            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
         if (defaultField.setType == "boolean") {
             const fieldComponent = this.newUiElement("Boolean Field", "./src/workspace/ui/html/panel/inspectors/booleanInspector.html", "./src/workspace/ui/css/panel/inspectors/booleanInspector.css");
 
@@ -187,7 +199,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
             return fieldComponent;
         }
-        if (defaultField.setType == "string" || defaultField.setType == "text") {
+        if (defaultField.setType == "string" || defaultField.setType == "text" || defaultField.setType == "path" || defaultField.setType == "imagePath" || defaultField.setType == "json") {
             const fieldComponent = this.newUiElement("String Field", "./src/workspace/ui/html/panel/inspectors/stringInspector.html", "./src/workspace/ui/css/panel/inspectors/stringInspector.css");
 
             const script = new StringInspectorScript();
