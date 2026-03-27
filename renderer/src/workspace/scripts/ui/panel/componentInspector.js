@@ -199,7 +199,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
             return fieldComponent;
         }
-        if (defaultField.setType == "string" || defaultField.setType == "text" || defaultField.setType == "path" || defaultField.setType == "imagePath" || defaultField.setType == "json") {
+        if (defaultField.setType == "string" || defaultField.setType == "text" || defaultField.setType == "path" || defaultField.setType == "imagePath" || defaultField.setType == "jsonPath") {
             const fieldComponent = this.newUiElement("String Field", "./src/workspace/ui/html/panel/inspectors/stringInspector.html", "./src/workspace/ui/css/panel/inspectors/stringInspector.css");
 
             const script = new StringInspectorScript();
