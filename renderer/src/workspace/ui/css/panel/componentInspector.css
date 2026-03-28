@@ -181,6 +181,33 @@ hr {
 }
 
 b {
-    margin: 5px 0px;
+    margin: 0px;
+    margin-left: 5px;
     display: flex;
+}
+
+.topBar {
+    align-items: center;
+    justify-content: start;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+    padding: 5px 0px;
+}
+
+.topBar:hover {
+    background-color: var(--current-surface0);
+    border-radius: 5px;
+}
+
+.attributeIcon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.attributeIcon {
+    margin-left: 5px;
+    width: 16px;
+    height: 16px;
 }
