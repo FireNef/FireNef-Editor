@@ -86,16 +86,16 @@ export class UiElement extends Component {
     start() {
         this.inneritedStyles = (this.parent?.inneritedStyles ?? []).slice();
         this.inneritedStyles.push(this.parent?.style);
-        if (this.getAttributeFieldValue(0, 2)) this.inneritedStyles = [];
+        if (this.getAttr("Ui", "Isolate Style")) this.inneritedStyles = [];
 
         this.shadow = this.host.attachShadow({ mode: "open" });
 
         this.style = new CSSStyleSheet();
-        this.style.replaceSync(this.getAttributeFieldValue(0, 1));
+        this.style.replaceSync(this.getAttr("Ui", "css"));
 
         this.shadow.adoptedStyleSheets = [...this.inneritedStyles, this.style];
 
-        const htmlString = this.getAttributeFieldValue(0, 0) ?? "";
+        const htmlString = this.getAttr("Ui", "html") ?? "";
         const template = document.createElement("template");
 
         template.innerHTML = htmlString.trim();

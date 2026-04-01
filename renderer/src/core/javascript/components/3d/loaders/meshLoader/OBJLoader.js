@@ -29,17 +29,17 @@ export class OBJLoader extends Object3d {
 
     updateMesh(forceUpdate = false) {
         if (!forceUpdate && this.loaded) return;
-        if (!this.getAttributeFieldValue(1, 0)) return;
+        if (!this.getAttr("Mesh", "OBJ File")) return;
 
-        if (this.getAttributeFieldValue(1, 1)) {
-            const mtl = OBJLoader.mtlLoader.parse(this.getAttributeFieldValue(1, 1), "./");
+        if (this.getAttr("Mesh", "MTL File")) {
+            const mtl = OBJLoader.mtlLoader.parse(this.getAttr("Mesh", "MTL File"), "./");
             mtl.preload();
             OBJLoader.objLoader.setMaterials(mtl);
         } else {
             OBJLoader.objLoader.setMaterials(null);
         }
 
-        const obj = OBJLoader.objLoader.parse(this.getAttributeFieldValue(1, 0));
+        const obj = OBJLoader.objLoader.parse(this.getAttr("Mesh", "OBJ File"));
 
         this.object3D = obj;
 
@@ -55,19 +55,19 @@ export class OBJLoader extends Object3d {
     updateShadow() {
         this.object3D.traverse((child) => {
             if (child.isMesh) {
-                child.castShadow = this.getAttributeFieldValue(1, 2);
-                child.receiveShadow = this.getAttributeFieldValue(1, 3);
+                child.castShadow = this.getAttr("Mesh", "Cast Shadows");
+                child.receiveShadow = this.getAttr("Mesh", "Receive Shadows");
             }
         })
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
-        if (attribute == 1) {
-            if (field == 0) this.updateMesh(true);
-            if (field == 1) this.updateMesh(true);
-            if (field == 2) this.updateShadow();
-            if (field == 3) this.updateShadow();
+        if (attribute == "Mesh") {
+            if (field == "OBJ File") this.updateMesh(true);
+            if (field == "MTL File") this.updateMesh(true);
+            if (field == "Cast Shadows") this.updateShadow();
+            if (field == "Receive Shadows") this.updateShadow();
         }
     }
 }

@@ -102,7 +102,7 @@ export class Renderer3D extends Component {
         (async () => {
             this.renderer = new THREE.WebGPURenderer({
                 canvas: this.canvasElement,
-                antialias: this.getAttributeFieldValue(1, 3),
+                antialias: this.getAttr("Renderer", "Antialias"),
             });
 
             this.canvasElement.width = this.resolution.width;
@@ -110,11 +110,11 @@ export class Renderer3D extends Component {
 
             this.renderer.setPixelRatio(1);
             this.renderer.setSize(this.resolution.width, this.resolution.height, false);
-            this.renderer.outputEncoding = this.getAttributeFieldValue(1, 0);
-            this.renderer.toneMapping = this.getAttributeFieldValue(1, 1);
-            this.renderer.toneMappingExposure = this.getAttributeFieldValue(1, 2);
-            this.renderer.shadowMap.enabled = this.getAttributeFieldValue(1, 3);
-            this.renderer.shadowMap.type = this.getAttributeFieldValue(1, 4);
+            this.renderer.outputEncoding = this.getAttr("Renderer", "Output Color Space");
+            this.renderer.toneMapping = this.getAttr("Renderer", "Tone Mapping");
+            this.renderer.toneMappingExposure = this.getAttr("Renderer", "Tone Mapping Exposure");
+            this.renderer.shadowMap.enabled = this.getAttr("Renderer", "Cast Shadows");
+            this.renderer.shadowMap.type = this.getAttr("Renderer", "Shadow Map Type");
 
             await this.renderer.init();
             this.renderer.setSize(this.resolution.width, this.resolution.height, false);
@@ -141,33 +141,33 @@ export class Renderer3D extends Component {
         return this.children;
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
+    async setAttributeFieldValue(attribute, field, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 0) {
-            if (field == 0) this.setMaxFPS(this.getAttributeFieldValue(0, 1));
-            if (field == 1) this.setMaxFPS(value);
-            if (field == 2) this.setVsync();
+        if (attribute == "Frame Rate") {
+            if (field == "Cap FPS") this.setMaxFPS(this.getAttr("Frame Rate", "Max FPS"));
+            if (field == "Max FPS") this.setMaxFPS(value);
+            if (field == "Use Vsync") this.setVsync();
         }
-        if (attribute == 1) this.updateSettings();
-        if (attribute == 2) {
-            if (field == 0) this.maxTextureSize = this.getAttributeFieldValue(2, 0);
+        if (attribute == "Renderer") this.updateSettings();
+        if (attribute == "Performance") {
+            if (field == "Max Texture Size") this.maxTextureSize = this.getAttr("Performance", "Max Texture Size");
         }
     }
 
     updateSettings() {
         if (!this.renderer) return;
-        this.renderer.outputEncoding = this.getAttributeFieldValue(1, 0);
-        this.renderer.toneMapping = this.getAttributeFieldValue(1, 1);
-        this.renderer.toneMappingExposure = this.getAttributeFieldValue(1, 2);
-        this.renderer.shadowMap.enabled = this.getAttributeFieldValue(1, 3);
-        this.renderer.shadowMap.type = this.getAttributeFieldValue(1, 4);
+        this.renderer.outputEncoding = this.getAttr("Renderer", "Output Encoding");
+        this.renderer.toneMapping = this.getAttr("Renderer", "Tone Mapping");
+        this.renderer.toneMappingExposure = this.getAttr("Renderer", "Tone Mapping Exposure");
+        this.renderer.shadowMap.enabled = this.getAttr("Renderer", "Cast Shadows");
+        this.renderer.shadowMap.type = this.getAttr("Renderer", "Shadow Map Type");
     }
 
     startRenderLoop() {
         if (this.renderLoopId) this.stopRenderLoop();
         this.running = true;
 
-        if (this.getAttributeFieldValue(0, 2)) {
+        if (this.getAttr("Frame Rate", "Use Vsync")) {
             this.startRenderVsync();
         } else {
             this.startRenderFixedFPS();
@@ -177,7 +177,7 @@ export class Renderer3D extends Component {
     stopRenderLoop() {
         if (!this.renderLoopId) return;
 
-        if (this.getAttributeFieldValue(0, 2)) {
+        if (this.getAttr("Frame Rate", "Use Vsync")) {
             cancelAnimationFrame(this.renderLoopId);
         } else {
             clearInterval(this.renderLoopId);
@@ -190,9 +190,9 @@ export class Renderer3D extends Component {
     setMaxFPS(maxFps) {
         this.dtRender = maxFps == 0 ? 0 : 1000 / maxFps;
 
-        if (!this.getAttributeFieldValue(0, 0)) this.dtRender = 0;
+        if (!this.getAttr("Frame Rate", "Cap FPS")) this.dtRender = 0;
 
-        if (!this.getAttributeFieldValue(0, 2) && this.running) {
+        if (!this.getAttr("Frame Rate", "Use Vsync") && this.running) {
             this.startRenderLoop();
         }
     }

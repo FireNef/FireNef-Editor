@@ -49,13 +49,14 @@ async function initializeComponents(components, modules, sourcePath) {
                 for (const field in module.attributes[attribute]) {
                     const fieldValue = module.attributes[attribute][field];
                     if (!fieldValue.type) continue;
+                    const [ attributeName, fieldName ] = component.getAttributeName(attribute, field);
                     if (fieldValue.type === "component" || fieldValue.type === "module") {
                         const newComponent = await loadFullModule([fieldValue], sourcePath);
-                        await component.setAttributeFieldValue(attribute, field, newComponent[0], fieldValue.setType);
+                        await component.setAttributeFieldValue(attributeName, fieldName, newComponent[0], fieldValue.setType);
                     } else if (fieldValue.type === "variable") {
-                        await component.setAttributeFieldValue(attribute, field, getVariableValue(fieldValue.value), fieldValue.setType ?? fieldValue.type);
+                        await component.setAttributeFieldValue(attributeName, fieldName, getVariableValue(fieldValue.value), fieldValue.setType ?? fieldValue.type);
                     } else {
-                        await component.setAttributeFieldValue(attribute, field, fieldValue.value, fieldValue.setType ?? fieldValue.type);
+                        await component.setAttributeFieldValue(attributeName, fieldName, fieldValue.value, fieldValue.setType ?? fieldValue.type);
                     }
                 }
             }

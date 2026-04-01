@@ -51,7 +51,7 @@ export class TextureComponent extends Component {
     static type = "texture"
 
     async updateTexture() {
-        const rawValue = this.attributes[0].fields[0].rawValue;
+        const rawValue = this.getAttr("Texture", "Image");
         this.texture = await TextureComponent.loader.loadAsync(rawValue); 
         this.texture.needsUpdate = true;
 
@@ -65,10 +65,10 @@ export class TextureComponent extends Component {
     }
 
     updateMapping() {
-        const mapping = this.getAttributeFieldValue(1, 0);
+        const mapping = this.getAttr("UV", "Mapping");
 
         if (mapping == "auto") {
-            const preset = this.getAttributeFieldValue(0, 1);
+            const preset = this.getAttr("Texture", "Preset");
 
             if (preset == "environment") {
                 this.texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -82,10 +82,10 @@ export class TextureComponent extends Component {
     }
 
     updateFlipY() {
-        const flipY = this.getAttributeFieldValue(2, 5);
+        const flipY = this.getAttr("Transform", "Flip Y");
 
         if (flipY == "auto") {
-            const preset = this.getAttributeFieldValue(0, 1);
+            const preset = this.getAttr("Texture", "Preset");
 
             if (preset == "data") {
                 this.texture.flipY = false;
@@ -99,10 +99,10 @@ export class TextureComponent extends Component {
     }
 
     updateColorSpace() {
-        const colorSpace = this.getAttributeFieldValue(3, 0);
+        const colorSpace = this.getAttr("Advanced", "Color Space");
 
         if (colorSpace == "auto") {
-            const preset = this.getAttributeFieldValue(0, 1);
+            const preset = this.getAttr("Texture", "Preset");
 
             if (preset == "color" || preset == "emissive" || preset == "environment") {
                 this.texture.colorSpace = THREE.SRGBColorSpace;
@@ -116,10 +116,10 @@ export class TextureComponent extends Component {
     }
 
     updateGenerateMipmaps() {
-        const generateMipmaps = this.getAttributeFieldValue(3, 5);
+        const generateMipmaps = this.getAttr("Advanced", "Generate Mipmaps");
 
         if (generateMipmaps == "auto") {
-            const preset = this.getAttributeFieldValue(0, 1);
+            const preset = this.getAttr("Texture", "Preset");
 
             if (preset == "data") {
                 this.texture.generateMipmaps = false;
@@ -134,46 +134,46 @@ export class TextureComponent extends Component {
 
     updateUV() {
         this.updateMapping();
-        this.texture.wrapS = this.getAttributeFieldValue(1, 1);
-        this.texture.wrapT = this.getAttributeFieldValue(1, 2);
-        this.texture.repeat.set(this.getAttributeFieldValue(1, 3), this.getAttributeFieldValue(1, 4));
-        this.texture.channel = this.getAttributeFieldValue(1, 5);
+        this.texture.wrapS = this.getAttr("UV", "Wrap S");
+        this.texture.wrapT = this.getAttr("UV", "Wrap T");
+        this.texture.repeat.set(this.getAttr("UV", "Repeat X"), this.getAttr("UV", "Repeat Y"));
+        this.texture.channel = this.getAttr("UV", "UV Channel");
         this.texture.needsUpdate = true;
     }
 
     updateTransform() {
-        this.texture.offset.set(this.getAttributeFieldValue(2, 0), this.getAttributeFieldValue(2, 1));
-        this.texture.rotation = this.getAttributeFieldValue(2, 2);
-        this.texture.center.set(this.getAttributeFieldValue(2, 3), this.getAttributeFieldValue(2, 4));
+        this.texture.offset.set(this.getAttr("Transform", "Offset X"), this.getAttr("Transform", "Offset Y"));
+        this.texture.rotation = this.getAttr("Transform", "Rotation");
+        this.texture.center.set(this.getAttr("Transform", "Center X"), this.getAttr("Transform", "Center Y"));
         this.updateFlipY();
         this.texture.needsUpdate = true;
     }
 
     updateAdvanced() {
         this.updateColorSpace();
-        this.texture.magFilter = this.getAttributeFieldValue(3, 1);
-        this.texture.minFilter = this.getAttributeFieldValue(3, 2);
-        this.texture.type = this.getAttributeFieldValue(3, 3);
-        this.texture.anisotropy = this.getAttributeFieldValue(3, 4);
+        this.texture.magFilter = this.getAttr("Advanced", "Mag Filter");
+        this.texture.minFilter = this.getAttr("Advanced", "Min Filter");
+        this.texture.type = this.getAttr("Advanced", "Type");
+        this.texture.anisotropy = this.getAttr("Advanced", "Anisotropy");
         this.updateGenerateMipmaps();
-        this.texture.premultiplyAlpha = this.getAttributeFieldValue(3, 6);
-        this.texture.matrixAutoUpdate = this.getAttributeFieldValue(3, 7);
+        this.texture.premultiplyAlpha = this.getAttr("Advanced", "Premultiply Alpha");
+        this.texture.matrixAutoUpdate = this.getAttr("Advanced", "Matrix Auto Update");
         this.texture.needsUpdate = true;
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
-        if (attribute == 0) {
-            if (field == 0) await this.updateTexture();
-            if (field == 1) {
+        if (attribute == "Texture") {
+            if (field == "Image") await this.updateTexture();
+            if (field == "Preset") {
                 this.updateMapping();
                 this.updateFlipY();
                 this.updateColorSpace();
                 this.updateGenerateMipmaps();
             }
         }
-        if (attribute == 1) this.updateUV();
-        if (attribute == 2) this.updateTransform();
-        if (attribute == 3) this.updateAdvanced();
+        if (attribute == "UV") this.updateUV();
+        if (attribute == "Transform") this.updateTransform();
+        if (attribute == "Advanced") this.updateAdvanced();
     }
 }

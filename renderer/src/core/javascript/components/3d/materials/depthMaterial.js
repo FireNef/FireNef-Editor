@@ -18,13 +18,17 @@ export class DepthMaterialComponent extends Component {
     static baseType = "material";
     static type = "depthMaterial";
 
-    updateWireframeMaterialProperties(attribute = 0) {
-        this.material.wireframe = this.getAttributeFieldValue(attribute, 0);
+    updateAllProperties() {
+        this.updateWireframeMaterialProperties();
+    }
+
+    updateWireframeMaterialProperties() {
+        this.material.wireframe = this.getAttributeFieldValue("Wireframe", "Wireframe");
         this.material.needsUpdate = true;
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
-        if (attribute == 0) this.updateWireframeMaterialProperties(attribute);
-        await super.setAttributeFieldValue(attribute, field, value, type);
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
+        await super.setAttributeFieldValue(attribute, field, value, type, inputs);
+        if (attribute == "Wireframe") this.updateWireframeMaterialProperties();
     }
 }

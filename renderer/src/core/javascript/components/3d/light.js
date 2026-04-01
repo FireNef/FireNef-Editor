@@ -26,9 +26,9 @@ export class DirectionalLightComponent extends Object3d {
     }
 
     updateLightProperties() {
-        const color = this.getAttributeFieldValue(1, 0);
-        const intensity = this.getAttributeFieldValue(1, 1);
-        const castShadows = this.getAttributeFieldValue(1, 2);
+        const color = this.getAttr("Directional Light", "Color");
+        const intensity = this.getAttr("Directional Light", "Intensity");
+        const castShadows = this.getAttr("Directional Light", "Cast Shadows");
         this.object3D.color.set(color);
         this.object3D.intensity = intensity;
         this.object3D.castShadow = castShadows;
@@ -38,7 +38,7 @@ export class DirectionalLightComponent extends Object3d {
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 1) this.updateLightProperties();
+        if (attribute == "Directional Light") this.updateLightProperties();
     }
 }
 
@@ -67,11 +67,11 @@ export class PointLightComponent extends Object3d {
     }
 
     updateLightProperties() {
-        const color = this.getAttributeFieldValue(1, 0);
-        const intensity = this.getAttributeFieldValue(1, 1);
-        const distance = this.getAttributeFieldValue(1, 2);
-        const decay = this.getAttributeFieldValue(1, 3);
-        const castShadows = this.getAttributeFieldValue(1, 4);
+        const color = this.getAttr("Point Light", "Color");
+        const intensity = this.getAttr("Point Light", "Intensity");
+        const distance = this.getAttr("Point Light", "Distance");
+        const decay = this.getAttr("Point Light", "Decay");
+        const castShadows = this.getAttr("Point Light", "Cast Shadows");
 
         this.object3D.color.set(color);
         this.object3D.intensity = intensity;
@@ -84,7 +84,7 @@ export class PointLightComponent extends Object3d {
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 1) this.updateLightProperties();
+        if (attribute == "Point Light") this.updateLightProperties();
     }
 }
 
@@ -104,18 +104,15 @@ export class SpotLightComponent extends Object3d {
 
         this.attributes.push(lightAttribute);
 
-        // Create spotlight
         this.object3D = new THREE.SpotLight(0xffffff, 1);
         this.object3D.name = name;
         this.object3D.castShadow = false;
         this.object3D.shadow.normalBias = 0.02;
         this.object3D.shadow.bias = -0.0005;
 
-        // Create target (NOT parented to the light)
         this.target = new THREE.Object3D();
         this.object3D.target = this.target;
 
-        // Internal reusable vectors (no GC spam)
         this._forward = new THREE.Vector3();
         this._quat = new THREE.Quaternion();
         this._worldPos = new THREE.Vector3();
@@ -135,13 +132,13 @@ export class SpotLightComponent extends Object3d {
     }
 
     updateLightProperties() {
-        const color = this.getAttributeFieldValue(1, 0);
-        const intensity = this.getAttributeFieldValue(1, 1);
-        const distance = this.getAttributeFieldValue(1, 2);
-        const angle = this.getAttributeFieldValue(1, 3);
-        const penumbra = this.getAttributeFieldValue(1, 4);
-        const decay = this.getAttributeFieldValue(1, 5);
-        const castShadows = this.getAttributeFieldValue(1, 6);
+        const color = this.getAttr("Spot Light", "Color");
+        const intensity = this.getAttr("Spot Light", "Intensity");
+        const distance = this.getAttr("Spot Light", "Distance");
+        const angle = this.getAttr("Spot Light", "Angle");
+        const penumbra = this.getAttr("Spot Light", "Penumbra");
+        const decay = this.getAttr("Spot Light", "Decay");
+        const castShadows = this.getAttr("Spot Light", "Cast Shadows");
 
         this.object3D.color.set(color);
         this.object3D.intensity = intensity;
@@ -157,29 +154,20 @@ export class SpotLightComponent extends Object3d {
 
         if (!this.object3D.parent) return;
 
-        // Make sure world matrices are updated
         this.object3D.updateMatrixWorld(true);
-
-        // Get interpolated WORLD position
         this.object3D.getWorldPosition(this._worldPos);
-
-        // Get interpolated WORLD rotation
         this.object3D.getWorldQuaternion(this._quat);
 
-        // Forward vector
         this._forward.set(0, 0, -1);
         this._forward.applyQuaternion(this._quat);
 
-        // Place target 1 unit forward in world space
         this.target.position.copy(this._worldPos).add(this._forward);
-
-        // Ensure target matrix updates too
         this.target.updateMatrixWorld(true);
     }
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 1) this.updateLightProperties();
+        if (attribute == "Spot Light") this.updateLightProperties();
     }
 }
 
@@ -205,8 +193,8 @@ export class AmbientLightComponent extends Object3d {
     }
 
     updateLightProperties() {
-        const color = this.getAttributeFieldValue(1, 0);
-        const intensity = this.getAttributeFieldValue(1, 1);
+        const color = this.getAttr("Ambient Light", "Color");
+        const intensity = this.getAttr("Ambient Light", "Intensity");
 
         this.object3D.color = new THREE.Color(color);
         this.object3D.intensity = intensity;
@@ -214,7 +202,7 @@ export class AmbientLightComponent extends Object3d {
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 1) this.updateLightProperties();
+        if (attribute == "Ambient Light") this.updateLightProperties();
     }
 }
 
@@ -241,9 +229,9 @@ export class HemisphereLightComponent extends Object3d {
     }
 
     updateLightProperties() {
-        const skyColor = this.getAttributeFieldValue(1, 0);
-        const groundColor = this.getAttributeFieldValue(1, 1);
-        const intensity = this.getAttributeFieldValue(1, 2);
+        const skyColor = this.getAttr("Hemisphere Light", "Sky Color");
+        const groundColor = this.getAttr("Hemisphere Light", "Ground Color");
+        const intensity = this.getAttr("Hemisphere Light", "Intensity");
 
         this.object3D.color.set(skyColor);
         this.object3D.groundColor.set(groundColor);
@@ -252,6 +240,6 @@ export class HemisphereLightComponent extends Object3d {
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type)
-        if (attribute == 1) this.updateLightProperties()
+        if (attribute == "Hemisphere Light") this.updateLightProperties()
     }
 }

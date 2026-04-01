@@ -45,65 +45,57 @@ export class PhysicalMaterialComponent extends StandardMaterialComponent {
 
     static type = "pysicalMaterial";
 
-    updateClearCoatMaterialProperties(attribute = 9) {
-        this.material.clearcoat = this.getAttributeFieldValue(attribute, 0);
-        this.material.clearcoatRoughness = this.getAttributeFieldValue(attribute, 1);
-        this.material.clearcoatMap = this.getAttributeFieldValue(attribute, 2)?.texture ?? null;
-        this.material.clearcoatRoughnessMap = this.getAttributeFieldValue(attribute, 3);
-        this.material.clearcoatNormalMap = this.getAttributeFieldValue(attribute, 4)?.texture ?? null;
+    updateMaterialProperties() {
+        super.updateMaterialProperties();
+        this.updateClearCoatMaterialProperties();
+        this.updateSheenMaterialProperties();
+        this.updateTransmissionMaterialProperties();
+        this.updateIridescenceMaterialProperties();
+    }
+
+    updateClearCoatMaterialProperties() {
+        this.material.clearcoat = this.getAttr("Clear Coat", "Clear Coat Strength");
+        this.material.clearcoatRoughness = this.getAttr("Clear Coat", "Clear Coat Roughness");
+        this.material.clearcoatMap = this.getAttr("Clear Coat", "Clear Coat Map")?.texture ?? null;
+        this.material.clearcoatRoughnessMap = this.getAttr("Clear Coat", "Clear Coat Roughness Map")?.texture ?? null;
+        this.material.clearcoatNormalMap = this.getAttr("Clear Coat", "Clear Coat Normal Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
     
-    updateSheenMaterialProperties(attribute = 10) {
-        this.material.sheen = this.getAttributeFieldValue(attribute, 0);
-        this.material.sheenColor.set(this.getAttributeFieldValue(attribute, 1));
-        this.material.sheenRoughness = this.getAttributeFieldValue(attribute, 2);
-        this.material.sheenColorMap = this.getAttributeFieldValue(attribute, 3)?.texture ?? null;
-        this.material.sheenRoughnessMap = this.getAttributeFieldValue(attribute, 4)?.texture ?? null;
+    updateSheenMaterialProperties() {
+        this.material.sheen = this.getAttr("Sheen", "Sheen Strength");
+        this.material.sheenColor.set(this.getAttr("Sheen", "Sheen Color"));
+        this.material.sheenRoughness = this.getAttr("Sheen", "Sheen Roughness");
+        this.material.sheenColorMap = this.getAttr("Sheen", "Sheen Color Map")?.texture ?? null;
+        this.material.sheenRoughnessMap = this.getAttr("Sheen", "Sheen Roughness Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
 
-    updateTransmissionMaterialProperties(attribute = 11) {
-        this.material.transmission = this.getAttributeFieldValue(attribute, 0);
-        this.material.transmissionMap = this.getAttributeFieldValue(attribute, 1)?.texture ?? null;
-        this.material.thickness = this.getAttributeFieldValue(attribute, 2);
-        this.material.thicknessMap = this.getAttributeFieldValue(attribute, 3)?.texture ?? null;
-        this.material.attenuationColor.set(this.getAttributeFieldValue(attribute, 4));
-        this.material.attenuationDistance = this.getAttributeFieldValue(attribute, 5);
-        this.material.ior = this.getAttributeFieldValue(attribute, 6);
+    updateTransmissionMaterialProperties() {
+        this.material.transmission = this.getAttr("Transmission", "Transmission");
+        this.material.transmissionMap = this.getAttr("Transmission", "Transmission Map")?.texture ?? null;
+        this.material.thickness = this.getAttr("Transmission", "Thickness");
+        this.material.thicknessMap = this.getAttr("Transmission", "Thickness Map")?.texture ?? null;
+        this.material.attenuationColor.set(this.getAttr("Transmission", "Attenuation Color"));
+        this.material.attenuationDistance = this.getAttr("Transmission", "Attenuation Distance");
+        this.material.ior = this.getAttr("Transmission", "Ior");
         this.material.needsUpdate = true;
     }
 
-    updateIridescenceMaterialProperties(attribute = 12) {
-        this.material.iridescence = this.getAttributeFieldValue(attribute, 0);
-        this.material.iridescenceIOR = this.getAttributeFieldValue(attribute, 1);
-        this.material.iridescenceThicknessRange = [this.getAttributeFieldValue(attribute, 2), this.getAttributeFieldValue(attribute, 3)];
-        this.material.iridescenceMap = this.getAttributeFieldValue(attribute, 4)?.texture ?? null;
+    updateIridescenceMaterialProperties() {
+        this.material.iridescence = this.getAttr("Iridescence", "Iridescence Strength");
+        this.material.iridescenceIOR = this.getAttr("Iridescence", "Iridescence IOR");
+        this.material.iridescenceThicknessRange = [this.getAttr("Iridescence", "Iridescence Thickness Min"), this.getAttr("Iridescence", "Iridescence Thickness Max")];
+        this.material.iridescenceMap = this.getAttr("Iridescence", "Iridescence Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
-        await super.setAttributeFieldValue(attribute, field, value, type);
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
+        await super.setAttributeFieldValue(attribute, field, value, type, inputs);
 
-        if (this.currentAttributeAmount == 1) {
-            this.updateClearCoatMaterialProperties(attribute);
-            return;
-        }
-        this.currentAttributeAmount--;
-        if (this.currentAttributeAmount == 1) {
-            this.updateSheenMaterialProperties(attribute);
-            return;
-        }
-        this.currentAttributeAmount--;
-        if (this.currentAttributeAmount == 1) {
-            this.updateTransmissionMaterialProperties(attribute);
-            return;
-        }
-        this.currentAttributeAmount--;
-        if (this.currentAttributeAmount == 1) {
-            this.updateIridescenceMaterialProperties(attribute);
-            return;
-        }
-        this.currentAttributeAmount--;
+        if (attribute == "Clear Coat") this.updateClearCoatMaterialProperties();
+        if (attribute == "Sheen") this.updateSheenMaterialProperties();
+        if (attribute == "Transmission") this.updateTransmissionMaterialProperties();
+        if (attribute == "Iridescence") this.updateIridescenceMaterialProperties();
     }
 }

@@ -70,7 +70,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             this.typeTextElement.textContent = `Type: ${classObject.type}`;
 
             const iconComponent = new FIRENEF.SvgElement("Component Icon");
-            iconComponent.setNonAsyncAttributeFieldValue(0, 0, this.editor.projectComponentIcons[classObject.icon[0]], "text");
+            iconComponent.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "text");
             this.parent.appendChild(iconComponent);
 
             this.nameInputElement.style.display = "block";
@@ -190,9 +190,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Option Field", "./src/workspace/ui/html/panel/inspectors/dropdownInspector.html", "./src/workspace/ui/css/panel/inspectors/dropdownInspector.css");
 
             const script = new DropdownInspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
 
             fieldComponent.appendChild(script);
 
@@ -202,9 +202,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Boolean Field", "./src/workspace/ui/html/panel/inspectors/booleanInspector.html", "./src/workspace/ui/css/panel/inspectors/booleanInspector.css");
 
             const script = new BooleanInspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
 
             fieldComponent.appendChild(script);
 
@@ -214,9 +214,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Number Field", "./src/workspace/ui/html/panel/inspectors/numberInspector.html", "./src/workspace/ui/css/panel/inspectors/numberInspector.css");
 
             const script = new NumberInspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
             fieldComponent.appendChild(script);
 
             return fieldComponent;
@@ -225,9 +225,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("String Field", "./src/workspace/ui/html/panel/inspectors/stringInspector.html", "./src/workspace/ui/css/panel/inspectors/stringInspector.css");
 
             const script = new StringInspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
             fieldComponent.appendChild(script);
 
             return fieldComponent;
@@ -236,9 +236,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Vec3 Field", "./src/workspace/ui/html/panel/inspectors/vec3Inspector.html", "./src/workspace/ui/css/panel/inspectors/vectorInspector.css");
         
             const script = new Vector3InspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
             fieldComponent.appendChild(script);
 
             return fieldComponent;
@@ -247,9 +247,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Vec2 Field", "./src/workspace/ui/html/panel/inspectors/vec2Inspector.html", "./src/workspace/ui/css/panel/inspectors/vectorInspector.css");
         
             const script = new Vector2InspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
             fieldComponent.appendChild(script);
 
             return fieldComponent;
@@ -258,9 +258,9 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Color Field", "./src/workspace/ui/html/panel/inspectors/colorInspector.html", "./src/workspace/ui/css/panel/inspectors/colorInspector.css");
         
             const script = new ColorInspectorScript();
-            script.setNonAsyncAttributeFieldValue(0, 0, defaultField, "object");
-            script.setNonAsyncAttributeFieldValue(0, 1, field, "object");
-            script.setNonAsyncAttributeFieldValue(0, 2, isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
             fieldComponent.appendChild(script);
 
             return fieldComponent;
@@ -272,8 +272,8 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
     newUiElement(name, htmlPath, cssPath) {
         const uiElement = new FIRENEF.UiElement(name);
-        uiElement.setNonAsyncAttributeFieldValue(0, 0, htmlPath, "file", {}, true);
-        uiElement.setNonAsyncAttributeFieldValue(0, 1, cssPath, "file", {}, true);
+        uiElement.setNonAsyncAttr("Ui", "html", htmlPath, "file", {}, true);
+        uiElement.setNonAsyncAttr("Ui", "css", cssPath, "file", {}, true);
         return uiElement;
     }
 

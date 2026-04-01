@@ -5,9 +5,9 @@ export class BooleanInspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -26,13 +26,13 @@ export class BooleanInspectorScript extends FIRENEF.Script {
         this.checkboxElement = this.element.querySelector("#checkbox");
         this.spacerElement = this.element.querySelector("#spacer");
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
-        this.checkboxElement.checked = this.getAttributeFieldValue(0, 1).value;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
+        this.checkboxElement.checked = this.getAttr("Script", "Field").value;
 
         this.checkboxElement.addEventListener("change", () => {
-            this.getAttributeFieldValue(0, 1).value = this.checkboxElement.checked;
+            this.getAttr("Script", "Field").value = this.checkboxElement.checked;
         });
     }
 }
@@ -42,9 +42,9 @@ export class NumberInspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -66,11 +66,11 @@ export class NumberInspectorScript extends FIRENEF.Script {
         this.spacerElement = this.element.querySelector("#spacer");
         if (!this.rangeInputElement) return;
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        const inputs = this.getAttributeFieldValue(0, 0).inputs;
+        const inputs = this.getAttr("Script", "Default Type").inputs;
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
         if ((inputs.min || inputs.min === 0) && (inputs.max || inputs.max === 0) && !inputs.noRange) {
             this.rangeInputElement.style.display = null;
@@ -78,7 +78,7 @@ export class NumberInspectorScript extends FIRENEF.Script {
                 if (this.rangeInputElement.value < inputs.min) this.rangeInputElement.value = inputs.min;
                 if (this.rangeInputElement.value > inputs.max) this.rangeInputElement.value = inputs.max;
                 if (!this.rangeInputElement.value && this.rangeInputElement.value !== 0) this.rangeInputElement.value = 0;
-                this.getAttributeFieldValue(0, 1).value = Number(this.rangeInputElement.value);
+                this.getAttr("Script", "Field").value = Number(this.rangeInputElement.value);
                 this.numberInputElement.value = this.rangeInputElement.value;
             });
             this.rangeInputElement.min = inputs.min;
@@ -89,7 +89,7 @@ export class NumberInspectorScript extends FIRENEF.Script {
                 this.rangeInputElement.step = (inputs.max - inputs.min) / 100;
             }
 
-            this.rangeInputElement.value = this.getAttributeFieldValue(0, 1).value;
+            this.rangeInputElement.value = this.getAttr("Script", "Field").value;
 
             const value = (this.rangeInputElement.value - this.rangeInputElement.min) / (this.rangeInputElement.max - this.rangeInputElement.min) * 100;
             this.rangeInputElement.style.setProperty('--track-color', `linear-gradient(to right, var(--current-accent) ${value}%, var(--current-surface1) ${value}%)`);
@@ -102,12 +102,12 @@ export class NumberInspectorScript extends FIRENEF.Script {
             this.rangeInputElement.style.display = "none";
         }
 
-        this.numberInputElement.value = this.getAttributeFieldValue(0, 1).value;
+        this.numberInputElement.value = this.getAttr("Script", "Field").value;
         this.numberInputElement.addEventListener("change", () => {
             if (inputs.min || inputs.min === 0) if (this.numberInputElement.value < inputs.min) this.numberInputElement.value = inputs.min;
             if (inputs.max || inputs.max === 0) if (this.numberInputElement.value > inputs.max) this.numberInputElement.value = inputs.max;
             if (!this.numberInputElement.value && this.numberInputElement.value !== 0) this.numberInputElement.value = 0;
-            this.getAttributeFieldValue(0, 1).value = Number(this.numberInputElement.value);
+            this.getAttr("Script", "Field").value = Number(this.numberInputElement.value);
             if (this.rangeInputElement) this.rangeInputElement.value = this.numberInputElement.value;
         });
         if (inputs.min || inputs.min === 0) this.numberInputElement.min = inputs.min;
@@ -121,9 +121,9 @@ export class StringInspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -145,35 +145,35 @@ export class StringInspectorScript extends FIRENEF.Script {
         this.spacerElement = this.element.querySelector("#spacer");
         if (!this.textInputElement) return;
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        const inputs = this.getAttributeFieldValue(0, 0).inputs;
+        const inputs = this.getAttr("Script", "Default Type").inputs;
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
         if (inputs.textField == "wide") {
             this.textInputElement.style.display = "none";
             this.textareaElement.style.display = null;
             this.textareaElement.addEventListener("change", () => {
                 if (this.textareaElement.value === "null") {
-                    this.getAttributeFieldValue(0, 1).value = null;
+                    this.getAttr("Script", "Field").value = null;
                     return;
                 }
-                this.getAttributeFieldValue(0, 1).value = this.textareaElement.value
+                this.getAttr("Script", "Field").value = this.textareaElement.value
             });
-            this.textareaElement.value = this.getAttributeFieldValue(0, 1).value;
+            this.textareaElement.value = this.getAttr("Script", "Field").value;
         } else {
             this.textareaElement.style.display = "none";
             this.textInputElement.style.display = null;
         }
 
-        this.textInputElement.value = this.getAttributeFieldValue(0, 1).value;
+        this.textInputElement.value = this.getAttr("Script", "Field").value;
         this.textInputElement.addEventListener("change", () => {
             if (this.textInputElement.value === "null") {
-                this.getAttributeFieldValue(0, 1).value = null;
+                this.getAttr("Script", "Field").value = null;
                 return;
             }
-            this.getAttributeFieldValue(0, 1).value = this.textInputElement.value
+            this.getAttr("Script", "Field").value = this.textInputElement.value
         });
     }
 }
@@ -183,9 +183,9 @@ export class Vector3InspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -208,17 +208,17 @@ export class Vector3InspectorScript extends FIRENEF.Script {
         this.vecYInputElement = this.element.querySelector("#vecYInput");
         this.vecZInputElement = this.element.querySelector("#vecZInput");
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
         
-        this.vecXInputElement.value = this.getAttributeFieldValue(0, 1).value.x;
-        this.vecYInputElement.value = this.getAttributeFieldValue(0, 1).value.y;
-        this.vecZInputElement.value = this.getAttributeFieldValue(0, 1).value.z;
+        this.vecXInputElement.value = this.getAttr("Script", "Field").value.x;
+        this.vecYInputElement.value = this.getAttr("Script", "Field").value.y;
+        this.vecZInputElement.value = this.getAttr("Script", "Field").value.z;
 
-        this.vecXInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.x = Number(this.vecXInputElement.value));
-        this.vecYInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.y = Number(this.vecYInputElement.value));
-        this.vecZInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.z = Number(this.vecZInputElement.value));
+        this.vecXInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.x = Number(this.vecXInputElement.value));
+        this.vecYInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.y = Number(this.vecYInputElement.value));
+        this.vecZInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.z = Number(this.vecZInputElement.value));
     }
 }
 
@@ -227,9 +227,9 @@ export class Vector2InspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -250,15 +250,15 @@ export class Vector2InspectorScript extends FIRENEF.Script {
         this.vecXInputElement = this.element.querySelector("#vecXInput");
         this.vecYInputElement = this.element.querySelector("#vecYInput");
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
-        this.vecXInputElement.value = this.getAttributeFieldValue(0, 1).value.x;
-        this.vecYInputElement.value = this.getAttributeFieldValue(0, 1).value.y;
+        this.vecXInputElement.value = this.getAttr("Script", "Field").value.x;
+        this.vecYInputElement.value = this.getAttr("Script", "Field").value.y;
 
-        this.vecXInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.x = Number(this.vecXInputElement.value));
-        this.vecYInputElement.addEventListener("change", () => this.getAttributeFieldValue(0, 1).value.y = Number(this.vecYInputElement.value));
+        this.vecXInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.x = Number(this.vecXInputElement.value));
+        this.vecYInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.y = Number(this.vecYInputElement.value));
     }
 }
 
@@ -267,9 +267,9 @@ export class ColorInspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -292,24 +292,24 @@ export class ColorInspectorScript extends FIRENEF.Script {
         this.colorPickerElement = this.element.querySelector("#colorPicker");
         this.textInputElement = this.element.querySelector("#textInput");
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
-        this.colorPickerElement.style.backgroundColor = this.getAttributeFieldValue(0, 1).value;
-        this.textInputElement.value = this.getAttributeFieldValue(0, 1).value;
+        this.colorPickerElement.style.backgroundColor = this.getAttr("Script", "Field").value;
+        this.textInputElement.value = this.getAttr("Script", "Field").value;
 
         this.textInputElement.addEventListener("change", () => {
             this.textInputElement.value = this.colorToHex(this.textInputElement.value);
             this.colorPickerElement.style.backgroundColor = this.textInputElement.value;
-            this.getAttributeFieldValue(0, 1).value = this.textInputElement.value;
+            this.getAttr("Script", "Field").value = this.textInputElement.value;
         });
 
         this.colorPickerElement.addEventListener("click", () => {
-            this.editor.setOverlay("colorPicker", { color: this.getAttributeFieldValue(0, 1).value, colorSet: (hex) => {
+            this.editor.setOverlay("colorPicker", { color: this.getAttr("Script", "Field").value, colorSet: (hex) => {
                 this.textInputElement.value = hex;
                 this.colorPickerElement.style.backgroundColor = hex;
-                this.getAttributeFieldValue(0, 1).value = hex;
+                this.getAttr("Script", "Field").value = hex;
             }});
         });
     }
@@ -381,9 +381,9 @@ export class DropdownInspectorScript extends FIRENEF.Script {
         super(name);
 
         const scriptAttribute = new FIRENEF.Attribute("Script");
-        scriptAttribute.addField("defaultType", "object", null);
-        scriptAttribute.addField("field", "object", null);
-        scriptAttribute.addField("is Last", "boolean", false);
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -406,26 +406,26 @@ export class DropdownInspectorScript extends FIRENEF.Script {
         this.menuButtonElement = this.element.querySelector("#menuButton");
         this.dropMenuElement = this.element.querySelector("#dropMenu");
 
-        if (this.getAttributeFieldValue(0, 2)) this.spacerElement.style.display = "none";
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
-        this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name;
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
-        this.menuButtonElement.textContent = this.getAttributeFieldValue(0, 1).value;
+        this.menuButtonElement.textContent = this.getAttr("Script", "Field").value;
 
-        for (const option of this.getAttributeFieldValue(0, 0).inputs.options) {
+        for (const option of this.getAttr("Script", "Default Type").inputs.options) {
             const optionElement = document.createElement("div");
             optionElement.textContent = option;
             optionElement.addEventListener("click", (e) => {
                 e.stopPropagation();
                 this.menuButtonElement.textContent = option;
-                this.getAttributeFieldValue(0, 1).value = option;
+                this.getAttr("Script", "Field").value = option;
                 this.dropMenuElement.classList.remove("show");
 
-                if (this.getAttributeFieldValue(0, 0).setType == "three") {
+                if (this.getAttr("Script", "Default Type").setType == "three") {
                     if (this.editor.isValidVariable(option)) {
-                        this.getAttributeFieldValue(0, 1).type = "variable";
+                        this.getAttr("Script", "Field").type = "variable";
                     } else {
-                        this.getAttributeFieldValue(0, 1).type = "string";
+                        this.getAttr("Script", "Field").type = "string";
                     }
                 }
             });

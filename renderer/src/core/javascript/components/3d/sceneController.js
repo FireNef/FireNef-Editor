@@ -28,7 +28,7 @@ export class SceneController extends Component {
 
     update() {
         if (!this.renderer) return;
-        const index = this.getAttributeFieldValue(0, 0);
+        const index = this.getAttr("Scene Controller", "Selected Scene");
         const scene = this.children[index];
 
         if (!(scene instanceof SceneComponent)) return;
@@ -37,11 +37,11 @@ export class SceneController extends Component {
         this.renderer.setCamera(scene?.currentCamera ? scene?.currentCamera : null);
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
        
         for (let i = 0; i < this.children.length; i++) {
-            if (this.getAttributeFieldValue(0, 0) == i || !this.getAttributeFieldValue(1, 0)) this.children[i].enable = true;
+            if (this.getAttr("Scene Controller", "Selected Scene") == i || !this.getAttr("Scene Controller", "Disable Inactive Scenes")) this.children[i].enable = true;
             else this.children[i].enable = false;
         }
     }

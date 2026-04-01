@@ -32,18 +32,18 @@ export class MeshComponent extends Object3d {
 
     updateAllProperties() {
         this.updateMesh();
-        if (this.getAttributeFieldValue(1, 1)) this.getAttributeFieldValue(1, 1).updateAllProperties();
+        if (this.getAttr("Mesh", "Material")) this.getAttr("Mesh", "Material").updateAllProperties();
     }
 
     updateMesh() {
-        this.object3D.geometry = this.getAttributeFieldValue(1, 0);
-        this.object3D.material = this.getAttributeFieldValue(1, 1)?.material ?? null;
-        this.object3D.castShadow = this.getAttributeFieldValue(1, 2);
-        this.object3D.receiveShadow = this.getAttributeFieldValue(1, 3);
+        this.object3D.geometry = this.getAttr("Mesh", "Geometry");
+        this.object3D.material = this.getAttr("Mesh", "Material")?.material ?? null;
+        this.object3D.castShadow = this.getAttr("Mesh", "Cast Shadows");
+        this.object3D.receiveShadow = this.getAttr("Mesh", "Receive Shadows");
     }
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
-        if (attribute == 1) this.updateMesh();
+        if (attribute == "Mesh") this.updateMesh();
     }
 }

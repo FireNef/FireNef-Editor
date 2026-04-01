@@ -13,13 +13,13 @@ export default class FontLoaderScript extends FIRENEF.Script {
 
     static type = "fontLoaderScript";
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
-        await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 0) {
-            if (field == 0) {
-                this.attributes[0].fields[0].value = JSON.parse(this.getAttributeFieldValue(0, 0));
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
+        await super.setAttributeFieldValue(attribute, field, value, type, inputs);
+        if (attribute == "Font") {
+            if (field == "Json") {
+                this.attributes[0].fields[0].value = JSON.parse(this.getAttr("Font", "Json"));
 
-                const fontConfig = this.getAttributeFieldValue(0, 0);
+                const fontConfig = this.getAttr("Font", "Json");
 
                 const sheet = new CSSStyleSheet();
 

@@ -38,25 +38,25 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
     refreshComponents() {
         if (!this.element) return;
 
-        if (this.getAttributeFieldValue(0, 0).path) {
-            const fullPath = this.editor.resolvePath("./src/", this.getAttributeFieldValue(0, 0).path).replace(/^\/+/, '');
+        if (this.getAttr("Component Data", "Component").path) {
+            const fullPath = this.editor.resolvePath("./src/", this.getAttr("Component Data", "Component").path).replace(/^\/+/, '');
             const classObject = this.editor.imports[fullPath];
 
-            this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name || this.editor.getClassName(classObject);
+            this.nameElement.textContent = this.getAttr("Component Data", "Component").name || this.editor.getClassName(classObject);
             this.classNameElement.textContent = this.editor.getClassBaseType(classObject);
         } else {
-            this.nameElement.textContent = this.getAttributeFieldValue(0, 0).name || this.editor.getClassName(this.getAttributeFieldValue(0, 0).class);
-            this.classNameElement.textContent = this.editor.getClassBaseType(this.getAttributeFieldValue(0, 0).class);
+            this.nameElement.textContent = this.getAttr("Component Data", "Component").name || this.editor.getClassName(this.getAttr("Component Data", "Component").class);
+            this.classNameElement.textContent = this.editor.getClassBaseType(this.getAttr("Component Data", "Component").class);
         }
 
         this.removeAllItemChildren();
 
-        if (!this.getAttributeFieldValue(0, 0)?.children || this.getAttributeFieldValue(0, 0).children.length == 0) {
+        if (!this.getAttr("Component Data", "Component")?.children || this.getAttr("Component Data", "Component").children.length == 0) {
             this.closedArrow.style.display = "none";
             this.openArrow.style.display = "none";
-            this.getAttributeFieldValue(0, 0).treeShown = false;
+            this.getAttr("Component Data", "Component").treeShown = false;
             return;
-        } else if (this.getAttributeFieldValue(0, 0).treeShown) {
+        } else if (this.getAttr("Component Data", "Component").treeShown) {
             this.closedArrow.style.display = "none";
             this.openArrow.style.display = "block";
         } else {
@@ -64,29 +64,29 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             this.openArrow.style.display = "none";
         }
 
-        for (let i in this.getAttributeFieldValue(0, 0).children) {
-            let component = this.getAttributeFieldValue(0, 0).children[i];
+        for (let i in this.getAttr("Component Data", "Component").children) {
+            let component = this.getAttr("Component Data", "Component").children[i];
             if (component.type === "module") {
                 component = this.editor.projectModules[component.path];
             }
 
             const item = new FIRENEF.UiElement("Component Tree Item");
-            item.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[0], "text");
-            item.setNonAsyncAttributeFieldValue(0, 1, this.storedItemUi[1], "text");
-            item.enable = this.getAttributeFieldValue(0, 0).treeShown;
+            item.setNonAsyncAttr("Ui", "html", this.storedItemUi[0], "text");
+            item.setNonAsyncAttr("Ui", "css", this.storedItemUi[1], "text");
+            item.enable = this.getAttr("Component Data", "Component").treeShown;
 
             const itemScript = new ComponentTreeItemScript();
-            itemScript.setNonAsyncAttributeFieldValue(0, 0, component, "object");
-            itemScript.setNonAsyncAttributeFieldValue(0, 1, this.getAttributeFieldValue(0, 1) + 1, "number");
-            itemScript.setNonAsyncAttributeFieldValue(0, 2, i, "number");
+            itemScript.setNonAsyncAttr("Component Data", "Component", component, "object");
+            itemScript.setNonAsyncAttr("Component Data", "Depth", this.getAttr("Component Data", "Depth") + 1, "number");
+            itemScript.setNonAsyncAttr("Component Data", "Index", i, "number");
             item.appendChild(itemScript);
 
             const closedArrow = new FIRENEF.SvgElement("Closed Arrow SVG");
-            closedArrow.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[2], "text");
+            closedArrow.setNonAsyncAttr("Ui", "html", this.storedItemUi[2], "text");
             item.appendChild(closedArrow);
 
             const openArrow = new FIRENEF.SvgElement("Open Arrow SVG");
-            openArrow.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[3], "text");
+            openArrow.setNonAsyncAttr("Ui", "html", this.storedItemUi[3], "text");
             item.appendChild(openArrow);
 
             const icon = new FIRENEF.SvgElement("Icon SVG");
@@ -95,13 +95,13 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
                 const classObject = this.editor.imports[fullPath];
 
                 if (classObject) {
-                    icon.setNonAsyncAttributeFieldValue(0, 0, this.editor.projectComponentIcons[classObject.icon[0]], "text");
+                    icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "text");
                 }
             } else {
-                icon.setNonAsyncAttributeFieldValue(0, 0, this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
+                icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
             }
 
-            icon.setNonAsyncAttributeFieldValue(0, 1, this.storedItemUi[4], "text");
+            icon.setNonAsyncAttr("Ui", "css", this.storedItemUi[4], "text");
             item.appendChild(icon);
 
             this.parent.appendChild(item);
@@ -109,14 +109,14 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
     }
 
     updateTreeShown(state) {
-        this.getAttributeFieldValue(0, 0).treeShown = state;
+        this.getAttr("Component Data", "Component").treeShown = state;
 
-        if (!this.getAttributeFieldValue(0, 0)?.children || this.getAttributeFieldValue(0, 0).children.length == 0) {
+        if (!this.getAttr("Component Data", "Component")?.children || this.getAttr("Component Data", "Component").children.length == 0) {
             this.closedArrow.style.display = "none";
             this.openArrow.style.display = "none";
-            this.getAttributeFieldValue(0, 0).treeShown = false;
+            this.getAttr("Component Data", "Component").treeShown = false;
             return;
-        } else if (this.getAttributeFieldValue(0, 0).treeShown) {
+        } else if (this.getAttr("Component Data", "Component").treeShown) {
             this.closedArrow.style.display = "none";
             this.openArrow.style.display = "block";
         } else {
@@ -161,7 +161,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         this.renameElement.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
                 this.nameElement.textContent = this.renameElement.value;
-                this.getAttributeFieldValue(0, 0).name = this.renameElement.value;
+                this.getAttr("Component Data", "Component").name = this.renameElement.value;
                 if (this.selected) this.editor.currentSelection.inspectorRefresh();
                 this.renameElement.value = "";
                 this.renameElement.blur();
@@ -175,9 +175,9 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         });
 
         this.arrows.addEventListener("click", (e) => {
-            if (!this.getAttributeFieldValue(0, 0)?.children || this.getAttributeFieldValue(0, 0).children.length == 0) return;
+            if (!this.getAttr("Component Data", "Component")?.children || this.getAttr("Component Data", "Component").children.length == 0) return;
             e.stopPropagation();
-            this.updateTreeShown(!this.getAttributeFieldValue(0, 0).treeShown);
+            this.updateTreeShown(!this.getAttr("Component Data", "Component").treeShown);
         });
 
         this.backgroundElement.addEventListener("contextmenu", (e) => {
@@ -221,7 +221,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
                 line.style.bottom = null;
                 line.style.left = null;
 
-                if (!this.getAttributeFieldValue(0, 0).treeShown) {
+                if (!this.getAttr("Component Data", "Component").treeShown) {
                     if (relativeY < 0.25) {
                         line.style.top = "-2px";
                         line.style.left = "25%";
@@ -275,7 +275,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
 
                 const relativeY = y / height;
 
-                if (!this.getAttributeFieldValue(0, 0).treeShown) {
+                if (!this.getAttr("Component Data", "Component").treeShown) {
                     if (relativeY < 0.25) {
                         this.placeComponentOver(movedComponent, deleteFunction);
                     }
@@ -309,7 +309,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             if (this.selected) this.editor.setCurrentSelection(null);
 
             this.hideInsides();
-            this.editor.setDrag("componentTreeItem", () => this.showInsides(), { component: this.getAttributeFieldValue(0, 0), name: this.nameElement.textContent, icon: this.parent.children[3].deepClone(), deleteFunction: () => this.delete() });
+            this.editor.setDrag("componentTreeItem", () => this.showInsides(), { component: this.getAttr("Component Data", "Component"), name: this.nameElement.textContent, icon: this.parent.children[3].deepClone(), deleteFunction: () => this.delete() });
         });
 
         this.backgroundElement.addEventListener("click", (e) => {
@@ -324,9 +324,9 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             this.selected = true;
             this.backgroundElement.style.backgroundColor = "var(--current-surface1)";
 
-            const classObject = this.editor.getClassObjectFromComponentJson(this.getAttributeFieldValue(0, 0));
+            const classObject = this.editor.getClassObjectFromComponentJson(this.getAttr("Component Data", "Component"));
 
-            this.editor.setCurrentSelection({ classObject, component: this.getAttributeFieldValue(0, 0), deselect: () => {
+            this.editor.setCurrentSelection({ classObject, component: this.getAttr("Component Data", "Component"), deselect: () => {
                 this.selected = false;
                 this.backgroundElement.style.backgroundColor = null;
             }, refresh: () => this.refreshComponents() });
@@ -334,11 +334,11 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
 
         document.addEventListener("blur", () => this.mouseDown = false);
 
-        this.insertAfterMultiple(this.getAttributeFieldValue(0, 1), "<hr>", this.backgroundElement.querySelector("#lines"));
+        this.insertAfterMultiple(this.getAttr("Component Data", "Depth"), "<hr>", this.backgroundElement.querySelector("#lines"));
 
         this.storedItemUi = this.parent.parent.children[0].storedItemUi;
 
-        if (!this.getAttributeFieldValue(0, 0).treeShown) this.getAttributeFieldValue(0, 0).treeShown = false;
+        if (!this.getAttr("Component Data", "Component").treeShown) this.getAttr("Component Data", "Component").treeShown = false;
 
         this.refreshComponents();
     }
@@ -346,7 +346,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
     placeComponentTop(component, deleteFunction = () => {}) {
         deleteFunction();
 
-        const componentTree = this.getAttributeFieldValue(0, 0);
+        const componentTree = this.getAttr("Component Data", "Component");
         if (!componentTree.children) componentTree.children = [];
         componentTree.children.unshift(component);
 
@@ -356,11 +356,11 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
     placeComponentBottom(component, deleteFunction = () => {}) {
         deleteFunction();
 
-        const componentTree = this.getAttributeFieldValue(0, 0);
+        const componentTree = this.getAttr("Component Data", "Component");
         if (!componentTree.children) componentTree.children = [];
         componentTree.children.push(component);
 
-        this.getAttributeFieldValue(0, 0).treeShown = true;
+        this.getAttr("Component Data", "Component").treeShown = true;
         this.refreshComponents();
     }
 
@@ -368,7 +368,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         const parentScript = this.parent.parent.children[0];
         deleteFunction();
 
-        parentScript.addComponentAt(component, this.getAttributeFieldValue(0, 2));
+        parentScript.addComponentAt(component, this.getAttr("Component Data", "Index"));
         parentScript.refreshComponents();
     }
 
@@ -376,12 +376,12 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
         const parentScript = this.parent.parent.children[0];
         deleteFunction();
 
-        parentScript.addComponentAt(component, this.getAttributeFieldValue(0, 2) + 1);
+        parentScript.addComponentAt(component, this.getAttr("Component Data", "Index") + 1);
         parentScript.refreshComponents();
     }
 
     addComponentAt(component, index) {
-        const componentTree = this.getAttributeFieldValue(0, 0);
+        const componentTree = this.getAttr("Component Data", "Component");
         componentTree.children.splice(index, 0, component);
     }
 
@@ -393,7 +393,7 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
 
         this.drag = true;
 
-        this.getAttributeFieldValue(0, 0).treeShown = false;
+        this.getAttr("Component Data", "Component").treeShown = false;
         this.refreshComponents();
     }
 
@@ -416,9 +416,9 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
 
         const newComponent = this.editor.createNewComponentJson(className, classObject);
 
-        if (!this.getAttributeFieldValue(0, 0).children) this.getAttributeFieldValue(0, 0).children = [];
-        this.getAttributeFieldValue(0, 0).children.push(newComponent);
-        this.getAttributeFieldValue(0, 0).treeShown = true;
+        if (!this.getAttr("Component Data", "Component").children) this.getAttr("Component Data", "Component").children = [];
+        this.getAttr("Component Data", "Component").children.push(newComponent);
+        this.getAttr("Component Data", "Component").treeShown = true;
         this.refreshComponents();
     }
 
@@ -435,13 +435,13 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
 
     delete() {
         this.editor.clearContextMenu();
-        this.parent.parent.children[0].removeComponent(this.getAttributeFieldValue(0, 2));
+        this.parent.parent.children[0].removeComponent(this.getAttr("Component Data", "Index"));
         this.parent.parent.children[0].refreshComponents();
         this.parent.removeParent();
     }
 
     removeComponent(childIndex) {
-        this.getAttributeFieldValue(0, 0).children.splice(childIndex, 1);
+        this.getAttr("Component Data", "Component").children.splice(childIndex, 1);
     }
 
     insertAfterMultiple(count, html, target) {

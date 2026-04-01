@@ -198,8 +198,31 @@ export class Component {
         }
     }
 
-    getAttributeFieldValue(attribute = 0, field = 0) {
-        return this.attributes[attribute].fields[field].value;
+    getAttributeName(attributeIndex, fieldIndex) {
+        const attribute = this.attributes[attributeIndex];
+        const field = attribute.fields[fieldIndex];
+        return [attribute.name, field.name];
+    }
+
+    getAttr(attributeName, fieldName) {
+        return this.getAttributeFieldValue(attributeName, fieldName);
+    }
+
+    async setAttr(attributeName, fieldName, value, type, inputs = {}) {
+        return await this.setAttributeFieldValue(attributeName, fieldName, value, type, inputs);
+    }
+
+    setNonAsyncAttr(attributeName, fieldName, value, type, inputs = {}, disableComponent = false) {
+        return this.setNonAsyncAttributeFieldValue(attributeName, fieldName, value, type, inputs, disableComponent);
+    }
+
+    getAttributeFieldValue(attributeName, fieldName) {
+        const attributeIndex = this.attributes.findIndex(attr => attr.name === attributeName);
+        if (attributeIndex === -1) return;
+        const fieldIndex = this.attributes[attributeIndex].fields.findIndex(field => field.name === fieldName);
+        if (fieldIndex === -1) return;
+
+        return this.attributes[attributeIndex].fields[fieldIndex].value;
     }
 
     attribute(name) {
@@ -208,16 +231,25 @@ export class Component {
         }
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
-        return await this.attributes[attribute].fields[field].setValue(value, type, { component: this, ...inputs });
+    async setAttributeFieldValue(attributeName, fieldName, value, type, inputs = {}) {
+        const attributeIndex = this.attributes.findIndex(attr => attr.name === attributeName);
+        if (attributeIndex === -1) return;
+        const fieldIndex = this.attributes[attributeIndex].fields.findIndex(field => field.name === fieldName);
+        if (fieldIndex === -1) return;
+        return await this.attributes[attributeIndex].fields[fieldIndex].setValue(value, type, { component: this, ...inputs });
     }
 
-    setNonAsyncAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}, disableComponent = false) {
+    setNonAsyncAttributeFieldValue(attributeName, fieldName, value, type, inputs = {}, disableComponent = false) {
+        const attributeIndex = this.attributes.findIndex(attr => attr.name === attributeName);
+        if (attributeIndex === -1) return;
+        const fieldIndex = this.attributes[attributeIndex].fields.findIndex(field => field.name === fieldName);
+        if (fieldIndex === -1) return;
+
         if (disableComponent) {
             this.enable = false;
             this.attributeDisableValue++;
         };
-        this.attributes[attribute].fields[field].setValue(value, type, { component: this, ...inputs }).then(() => {
+        this.attributes[attributeIndex].fields[fieldIndex].setValue(value, type, { component: this, ...inputs }).then(() => {
             if (disableComponent) {
                 this.attributeDisableValue--;
                 if (this.attributeDisableValue <= 0) {

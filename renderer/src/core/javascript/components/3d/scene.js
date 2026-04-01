@@ -59,7 +59,7 @@ export class SceneComponent extends Object3d {
 
         if (!renderer.initialized) return;
 
-        const texComp = this.getAttributeFieldValue(1, 0);
+        const texComp = this.getAttr("Environment", "Environment");
         if (!texComp || !texComp.texture) {
             this.object3D.environment = null;
             return;
@@ -67,7 +67,7 @@ export class SceneComponent extends Object3d {
 
         let envMap = texComp.texture;
 
-        if (texComp.getAttributeFieldValue(0, 1) == "environment") {
+        if (texComp.getAttr("Texture", "Preset") == "environment") {
             // Only generate PMREM once per environment texture
             if (!texComp.pmremTexture) {
                 if (texComp.texture !== texComp._lastTexture) {
@@ -87,9 +87,9 @@ export class SceneComponent extends Object3d {
         }
 
         this.object3D.environment = envMap;
-        this.object3D.environmentIntensity = this.getAttributeFieldValue(1, 1);
+        this.object3D.environmentIntensity = this.getAttr("Environment", "Environment Intensity");
 
-        const envRotation = this.getAttributeFieldValue(1, 2);
+        const envRotation = this.getAttr("Environment", "Environment Rotation");
         this.object3D.environmentRotation.set(THREE.MathUtils.degToRad(envRotation.x), THREE.MathUtils.degToRad(envRotation.y), THREE.MathUtils.degToRad(envRotation.z));
 
         // Update all child materials so reflections take effect
@@ -104,11 +104,11 @@ export class SceneComponent extends Object3d {
         });
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
+    async setAttributeFieldValue(attribute, field, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 0) this.updateScene();
-        if (attribute == 1) this.updateEnvironment();
-        if (attribute == 2) this.updateFog();
+        if (attribute == "Scene") this.updateScene();
+        if (attribute == "Environment") this.updateEnvironment();
+        if (attribute == "Fog") this.updateFog();
     }
 
     start() {
@@ -117,7 +117,7 @@ export class SceneComponent extends Object3d {
     }
 
     update() {
-        if (this.getAttributeFieldValue(0, 5)) {
+        if (this.getAttr("Scene", "Auto Update")) {
             this.object3D.updateMatrixWorld();
         }
     }
@@ -140,30 +140,30 @@ export class SceneComponent extends Object3d {
     }
 
     updateScene() {
-        if (this.getAttributeFieldValue(0, 0) instanceof TextureComponent) {
-            this.object3D.background = this.getAttributeFieldValue(0, 0)?.texture ?? null;
+        if (this.getAttr("Scene", "Background") instanceof TextureComponent) {
+            this.object3D.background = this.getAttr("Scene", "Background")?.texture ?? null;
         } else {
-            this.object3D.background = new THREE.Color(this.getAttributeFieldValue(0, 0));
+            this.object3D.background = new THREE.Color(this.getAttr("Scene", "Background"));
         }
-        this.object3D.backgroundBlurriness = this.getAttributeFieldValue(0, 1);
-        this.object3D.backgroundIntensity = this.getAttributeFieldValue(0, 2);
+        this.object3D.backgroundBlurriness = this.getAttr("Scene", "Background Blurriness");
+        this.object3D.backgroundIntensity = this.getAttr("Scene", "Background Intensity");
 
-        const backgroundRotation = this.getAttributeFieldValue(0, 3);
+        const backgroundRotation = this.getAttr("Scene", "Background Rotation");
         this.object3D.backgroundRotation.set(THREE.MathUtils.degToRad(backgroundRotation.x), THREE.MathUtils.degToRad(backgroundRotation.y), THREE.MathUtils.degToRad(backgroundRotation.z));
     
-        this.object3D.overrideMaterial = this.getAttributeFieldValue(0, 4);
+        this.object3D.overrideMaterial = this.getAttr("Scene", "Override Material");
     }
 
     updateFog() {
-        if (!this.getAttributeFieldValue(2, 0)) {
+        if (!this.getAttr("Fog", "Enabled")) {
             this.object3D.fog = null;
             return;
         }
 
-        if (this.getAttributeFieldValue(2, 1) === "linear") {
-            this.object3D.fog = new THREE.Fog(new THREE.Color(this.getAttributeFieldValue(2, 2)), this.getAttributeFieldValue(2, 3), this.getAttributeFieldValue(2, 4));
+        if (this.getAttr("Fog", "Type") === "linear") {
+            this.object3D.fog = new THREE.Fog(new THREE.Color(this.getAttr("Fog", "Fog Color")), this.getAttr("Fog", "Fog Near"), this.getAttr("Fog", "Fog Far"));
         } else {
-            this.object3D.fog = new THREE.FogExp2(new THREE.Color(this.getAttributeFieldValue(2, 2)), this.getAttributeFieldValue(2, 2), this.getAttributeFieldValue(2, 5));
+            this.object3D.fog = new THREE.FogExp2(new THREE.Color(this.getAttr("Fog", "Fog Color")), this.getAttr("Fog", "Fog Near"), this.getAttr("Fog", "Fog Far"));
         }
     }
 }

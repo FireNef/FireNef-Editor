@@ -17,10 +17,10 @@ export class PhongMaterialComponent extends StandardMaterialComponent {
 
     static type = "phongMaterial";
 
-    updateSurfaceMaterialProperties(attribute = 1) {
-        this.material.specular.set(this.getAttributeFieldValue(attribute, 0));
-        this.material.shininess = this.getAttributeFieldValue(attribute, 1);
-        this.material.specularMap = this.getAttributeFieldValue(attribute, 2);
+    updateSurfaceMaterialProperties() {
+        this.material.specular.set(this.getAttr("Surface", "Specular Color"));
+        this.material.shininess = this.getAttr("Surface", "Shininess");
+        this.material.specularMap = this.getAttr("Surface", "Specular Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
 }

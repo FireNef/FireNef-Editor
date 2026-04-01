@@ -58,15 +58,15 @@ export class Viewport extends Component {
         }
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
+    async setAttributeFieldValue(attribute, field, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
         this.viewportResize();
     }
 
     viewportResize() {
-        this.aspectRatio = this.getAttributeFieldValue(0, 1) / this.getAttributeFieldValue(0, 2);
+        this.aspectRatio = this.getAttr("Viewport", "Resolution Width") / this.getAttr("Viewport", "Resolution Height");
 
-        if (this.getAttributeFieldValue(0, 0)) {
+        if (this.getAttr("Viewport", "Locked Aspect Ratio")) {
             this.positionElementsAspectRatio(this.viewportElement, this.aspectRatio);
         } else {
             this.positionElementsFreeForm(this.viewportElement);
@@ -87,11 +87,11 @@ export class Viewport extends Component {
         const windowRatio = vw / vh;
 
         if (windowRatio > this.aspectRatio) {
-            this.actualResolution.width = this.getAttributeFieldValue(0, 1);
-            this.actualResolution.height = this.getAttributeFieldValue(0, 1) / windowRatio;
+            this.actualResolution.width = this.getAttr("Viewport", "Resolution Width");
+            this.actualResolution.height = this.getAttr("Viewport", "Resolution Width") / windowRatio;
         } else {
-            this.actualResolution.width = this.getAttributeFieldValue(0, 2) * windowRatio;
-            this.actualResolution.height = this.getAttributeFieldValue(0, 2);
+            this.actualResolution.width = this.getAttr("Viewport", "Resolution Height") * windowRatio;
+            this.actualResolution.height = this.getAttr("Viewport", "Resolution Height");
         }
 
         this.actualAspectRatio = this.actualResolution.width / this.actualResolution.height;
@@ -109,8 +109,8 @@ export class Viewport extends Component {
         const vw = this.viewportElement.clientWidth;
         const vh = this.viewportElement.clientHeight;
 
-        this.actualResolution.width = this.getAttributeFieldValue(0, 1);
-        this.actualResolution.height = this.getAttributeFieldValue(0, 2);
+        this.actualResolution.width = this.getAttr("Viewport", "Resolution Width");
+        this.actualResolution.height = this.getAttr("Viewport", "Resolution Height");
 
         this.actualAspectRatio = this.actualResolution.width / this.actualResolution.height;
 

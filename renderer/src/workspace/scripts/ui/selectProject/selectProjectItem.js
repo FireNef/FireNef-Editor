@@ -5,7 +5,7 @@ export default class SelectProjectItemScript extends FIRENEF.Script {
         super(name);
 
         const projectAttribute = new FIRENEF.Attribute("Project");
-        projectAttribute.addField("String", "name", "");
+        projectAttribute.addField("Name", "string", "");
         this.attributes.push(projectAttribute);
 
         this.element = null;
@@ -36,12 +36,12 @@ export default class SelectProjectItemScript extends FIRENEF.Script {
         this.deleteButton = this.element.querySelector("#deleteButton");
         this.openButton = this.element.querySelector("#openButton");
 
-        this.deleteButton.addEventListener("click", () => this.editor.deleteProject(this.getAttributeFieldValue(0, 0)));
-        this.openButton.addEventListener("click", () => this.editor.openProject(this.getAttributeFieldValue(0, 0)));
+        this.deleteButton.addEventListener("click", () => this.editor.deleteProject(this.getAttr("Project", "Name")));
+        this.openButton.addEventListener("click", () => this.editor.openProject(this.getAttr("Project", "Name")));
 
         this.parent.visible = false;
 
-        this.editor.getProjectInfo(this.getAttributeFieldValue(0, 0)).then((data) => {
+        this.editor.getProjectInfo(this.getAttr("Project", "Name")).then((data) => {
             this.nameElement.textContent = data.name;
             this.creationDateElement.textContent = `Created: ${this.convertToReadableDate(data.createdAt)}`;
             this.modifiedDateElement.textContent = `Modified: ${this.convertToReadableDate(data.modifiedAt)}`;
@@ -50,7 +50,7 @@ export default class SelectProjectItemScript extends FIRENEF.Script {
             this.parent.visible = true;
         });
 
-        this.editor.getProjectIconAsUrl(this.getAttributeFieldValue(0, 0)).then((data) => {
+        this.editor.getProjectIconAsUrl(this.getAttr("Project", "Name")).then((data) => {
             this.iconElement.src = data; 
         });
     }

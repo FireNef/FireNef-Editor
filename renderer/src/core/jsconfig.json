@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "firenef": ["javascript/firenef.js"],
+            "three": ["three.js/three.js"],
+            "rapier": ["rapier.js/rapier.js"]
+        },
+        "allowJs": true,
+        "moduleResolution": "node"
+    },
+    "include": [
+        "javascript/**/*",
+        "three.js/**/*",
+        "rapier.js/**/*"
+    ]
+}

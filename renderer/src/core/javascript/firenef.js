@@ -42,3 +42,5 @@ export * from "./components/3d/materials/depthMaterial.js";
 
 export * from "./components/3d/loaders/meshLoader/GLTFLoader.js";
 export * from "./components/3d/loaders/meshLoader/OBJLoader.js";
+
+export * from "./components/3d/physics/rapierController.js";

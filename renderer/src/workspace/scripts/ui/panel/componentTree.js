@@ -49,26 +49,26 @@ export default class ComponentTreeScript extends FIRENEF.Script {
             }
 
             const item = new FIRENEF.UiElement("Component Tree Item");
-            item.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[0], "text");
-            item.setNonAsyncAttributeFieldValue(0, 1, this.storedItemUi[1], "text");
+            item.setNonAsyncAttr("Ui", "html", this.storedItemUi[0], "text");
+            item.setNonAsyncAttr("Ui", "css", this.storedItemUi[1], "text");
 
             const itemScript = new ComponentTreeItemScript();
-            itemScript.setNonAsyncAttributeFieldValue(0, 0, component, "object");
-            itemScript.setNonAsyncAttributeFieldValue(0, 1, 0, "number");
-            itemScript.setNonAsyncAttributeFieldValue(0, 2, i, "object");
+            itemScript.setNonAsyncAttr("Component Data", "Component", component, "object");
+            itemScript.setNonAsyncAttr("Component Data", "Depth", 0, "number");
+            itemScript.setNonAsyncAttr("Component Data", "Index", i, "object");
             item.appendChild(itemScript);
 
             const closedArrow = new FIRENEF.SvgElement("Closed Arrow SVG");
-            closedArrow.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[2], "text");
+            closedArrow.setNonAsyncAttr("Ui", "html", this.storedItemUi[2], "text");
             item.appendChild(closedArrow);
 
             const openArrow = new FIRENEF.SvgElement("Open Arrow SVG");
-            openArrow.setNonAsyncAttributeFieldValue(0, 0, this.storedItemUi[3], "text");
+            openArrow.setNonAsyncAttr("Ui", "html", this.storedItemUi[3], "text");
             item.appendChild(openArrow);
 
             const icon = new FIRENEF.SvgElement("Icon SVG");
-            icon.setNonAsyncAttributeFieldValue(0, 0, this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
-            icon.setNonAsyncAttributeFieldValue(0, 1, this.storedItemUi[4], "text");
+            icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
+            icon.setNonAsyncAttr("Ui", "css", this.storedItemUi[4], "text");
             item.appendChild(icon);
 
             this.parent.appendChild(item);

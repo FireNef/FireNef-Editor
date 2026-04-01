@@ -1,0 +1,1 @@
+export * from "./v0193/rapier3d-compat.js";

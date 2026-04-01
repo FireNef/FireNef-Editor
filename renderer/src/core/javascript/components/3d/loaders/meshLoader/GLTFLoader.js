@@ -45,9 +45,7 @@ export class GLTFLoader extends Object3d {
         const rendererComponent = this.getFirstParentOfType(Renderer3D);
         if (!rendererComponent || !rendererComponent.initialized) return;
 
-        console.log("wawa");
-
-        const url = this.getAttributeFieldValue(1, 0);
+        const url = this.getAttr("Mesh", "GLB File");
 
         // wrap load in a promise so we can await it
         const gltf = await new Promise((resolve, reject) => {
@@ -58,17 +56,14 @@ export class GLTFLoader extends Object3d {
                 (err) => reject(err) // onError
             );
         });
-
-
+        
         this.object3D = gltf.scene;
-        console.log(this.object3D);
 
         if (this.maxTextureSize == 'global') {
             this.compressTextures(rendererComponent.maxTextureSize);
         } else {
             this.compressTextures(this.maxTextureSize);
         }
-
 
         this.updateShadow();
         this.updateOverideMaps();
@@ -78,7 +73,7 @@ export class GLTFLoader extends Object3d {
 
     async onRenderInit() {
         const rendererComponent = this.getFirstParentOfType(Renderer3D);
-        console.log(rendererComponent);
+
         if (!rendererComponent) return;
         const renderer = rendererComponent.renderer;
 
@@ -88,24 +83,22 @@ export class GLTFLoader extends Object3d {
             GLTFLoader.ktx2Loader.detectSupport( renderer );
 
             GLTFLoader.loader.setKTX2Loader(GLTFLoader.ktx2Loader);
-            console.log(GLTFLoader.ktx2Loader);
         }
 
         await this.updateMesh();
-        console.log("oo")
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type, inputs = {}) {
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
-        if (attribute == 1) {
-            if (field == 0) this.updateMesh();
-            if (field == 1) this.updateShadow();
-            if (field == 2) this.updateShadow();
+        if (attribute == "Mesh") {
+            if (field == "GLB File") this.updateMesh();
+            if (field == "Cast Shadows") this.updateShadow();
+            if (field == "Receive Shadows") this.updateShadow();
         }
-        if (attribute == 2) this.updateOverideMaps();
-        if (attribute == 3) {
-            if (field == 0) this.updateUnityNormalMapFix();
-            if (field == 1) this.updateUnityMetallicSmoothnessMap();
+        if (attribute == "Map Overide") this.updateOverideMaps();
+        if (attribute == "Unity Import") {
+            if (field == "Unity Normal Map Fix") this.updateUnityNormalMapFix();
+            if (field == "Unity Metal/Smoothness map") this.updateUnityMetallicSmoothnessMap();
         }
     }
 
@@ -119,7 +112,6 @@ export class GLTFLoader extends Object3d {
                         if (tex && tex.image) {
                             const w = tex.image.width;
                             const h = tex.image.height;
-                            console.log(w, h);
                             if (w > maxSize || h > maxSize) {
                                 const canvas = document.createElement('canvas');
                                 const scale = Math.min(maxSize / w, maxSize / h);
@@ -147,18 +139,18 @@ export class GLTFLoader extends Object3d {
                     child.receiveShadow = false;
                     return;
                 };
-                child.castShadow = this.getAttributeFieldValue(1, 1);
-                child.receiveShadow = this.getAttributeFieldValue(1, 2);
+                child.castShadow = this.getAttr("Mesh", "Cast Shadows");
+                child.receiveShadow = this.getAttr("Mesh", "Receive Shadows");
             }
         })
     }
 
     updateOverideMaps() {
-        const mapOveride = this.getAttributeFieldValue(2, 0);
-        const normalMapOveride = this.getAttributeFieldValue(2, 1);
-        const metalicMapOveride = this.getAttributeFieldValue(2, 2);
-        const roughnessMapOveride = this.getAttributeFieldValue(2, 3);
-        const aoMapOveride = this.getAttributeFieldValue(2, 4);
+        const mapOveride = this.getAttr("Map Overide", "Map");
+        const normalMapOveride = this.getAttr("Map Overide", "Normal Map");
+        const metalicMapOveride = this.getAttr("Map Overide", "Metalic Map");
+        const roughnessMapOveride = this.getAttr("Map Overide", "Roughness Map");
+        const aoMapOveride = this.getAttr("Map Overide", "Ambient Occlusion Map");
 
         this.object3D.traverse((child) => {
             if (child.isMesh) {
@@ -172,7 +164,7 @@ export class GLTFLoader extends Object3d {
     }
 
     updateUnityNormalMapFix() {
-        if (!this.getAttributeFieldValue(3, 0)) return;
+        if (!this.getAttr("Unity Import", "Unity Normal Map Fix")) return;
 
         this.object3D.traverse((child) => {
             if (child.isMesh && child.material.normalMap) {
@@ -238,9 +230,9 @@ export class GLTFLoader extends Object3d {
     }
 
     updateUnityMetallicSmoothnessMap() {
-        if (!this.getAttributeFieldValue(3, 1)) return;
+        if (!this.getAttr("Unity Import", "Unity Metallic Smoothness Map")) return;
 
-        const textureComponent = this.getAttributeFieldValue(3, 1);
+        const textureComponent = this.getAttr("Unity Import", "Unity Metallic Smoothness Map");
 
         if (!textureComponent.unityFix) {
             const texture = textureComponent.texture;

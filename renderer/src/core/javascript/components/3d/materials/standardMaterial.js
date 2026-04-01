@@ -112,150 +112,96 @@ export class StandardMaterialComponent extends Component {
         this.updateOtherMaterialProperties();
     }
 
-    updateCoreMaterialProperties(attribute = 0) {
-        this.material.visible = this.getAttributeFieldValue(attribute, 0);
-        this.material.color.set(this.getAttributeFieldValue(attribute, 1));
-        this.material.opacity = this.getAttributeFieldValue(attribute, 2);
-        this.material.transparent = this.getAttributeFieldValue(attribute, 3);
-        this.material.map = this.getAttributeFieldValue(attribute, 4)?.texture ?? null;
-        this.material.alphaMap = this.getAttributeFieldValue(attribute, 5)?.texture ?? null;
-        this.material.side = this.getAttributeFieldValue(attribute, 6);
-        this.material.wireframe = this.getAttributeFieldValue(attribute, 7);
-        this.material.wireframeLinewidth = this.getAttributeFieldValue(attribute, 8);
+    updateCoreMaterialProperties() {
+        this.material.visible = this.getAttr("Core", "Visible");
+        this.material.color.set(this.getAttr("Core", "Color"));
+        this.material.opacity = this.getAttr("Core", "Opacity");
+        this.material.transparent = this.getAttr("Core", "Transparent");
+        this.material.map = this.getAttr("Core", "Texture")?.texture ?? null;
+        this.material.alphaMap = this.getAttr("Core", "Alpha Map")?.texture ?? null;
+        this.material.side = this.getAttr("Core", "Side");
+        this.material.wireframe = this.getAttr("Core", "Wireframe");
+        this.material.wireframeLinewidth = this.getAttr("Core", "Wireframe Line Width");
         this.material.needsUpdate = true;
     }
 
-    updateSurfaceMaterialProperties(attribute = 1) {
+    updateSurfaceMaterialProperties() {
         if (!this.lightingBased) return;
-        this.material.roughness = this.getAttributeFieldValue(attribute, 0);
-        this.material.metalness = this.getAttributeFieldValue(attribute, 1);
-        this.material.roughnessMap = this.getAttributeFieldValue(attribute, 2)?.texture ?? null;
-        this.material.metalnessMap = this.getAttributeFieldValue(attribute, 3)?.texture ?? null;
+        this.material.roughness = this.getAttr("Surface", "Roughness");
+        this.material.metalness = this.getAttr("Surface", "Metalness");
+        this.material.roughnessMap = this.getAttr("Surface", "Roughness Map")?.texture ?? null;
+        this.material.metalnessMap = this.getAttr("Surface", "Metalness Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
 
-    updateEmissionMaterialProperties(attribute = 2) {
+    updateEmissionMaterialProperties() {
         if (!this.usesEmission) return;
-        this.material.emissive.set(this.getAttributeFieldValue(attribute, 0));
-        this.material.emissiveIntensity = this.getAttributeFieldValue(attribute, 1);
-        this.material.emissiveMap = this.getAttributeFieldValue(attribute, 2)?.texture ?? null;
+        this.material.emissive.set(this.getAttr("Emission", "Emissive Color"));
+        this.material.emissiveIntensity = this.getAttr("Emission", "Emissive Intensity");
+        this.material.emissiveMap = this.getAttr("Emission", "Emissive Map")?.texture ?? null;
         this.material.needsUpdate = true;
     }
 
-    updateDetailMaterialProperties(attribute = 3) {
+    updateDetailMaterialProperties() {
         if (!this.detailBased) return;
-        this.material.normalMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
-        const normalScale = this.getAttributeFieldValue(attribute, 1);
+        this.material.normalMap = this.getAttr("Detail", "Normal Map")?.texture ?? null;
+        const normalScale = this.getAttr("Detail", "Normal Scale");
         this.material.normalScale = new THREE.Vector2(normalScale.x, normalScale.y);
-        this.material.bumpMap = this.getAttributeFieldValue(attribute, 2)?.texture ?? null;
-        this.material.bumpScale = this.getAttributeFieldValue(attribute, 3);
+        this.material.bumpMap = this.getAttr("Detail", "Bump Map")?.texture ?? null;
+        this.material.bumpScale = this.getAttr("Detail", "Bump Scale");
         this.material.needsUpdate = true;
     }
 
-    updateDisplacementMaterialProperties(attribute = 4) {
+    updateDisplacementMaterialProperties() {
         if (!this.usesDisplacement) return;
-        this.material.displacementMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
-        this.material.displacementScale = this.getAttributeFieldValue(attribute, 1);
-        this.material.displacementBias = this.getAttributeFieldValue(attribute, 2);
+        this.material.displacementMap = this.getAttr("Displacement", "Map")?.texture ?? null;
+        this.material.displacementScale = this.getAttr("Displacement", "Scale");
+        this.material.displacementBias = this.getAttr("Displacement", "Bias");
         this.material.needsUpdate = true;
     }
 
-    updateLightMaterialProperties(attribute = 5) {
+    updateLightMaterialProperties() {
         if (!this.usesLight) return;
-        this.material.lightMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
-        this.material.lightMapIntensity = this.getAttributeFieldValue(attribute, 1);
+        this.material.lightMap = this.getAttr("Light", "Light Map")?.texture ?? null;
+        this.material.lightMapIntensity = this.getAttr("Light", "Light Map Intensity");
         this.material.needsUpdate = true;
     }
 
-    updateAmbientMaterialProperties(attribute = 6) {
+    updateAmbientMaterialProperties() {
         if (!this.usesAmbient) return;
-        this.material.aoMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
-        this.material.aoMapIntensity = this.getAttributeFieldValue(attribute, 1);
+        this.material.aoMap = this.getAttr("Ambient", "AO Map")?.texture ?? null;
+        this.material.aoMapIntensity = this.getAttr("Ambient", "AO Intensity");
         this.material.needsUpdate = true;
     }
 
-    updateReflectionMaterialProperties(attribute = 7) {
+    updateReflectionMaterialProperties() {
         if (!this.usesReflection) return;
-        this.material.envMap = this.getAttributeFieldValue(attribute, 0)?.texture ?? null;
-        this.material.envMapIntensity = this.getAttributeFieldValue(attribute, 1);
+        this.material.envMap = this.getAttr("Reflection", "Env Map")?.texture ?? null;
+        this.material.envMapIntensity = this.getAttr("Reflection", "Env Map Intensity");
         this.material.needsUpdate = true;
     }
 
-    updateOtherMaterialProperties(attribute = 8) {
+    updateOtherMaterialProperties() {
         if (!this.usesOther) return;
-        this.material.flatShading = this.getAttributeFieldValue(attribute, 0);
-        this.material.fog = this.getAttributeFieldValue(attribute, 1);
-        this.material.polygonOffset = this.getAttributeFieldValue(attribute, 2);
-        this.material.polygonOffsetFactor = this.getAttributeFieldValue(attribute, 3);
-        this.material.polygonOffsetUnits = this.getAttributeFieldValue(attribute, 4);
+        this.material.flatShading = this.getAttr("Other", "Flat Shading");
+        this.material.fog = this.getAttr("Other", "Fog");
+        this.material.polygonOffset = this.getAttr("Other", "Polygon Offset");
+        this.material.polygonOffsetFactor = this.getAttr("Other", "Polygon Offset Factor");
+        this.material.polygonOffsetUnits = this.getAttr("Other", "Polygon Offset Units");
         this.material.needsUpdate = true;
     }
 
-    async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
-        await super.setAttributeFieldValue(attribute, field, value, type);
+    async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
+        await super.setAttributeFieldValue(attribute, field, value, type, inputs);
         
-        if (attribute == 0) { // Core
-            this.updateCoreMaterialProperties(attribute);
-            return;
-        }
-
-        this.currentAttributeAmount = attribute;
-
-        if (this.lightingBased) { // Surface
-            if (this.currentAttributeAmount == 1) {
-                this.updateSurfaceMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesEmission) { // Emission
-            if (this.currentAttributeAmount == 1) {
-                this.updateEmissionMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.detailBased) { // Detail
-            if (this.currentAttributeAmount == 1) {
-                this.updateDetailMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesDisplacement) { // Displacement
-            if (this.currentAttributeAmount == 1) {
-                this.updateDisplacementMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesLight) { // Light
-            if (this.currentAttributeAmount == 1) {
-                this.updateLightMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesAmbient) { // Ambient Occlusion
-            if (this.currentAttributeAmount == 1) {
-                this.updateAmbientMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesReflection) { // Reflection
-            if (this.currentAttributeAmount == 1) {
-                this.updateReflectionMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
-        if (this.usesOther) { // Other
-            if (this.currentAttributeAmount == 1) {
-                this.updateOtherMaterialProperties(attribute);
-                return;
-            }
-            this.currentAttributeAmount--;
-        }
+        if (attribute == "Core") this.updateCoreMaterialProperties();
+        if (attribute == "Surface") this.updateSurfaceMaterialProperties();
+        if (attribute == "Emission") this.updateEmissionMaterialProperties();
+        if (attribute == "Detail") this.updateDetailMaterialProperties();
+        if (attribute == "Displacement") this.updateDisplacementMaterialProperties();
+        if (attribute == "Light") this.updateLightMaterialProperties();
+        if (attribute == "Ambient") this.updateAmbientMaterialProperties();
+        if (attribute == "Reflection") this.updateReflectionMaterialProperties();
+        if (attribute == "Other") this.updateOtherMaterialProperties();
     }
 }

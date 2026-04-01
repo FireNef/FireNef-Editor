@@ -101,9 +101,9 @@ export class Object3d extends Component {
         this.prevTransform.scale.copy(this.currTransform.scale);
         this.prevTransform.quaternion.copy(this.currTransform.quaternion);
 
-        const p = this.getAttributeFieldValue(0, 0);
-        const r = this.getAttributeFieldValue(0, 1);
-        const s = this.getAttributeFieldValue(0, 2);
+        const p = this.getAttr("Transform", "Position");
+        const r = this.getAttr("Transform", "Rotation");
+        const s = this.getAttr("Transform", "Scale");
 
         this.currTransform.position.set(p.x, p.y, p.z);
         this.currTransform.scale.set(s.x, s.y, s.z);
@@ -155,182 +155,182 @@ export class Object3d extends Component {
     }
 
     set rotation({ x = 0, y = 0, z = 0, order = "XYZ" } = {}) {
-        this.setAttributeFieldValue(0, 1, { x: x,  y: y, z: z, order: order });
+        this.setAttr("Transform", "Rotation", { x: x,  y: y, z: z, order: order });
     }
 
     set rotationOrder(order = "XYZ") {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x, y: oldRotation.y, z: oldRotation.z, order: order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x, y: oldRotation.y, z: oldRotation.z, order: order });
     }
 
     set rotationX(rotation = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: rotation, y: oldRotation.y, z: oldRotation.z, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: rotation, y: oldRotation.y, z: oldRotation.z, order: oldRotation.order });
     }
 
     set rotationY(rotation = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x, y: rotation, z: oldRotation.z, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x, y: rotation, z: oldRotation.z, order: oldRotation.order });
     }
 
     set rotationZ(rotation = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x, y: oldRotation.y, z: rotation, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x, y: oldRotation.y, z: rotation, order: oldRotation.order });
     }
 
     rotateXBy(angle = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x + angle, y: oldRotation.y, z: oldRotation.z, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x + angle, y: oldRotation.y, z: oldRotation.z, order: oldRotation.order });
     }
 
     rotateYBy(angle = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x, y: oldRotation.y + angle, z: oldRotation.z, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x, y: oldRotation.y + angle, z: oldRotation.z, order: oldRotation.order });
     }
 
     rotateZBy(angle = 0) {
-        const oldRotation = this.getAttributeFieldValue(0, 1);
-        this.setAttributeFieldValue(0, 1, { x: oldRotation.x, y: oldRotation.y, z: oldRotation.z + angle, order: oldRotation.order });
+        const oldRotation = this.getAttr("Transform", "Rotation");
+        this.setAttr("Transform", "Rotation", { x: oldRotation.x, y: oldRotation.y, z: oldRotation.z + angle, order: oldRotation.order });
     }
 
     get rotation() {
-        return this.getAttributeFieldValue(0, 1);
+        return this.getAttr("Transform", "Rotation");
     }
 
     get rotationX() {
-        return this.getAttributeFieldValue(0, 1).x;
+        return this.getAttr("Transform", "Rotation").x;
     }
 
     get rotationY() {
-        return this.getAttributeFieldValue(0, 1).y;
+        return this.getAttr("Transform", "Rotation").y;
     }
 
     get rotationZ() {
-        return this.getAttributeFieldValue(0, 1).z;
+        return this.getAttr("Transform", "Rotation").z;
     }
 
     get rotationOrder() {
-        return this.getAttributeFieldValue(0, 1).order;
+        return this.getAttr("Transform", "Rotation").order;
     }
 
     set position({ x = 0, y = 0, z = 0 } = {}) {
-        this.setAttributeFieldValue(0, 0, { x: x, y: y, z: z });
+        this.setAttr("Transform", "Position", { x: x, y: y, z: z });
     }
 
     set positionX(position = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: position, y: oldPosition.y, z: oldPosition.z });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: position, y: oldPosition.y, z: oldPosition.z });
     }
 
     set positionY(position = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: oldPosition.x,  y: position, z: oldPosition.z });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: oldPosition.x,  y: position, z: oldPosition.z });
     }
 
     set positionZ(position = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: oldPosition.x, y: oldPosition.y, z: position });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: oldPosition.x, y: oldPosition.y, z: position });
     }
 
     moveXBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: oldPosition.x + amount, y: oldPosition.y, z: oldPosition.z });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: oldPosition.x + amount, y: oldPosition.y, z: oldPosition.z });
     }
 
     moveYBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: oldPosition.x, y: oldPosition.y + amount, z: oldPosition.z });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: oldPosition.x, y: oldPosition.y + amount, z: oldPosition.z });
     }
 
     moveZBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
-        this.setAttributeFieldValue(0, 0, { x: oldPosition.x, y: oldPosition.y, z: oldPosition.z + amount });
+        const oldPosition = this.getAttr("Transform", "Position");
+        this.setAttr("Transform", "Position", { x: oldPosition.x, y: oldPosition.y, z: oldPosition.z + amount });
     }
 
     moveForwardAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const forward = new THREE.Vector3(0, 0, -1).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: forward.x, y: forward.y, z: forward.z });
+        this.setAttr("Transform", "Position", { x: forward.x, y: forward.y, z: forward.z });
     }
 
     moveBackwardAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const backward = new THREE.Vector3(0, 0, 1).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: backward.x, y: backward.y, z: backward.z });
+        this.setAttr("Transform", "Position", { x: backward.x, y: backward.y, z: backward.z });
     }
 
     moveRightAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const right = new THREE.Vector3(1, 0, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: right.x, y: right.y, z: right.z });
+        this.setAttr("Transform", "Position", { x: right.x, y: right.y, z: right.z });
     }
 
     moveLeftAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const left = new THREE.Vector3(-1, 0, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: left.x, y: left.y, z: left.z });
+        this.setAttr("Transform", "Position", { x: left.x, y: left.y, z: left.z });
     }
 
     moveUpAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const up = new THREE.Vector3(0, 1, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: up.x, y: up.y, z: up.z });
+        this.setAttr("Transform", "Position", { x: up.x, y: up.y, z: up.z });
     }
 
     moveDownAlongRotationBy(amount = 0) {
-        const oldPosition = this.getAttributeFieldValue(0, 0);
+        const oldPosition = this.getAttr("Transform", "Position");
         const down = new THREE.Vector3(0, -1, 0).applyEuler(this.currTransform.rotation).normalize().multiplyScalar(amount).add(oldPosition);
-        this.setAttributeFieldValue(0, 0, { x: down.x, y: down.y, z: down.z });
+        this.setAttr("Transform", "Position", { x: down.x, y: down.y, z: down.z });
     }
 
     get position() {
-        return this.getAttributeFieldValue(0, 0);
+        return this.getAttr("Transform", "Position");
     }
 
     get positionX() {
-        return this.getAttributeFieldValue(0, 0).x;
+        return this.getAttr("Transform", "Position").x;
     }
 
     get positionY() {
-        return this.getAttributeFieldValue(0, 0).y;
+        return this.getAttr("Transform", "Position").y;
     }
 
     get positionZ() {
-        return this.getAttributeFieldValue(0, 0).z;
+        return this.getAttr("Transform", "Position").z;
     }
 
     set scale({ x = 1, y = 1, z = 1 } = {}) {
-        this.setAttributeFieldValue(0, 2, { x: x, y: y, z: z });
+        this.setAttr("Transform", "Scale", { x: x, y: y, z: z });
     }
 
     set scaleX(scale = 1) {
-        const oldScale = this.getAttributeFieldValue(0, 2);
-        this.setAttributeFieldValue(0, 2, { x: scale, y: oldScale.y, z: oldScale.z });
+        const oldScale = this.getAttr("Transform", "Scale");
+        this.setAttr("Transform", "Scale", { x: scale, y: oldScale.y, z: oldScale.z });
     }
 
     set scaleY(scale = 1) {
-        const oldScale = this.getAttributeFieldValue(0, 2);
-        this.setAttributeFieldValue(0, 2, { x: oldScale.x, y: scale, z: oldScale.z });
+        const oldScale = this.getAttr("Transform", "Scale");
+        this.setAttr("Transform", "Scale", { x: oldScale.x, y: scale, z: oldScale.z });
     }
 
     set scaleZ(scale = 1) {
-        const oldScale = this.getAttributeFieldValue(0, 2);
-        this.setAttributeFieldValue(0, 2, { x: oldScale.x, y: oldScale.y, z: scale });
+        const oldScale = this.getAttr("Transform", "Scale");
+        this.setAttr("Transform", "Scale", { x: oldScale.x, y: oldScale.y, z: scale });
     }
 
     get scale() {
-        return this.getAttributeFieldValue(0, 2);
+        return this.getAttr("Transform", "Scale");
     }
 
     get scaleX() {
-        return this.getAttributeFieldValue(0, 2).x;
+        return this.getAttr("Transform", "Scale").x;
     }
 
     get scaleY() {
-        return this.getAttributeFieldValue(0, 2).y;
+        return this.getAttr("Transform", "Scale").y;
     }
 
     get scaleZ() {
-        return this.getAttributeFieldValue(0, 2).z;
+        return this.getAttr("Transform", "Scale").z;
     }
 }

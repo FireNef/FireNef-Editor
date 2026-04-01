@@ -58,11 +58,16 @@ img {
     width: auto;
     aspect-ratio: 1.1 / 1;
     font-size: 20px;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .window-controls button:hover {
     background-color: var(--current-surface0);
+}
+
+#close:hover {
+    background-color: var(--current-red) !important;
+    color: var(--current-crust);
 }
 
 .menu-bar {

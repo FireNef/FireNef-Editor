@@ -58,7 +58,7 @@ export class UiController extends Component {
         this.shadow = this.host.attachShadow({ mode: "open" });
 
         this.style = new CSSStyleSheet();
-        this.style.replaceSync(this.getAttributeFieldValue(0, 0));
+        this.style.replaceSync(this.getAttr("Ui Controller", "css"));
 
         this.shadow.adoptedStyleSheets = [this.style];
         this.shadow.append(this.element);
@@ -106,25 +106,25 @@ export class UiController extends Component {
         
         this.resolution = this.viewport.actualResolution;
 
-        if (!this.getAttributeFieldValue(0, 2)) {
-            this.element.style.width = `${100/this.getAttributeFieldValue(0, 1)}%`;
-            this.element.style.height = `${100/this.getAttributeFieldValue(0, 1)}%`;
+        if (!this.getAttr("Ui Controller", "Isolate Scale")) {
+            this.element.style.width = `${100/this.getAttr("Ui Controller", "Ui Scale")}%`;
+            this.element.style.height = `${100/this.getAttr("Ui Controller", "Ui Scale")}%`;
             return;
         }
 
-        this.element.style.width = this.resolution.width / this.getAttributeFieldValue(0, 1) + "px";
-        this.element.style.height = this.resolution.height / this.getAttributeFieldValue(0, 1) + "px";
+        this.element.style.width = this.resolution.width / this.getAttr("Ui Controller", "Ui Scale") + "px";
+        this.element.style.height = this.resolution.height / this.getAttr("Ui Controller", "Ui Scale") + "px";
     }
 
     resize() {
-        if (!this.getAttributeFieldValue(0, 2)) {
-            this.element.style.transform = `scale(${this.getAttributeFieldValue(0, 1)})`;
+        if (!this.getAttr("Ui Controller", "Isolate Scale")) {
+            this.element.style.transform = `scale(${this.getAttr("Ui Controller", "Ui Scale")})`;
             return;
         }
 
         if (!this.host) return;
-        const scaleX = this.host.clientWidth / (this.resolution.width / this.getAttributeFieldValue(0, 1));
-        const scaleY = this.host.clientHeight / (this.resolution.height / this.getAttributeFieldValue(0, 1));
+        const scaleX = this.host.clientWidth / (this.resolution.width / this.getAttr("Ui Controller", "Ui Scale"));
+        const scaleY = this.host.clientHeight / (this.resolution.height / this.getAttr("Ui Controller", "Ui Scale"));
         const scale = Math.min(scaleX, scaleY);
 
         this.element.style.transform = `scale(${scale})`;
@@ -132,13 +132,13 @@ export class UiController extends Component {
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
         await super.setAttributeFieldValue(attribute, field, value, type);
-        if (attribute == 0) {
-            if (field == 0) {
+        if (attribute == "Ui Controller") {
+            if (field == "css") {
                 this.attributes[0].fields[0].value = await this.resolveImports(this.attributes[0].fields[0].value, value.slice(0, value.lastIndexOf("/") + 1));
-                //console.log(this.getAttributeFieldValue(0, 0));
+                //console.log(this.getAttr("Ui Controller", "css"));
             }
-            if (field == 1) this.resize();
-            if (field == 2) this.resize();
+            if (field == "Ui Scale") this.resize();
+            if (field == "Isolate Scale") this.resize();
         }
     }
 
