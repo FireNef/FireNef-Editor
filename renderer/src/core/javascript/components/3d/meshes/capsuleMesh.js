@@ -15,7 +15,7 @@ export class CapsuleMeshComponent extends MeshComponent {
         capsuleAttribute.addField("Height Segments", "number", 1, { min: 1 });
         this.attributes.push(capsuleAttribute);
 
-        this.setAttre("Mesh", "Geometry", new THREE.CapsuleGeometry(1, 2, 4, 8, 1));
+        this.setAttr("Mesh", "Geometry", new THREE.CapsuleGeometry(1, 2, 4, 8, 1));
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
