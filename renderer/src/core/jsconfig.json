@@ -13,5 +13,8 @@
         "javascript/**/*",
         "three.js/**/*",
         "rapier.js/**/*"
+    ],
+    "exclude": [
+        "three.js/addons/**/*"
     ]
 }

@@ -44,3 +44,13 @@ export * from "./components/3d/loaders/meshLoader/GLTFLoader.js";
 export * from "./components/3d/loaders/meshLoader/OBJLoader.js";
 
 export * from "./components/3d/physics/rapierController.js";
+export * from "./components/3d/physics/rapierRigidBody.js";
+export * from "./components/3d/physics/rapierCollider.js";
+export * from "./components/3d/physics/rapierBoxCollider.js"
+export * from "./components/3d/physics/rapierSphereCollider.js"
+export * from "./components/3d/physics/rapierCapsuleCollider.js"
+export * from "./components/3d/physics/rapierCylinderCollider.js"
+export * from "./components/3d/physics/rapierConeCollider.js"
+export * from "./components/3d/physics/rapierRoundBoxCollider.js"
+export * from "./components/3d/physics/rapierRoundCylinderCollider.js"
+export * from "./components/3d/physics/rapierRoundConeCollider.js"
