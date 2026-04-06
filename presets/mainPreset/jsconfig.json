@@ -7,5 +7,6 @@
             "rapier": ["src/core/rapier.js/rapier.js"]
         }
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "exclude": ["src/core/three.js/addons/**/*"]
 }
