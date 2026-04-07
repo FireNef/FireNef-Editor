@@ -444,3 +444,47 @@ export class DropdownInspectorScript extends FIRENEF.Script {
         });
     }
 }
+
+export class RefrenceInspectorScript extends FIRENEF.Script {
+    constructor(name = "Refrence Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+        this.editor = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.componentDisplayElement = null;
+        this.componentNameElement = null;
+        this.componentClassNameElement = null;
+    }
+
+    start() {
+        this.element = this.parent.element;
+        this.editor = window.firenefEditor;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.componentDisplayElement = this.element.querySelector("#componentDisplay");
+        this.componentNameElement = this.element.querySelector("#componentName");
+        this.componentClassNameElement = this.element.querySelector("#componentClassName");
+
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
+    }
+
+    removeAllIcons() {
+        for (let i = this.parent.children.length - 1; i > 1; i--) {
+            this.parent.removeChild(this.parent.children[i]);
+        }
+    }
+}

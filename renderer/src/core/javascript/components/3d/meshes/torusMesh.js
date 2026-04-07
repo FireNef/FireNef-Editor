@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class TorusMeshComponent extends MeshComponent {
@@ -14,18 +15,29 @@ export class TorusMeshComponent extends MeshComponent {
         torusAttribute.addField("Tubular Segments", "number", 48, { min: 3 });
         this.attributes.push(torusAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.TorusGeometry(1, 0.4, 12, 48));
+        const geometry = new THREE.TorusGeometry(1, 0.4, 12, 48);
+
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
     static type = "torusMesh";
 
     updateTorusGemetry() {
-        const radius = this.getAttributeValue("Radius");
-        const tube = this.getAttributeValue("Tube");
-        const radialSegments = this.getAttributeValue("Radial Segments");
-        const tubularSegments = this.getAttributeValue("Tubular Segments");
-        this.setAttr("Mesh", "Geometry", new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments));
+        const radius = this.getAttr("Radius");
+        const tube = this.getAttr("Tube");
+        const radialSegments = this.getAttr("Radial Segments");
+        const tubularSegments = this.getAttr("Tubular Segments");
+
+        const geometry = new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

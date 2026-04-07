@@ -17,6 +17,7 @@ export * from "./components/storage.js";
 export * from "./components/group.js";
 export * from "./components/3d/camera.js";
 export * from "./components/3d/mesh.js";
+export * from "./components/3d/geometry.js";
 export * from "./components/3d/light.js";
 export * from "./components/3d/group3d.js";
 

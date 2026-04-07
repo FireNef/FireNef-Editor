@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class ConeMeshComponent extends MeshComponent {
@@ -15,7 +16,12 @@ export class ConeMeshComponent extends MeshComponent {
         coneAttribute.addField("Open Ended", "boolean", false);
         this.attributes.push(coneAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.ConeGeometry(1, 2, 32, 1, false));
+        const geometry = new THREE.ConeGeometry(1, 2, 32, 1, false);
+
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
@@ -28,7 +34,12 @@ export class ConeMeshComponent extends MeshComponent {
         const heightSegments = this.getAttr("Cone", "Height Segments");
         const openEnded = this.getAttr("Cone", "Open Ended");
 
-        this.setAttr("Mesh", "Geometry", new THREE.ConeGeometry(radius, height, radialSegments, heightSegments, openEnded));
+        const geometry = new THREE.ConeGeometry(radius, height, radialSegments, heightSegments, openEnded);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

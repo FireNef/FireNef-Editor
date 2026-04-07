@@ -9,7 +9,7 @@ export class RapierRoundCylinderCollider extends RapierCollider {
         const shapeAttribute = new Attribute("Shape");
         shapeAttribute.addField("Height", "number", 1.0, { min: 0 });
         shapeAttribute.addField("Radius", "number", 1.0, { min: 0 });
-        shapeAttribute.addField("Round Radius", "number", 1.0, { min: 0 });
+        shapeAttribute.addField("Round Radius", "number", 0.1, { min: 0 });
         this.attributes.push(shapeAttribute);
     }
 
@@ -19,7 +19,7 @@ export class RapierRoundCylinderCollider extends RapierCollider {
         const height = this.getAttr("Shape", "Height");
         const radius = this.getAttr("Shape", "Radius");
         const roundRadius = this.getAttr("Shape", "Round Radius");
-        
+
         const hh = Math.max(0.0001, height / 2 - roundRadius);
         const r  = Math.max(0.0001, radius - roundRadius);
         const rr = Math.min(roundRadius, hh, r);

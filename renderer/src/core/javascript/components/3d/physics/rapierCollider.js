@@ -12,7 +12,7 @@ export class RapierCollider extends Component {
         const coreAttribute = new Attribute("Core");
         coreAttribute.addField("Density", "number", 1.0, { min: 0 });
         coreAttribute.addField("Friction", "number", 1.0, { min: 0 });
-        coreAttribute.addField("Restitution", "number", 0.0, { min: 0, max: 1 });
+        coreAttribute.addField("Restitution", "number", 0.1, { min: 0, max: 1 });
         coreAttribute.addField("Is Sensor", "boolean", false);
         coreAttribute.addField("Collision Group", "number", 1, { min: 0, max: 65535, noRange: true });
         coreAttribute.addField("Collision Mask", "number", 65535, { min: 0, max: 65535, noRange: true });

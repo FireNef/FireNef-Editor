@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class RingMeshComponent extends MeshComponent {
@@ -13,7 +14,12 @@ export class RingMeshComponent extends MeshComponent {
         ringAttribute.addField("Segments", "number", 32, { min: 3 });
         this.attributes.push(ringAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.RingGeometry(1, 2, 32));
+        const geometry = new THREE.RingGeometry(1, 2, 32);
+
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
@@ -23,7 +29,13 @@ export class RingMeshComponent extends MeshComponent {
         const innerRadius = this.getAttr("Ring", "Inner Radius");
         const outerRadius = this.getAttr("Ring", "Outer Radius");
         const segments = this.getAttr("Ring", "Segments");
-        this.setAttr("Mesh", "Geometry", new THREE.RingGeometry(innerRadius, outerRadius, segments));
+
+        const geometry = new THREE.RingGeometry(innerRadius, outerRadius, segments);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

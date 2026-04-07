@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class CapsuleMeshComponent extends MeshComponent {
@@ -15,7 +16,12 @@ export class CapsuleMeshComponent extends MeshComponent {
         capsuleAttribute.addField("Height Segments", "number", 1, { min: 1 });
         this.attributes.push(capsuleAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.CapsuleGeometry(1, 2, 4, 8, 1));
+        const geometry = new THREE.CapsuleGeometry(1, 2, 4, 8, 1);
+
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
@@ -30,7 +36,12 @@ export class CapsuleMeshComponent extends MeshComponent {
 
         const height = fullHeight - radius * 2;
 
-        this.setAttr("Mesh", "Geometry", new THREE.CapsuleGeometry(radius, height, capSegments, radialSegments, heightSegments));
+        const geometry = new THREE.CapsuleGeometry(radius, height, capSegments, radialSegments, heightSegments);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

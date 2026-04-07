@@ -1,0 +1,60 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    overflow: visible;
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.background:hover {
+    background-color: var(--current-surface0);
+    border-radius: 5px;
+}
+
+input[type="text"] {
+    font-family: Ubuntu;
+    font-size: 16px;
+    height: 17px;
+    width: calc(100% - 25px);
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+    overflow: hidden;
+}
+
+input[type="text"]:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+input[type="text"]::placeholder {
+    color: var(--current-subtext0);
+}
+
+input[type="text"]::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}
+
+hr {
+    width: calc(100% - 20px);
+    height: 1px;
+    min-height: 1px;
+    overflow: visible;
+    background-color: var(--current-surface0);
+    border: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+p {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 4px 0px;
+    padding: 0px;
+}

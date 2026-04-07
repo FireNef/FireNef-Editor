@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class CircleMeshComponent extends MeshComponent {
@@ -12,7 +13,12 @@ export class CircleMeshComponent extends MeshComponent {
         circleAttribute.addField("Segments", "number", 32, { min: 3 });
         this.attributes.push(circleAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.CircleGeometry(1, 32));
+        const geometry = new THREE.CircleGeometry(1, 32);
+        
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+        
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
@@ -21,7 +27,13 @@ export class CircleMeshComponent extends MeshComponent {
     updateCircleGemetry() {
         const radius = this.getAttr("Circle", "Radius");
         const segments = this.getAttr("Circle", "Segments");
-        this.setAttr("Mesh", "Geometry", new THREE.CircleGeometry(radius, segments));
+
+        const geometry = new THREE.CircleGeometry(radius, segments);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

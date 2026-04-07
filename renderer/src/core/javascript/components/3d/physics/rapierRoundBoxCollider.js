@@ -8,7 +8,7 @@ export class RapierRoundBoxCollider extends RapierCollider {
 
         const shapeAttribute = new Attribute("Shape");
         shapeAttribute.addField("Size", "vec3", { x: 1, y: 1, z: 1 });
-        shapeAttribute.addField("Round Radius", "number", 1.0, { min: 0 });
+        shapeAttribute.addField("Round Radius", "number", 0.1, { min: 0 });
         this.attributes.push(shapeAttribute);
     }
 

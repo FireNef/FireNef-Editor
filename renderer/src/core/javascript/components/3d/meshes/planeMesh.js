@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class PlaneMeshComponent extends MeshComponent {
@@ -17,7 +18,10 @@ export class PlaneMeshComponent extends MeshComponent {
         const geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
         geometry.rotateX(-Math.PI / 2);
 
-        this.setAttr("Mesh", "Geometry", geometry);
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
@@ -32,7 +36,10 @@ export class PlaneMeshComponent extends MeshComponent {
         const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments);
         geometry.rotateX(-Math.PI / 2);
 
-        this.setAttr("Mesh", "Geometry", geometry);
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {

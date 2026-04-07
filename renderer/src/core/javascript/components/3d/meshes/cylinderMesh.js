@@ -1,6 +1,7 @@
 import { MeshComponent } from "../mesh.js";
 import { Attribute } from "../../attributes.js";
 import { StandardMaterialComponent } from "../materials/standardMaterial.js";
+import { GeometryComponent } from "../geometry.js";
 import * as THREE from "three";
 
 export class CylinderMeshComponent extends MeshComponent {
@@ -16,20 +17,31 @@ export class CylinderMeshComponent extends MeshComponent {
         cylinderAttribute.addField("Open Ended", "boolean", false);
         this.attributes.push(cylinderAttribute);
 
-        this.setAttr("Mesh", "Geometry", new THREE.CylinderGeometry(1, 1, 2, 32, 1, false));
+        const geometry = new THREE.CylinderGeometry(1, 1, 2, 32, 1, false);
+
+        const geometryComponent = new GeometryComponent();
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.setAttr("Mesh", "Geometry", geometryComponent);
         this.setAttr("Mesh", "Material", new StandardMaterialComponent());
     }
 
     static type = "cylinderMesh";
 
     updateCylinderGemetry() {
-        const radiusTop = this.getAttributeFieldValue("Cylinder", "Radius Top");
-        const radiusBottom = this.getAttributeFieldValue("Cylinder", "Radius Bottom");
-        const height = this.getAttributeFieldValue("Cylinder", "Height");
-        const radialSegments = this.getAttributeFieldValue("Cylinder", "Radial Segments");
-        const heightSegments = this.getAttributeFieldValue("Cylinder", "Height Segments");
-        const openEnded = this.getAttributeFieldValue("Cylinder", "Open Ended");
-        this.setAttr("Mesh", "Geometry", new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded));
+        const radiusTop = this.getAttr("Cylinder", "Radius Top");
+        const radiusBottom = this.getAttr("Cylinder", "Radius Bottom");
+        const height = this.getAttr("Cylinder", "Height");
+        const radialSegments = this.getAttr("Cylinder", "Radial Segments");
+        const heightSegments = this.getAttr("Cylinder", "Height Segments");
+        const openEnded = this.getAttr("Cylinder", "Open Ended");
+
+        const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded);
+
+        const geometryComponent = this.getAttr("Mesh", "Geometry");
+        geometryComponent.setAttr("Geometry", "Geometry", geometry);
+
+        this.updateMesh();
     }
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
