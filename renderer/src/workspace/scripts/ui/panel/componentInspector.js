@@ -272,6 +272,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
             script.setNonAsyncAttr("Script", "Field", field, "object");
             script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
+            script.setNonAsyncAttr("Script", "Component", component, "object");
             fieldComponent.appendChild(script);
 
             return fieldComponent;

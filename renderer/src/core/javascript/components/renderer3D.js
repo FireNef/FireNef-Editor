@@ -19,9 +19,12 @@ export class Renderer3D extends Component {
         rendererAttribute.addField("Shadow Map Enabled", "boolean", true);
         rendererAttribute.addField("Shadow Map Type", "three", THREE.PCFSoftShadowMap, { defaultValue: "THREE.PCFSoftShadowMap", options: ["THREE.BasicShadowMap", "THREE.PCFShadowMap", "THREE.PCFSoftShadowMap", "THREE.VSMShadowMap"] });
         rendererAttribute.addField("Antialias", "boolean", true);
+        rendererAttribute.addField("Antialias Samples", "number", 4, { min: 1, max: 16, step: 1 });
+        rendererAttribute.addField("Force WebGL", "boolean", false);
 
         const performanceAttribute = new Attribute("Performance");
         performanceAttribute.addField("Max Texture Size", "number", 2048, { min: 1, max: 4096, noRange: true });
+        performanceAttribute.addField("Shadow Map Size", "number", 2048, { min: 1, max: 4096, noRange: true, powerOf2: true });
 
         this.attributes.push(framerateAttribute);
         this.attributes.push(rendererAttribute);
@@ -103,6 +106,8 @@ export class Renderer3D extends Component {
             this.renderer = new THREE.WebGPURenderer({
                 canvas: this.canvasElement,
                 antialias: this.getAttr("Renderer", "Antialias"),
+                samples: this.getAttr("Renderer", "Antialias Samples"),
+                forceWebGL: this.getAttr("Renderer", "Force WebGL")
             });
 
             this.canvasElement.width = this.resolution.width;
@@ -151,6 +156,7 @@ export class Renderer3D extends Component {
         if (attribute == "Renderer") this.updateSettings();
         if (attribute == "Performance") {
             if (field == "Max Texture Size") this.maxTextureSize = this.getAttr("Performance", "Max Texture Size");
+            if (field == "Shadow Map Size") this.shadowMapSize = this.getAttr("Performance", "Shadow Map Size");
         }
     }
 

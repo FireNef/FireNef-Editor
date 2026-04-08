@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Object3d } from "./object3d.js";
 import { SceneComponent } from "./scene.js";
 import { Attribute } from "../attributes.js";
+import { Renderer3D } from "../renderer3D.js";
 
 export class DirectionalLightComponent extends Object3d {
     constructor(name = "Directional Light") {
@@ -14,12 +15,22 @@ export class DirectionalLightComponent extends Object3d {
 
         this.object3D = new THREE.DirectionalLight(0xffffff, 1);
         this.object3D.name = name;
+
+        this.renderer3d = null;
     }
 
     static baseType = "directionalLight";
     static type = "directionalLight";
 
     static group = "Lights";
+
+    start() {
+        this.renderer3d = this.getFirstParentOfType(Renderer3D);
+        if (!this.renderer3d) return;
+
+        this.object3D.shadow.mapSize.width = this.renderer3d.shadowMapSize;
+        this.object3D.shadow.mapSize.height = this.renderer3d.shadowMapSize;
+    }
 
     updateAllProperties() {
         this.updateLightProperties();
@@ -32,8 +43,8 @@ export class DirectionalLightComponent extends Object3d {
         this.object3D.color.set(color);
         this.object3D.intensity = intensity;
         this.object3D.castShadow = castShadows;
-        this.object3D.shadow.normalBias = 0.02;
-        this.object3D.shadow.bias = -0.0005
+        //this.object3D.shadow.normalBias = 0.02;
+        //this.object3D.shadow.bias = -0.0005
     }
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
@@ -55,12 +66,22 @@ export class PointLightComponent extends Object3d {
 
         this.object3D = new THREE.PointLight(0xffffff, 1, 0, 2);
         this.object3D.name = name;
+
+        this.renderer3d = null;
     }
 
     static baseType = "pointLight";
     static type = "pointLight";
 
     static group = "Lights";
+
+    start() {
+        this.renderer3d = this.getFirstParentOfType(Renderer3D);
+        if (!this.renderer3d) return;
+
+        this.object3D.shadow.mapSize.width = this.renderer3d.shadowMapSize;
+        this.object3D.shadow.mapSize.height = this.renderer3d.shadowMapSize;
+    }
 
     updateAllProperties() {
         this.updateLightProperties();
@@ -78,8 +99,8 @@ export class PointLightComponent extends Object3d {
         this.object3D.distance = distance;
         this.object3D.decay = decay;
         this.object3D.castShadow = castShadows;
-        this.object3D.shadow.normalBias = 0.02;
-        this.object3D.shadow.bias = -0.0005;
+        //this.object3D.shadow.normalBias = 0.02;
+        //this.object3D.shadow.bias = -0.0005;
     }
 
     async setAttributeFieldValue(attribute = 0, field = 0, value, type) {
@@ -107,8 +128,8 @@ export class SpotLightComponent extends Object3d {
         this.object3D = new THREE.SpotLight(0xffffff, 1);
         this.object3D.name = name;
         this.object3D.castShadow = false;
-        this.object3D.shadow.normalBias = 0.02;
-        this.object3D.shadow.bias = -0.0005;
+        //this.object3D.shadow.normalBias = 0.02;
+        //this.object3D.shadow.bias = -0.0005;
 
         this.target = new THREE.Object3D();
         this.object3D.target = this.target;
@@ -116,6 +137,8 @@ export class SpotLightComponent extends Object3d {
         this._forward = new THREE.Vector3();
         this._quat = new THREE.Quaternion();
         this._worldPos = new THREE.Vector3();
+
+        this.renderer3d = null;
     }
 
     static baseType = "spotLight";
@@ -125,6 +148,11 @@ export class SpotLightComponent extends Object3d {
 
     start() {
         this.getFirstParentOfType(SceneComponent).object3D.add(this.target);
+        this.renderer3d = this.getFirstParentOfType(Renderer3D);
+        if (!this.renderer3d) return;
+
+        this.object3D.shadow.mapSize.width = this.renderer3d.shadowMapSize;
+        this.object3D.shadow.mapSize.height = this.renderer3d.shadowMapSize;
     }
 
     updateAllProperties() {

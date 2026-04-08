@@ -119,14 +119,38 @@ export class FirenefEditor {
         const engineConfig = await this.getExternalJson(`${projectPath}/src/configs/config.json`);
         const projectModulePath = `${projectPath}/src/${engineConfig.mainModulePath}`;
 
-        await window.fs.writeFile(projectModulePath, JSON.stringify(this.projectModules.project, null, 4));
+        const projectModulesClone = structuredClone(this.projectModules);
+        this.cleanProjectModules(projectModulesClone);
+        
+        await window.fs.writeFile(projectModulePath, JSON.stringify(projectModulesClone.project, null, 4));
 
-        for (const modulePath in this.projectModules) {
+        for (const modulePath in projectModulesClone) {
             if (modulePath == "project") continue;
 
             const fullPath = `${projectPath}/src/${modulePath}`;
 
-            await window.fs.writeFile(fullPath, JSON.stringify(this.projectModules[modulePath], null, 4));
+            await window.fs.writeFile(fullPath, JSON.stringify(projectModulesClone[modulePath], null, 4));
+        }
+    }
+
+    cleanProjectModules(projectModules) {
+
+        for (const component of projectModules.project.updater) {
+            this.cleanComponent(component);
+        }
+
+        for (const modulePath in projectModules) {
+            if (modulePath == "project") continue;
+            this.cleanComponent(projectModules[modulePath]);
+        }
+    }
+
+    cleanComponent(component) {
+        if (component.treeShown) delete component.treeShown;
+        if (component.controller) delete component.controller;
+
+        for (const child of component.children) {
+            this.cleanComponent(child);
         }
     }
 
@@ -583,5 +607,32 @@ export class FirenefEditor {
             current = current[part];
         }
         return true;
+    }
+
+    getClassFromRefrence(refrence, controller) {
+
+        const decodedPath = this.decodeComponentPath(refrence);
+
+        let component = controller;
+        
+        for (const i in decodedPath) {
+            const pathPart = decodedPath[i];
+            
+        }
+    }
+
+    decodeComponentPath(path) {
+        const decodedPath = [];
+        const pathArray = path.split("/");
+        pathArray.forEach(p => {
+            if (p.includes(":")) {
+                const [key, value] = p.split(":");
+                decodedPath.push({ type: key, value });
+            } else {
+                decodedPath.push({ type: "index", value })
+            }
+
+        });
+        return decodedPath;
     }
 }

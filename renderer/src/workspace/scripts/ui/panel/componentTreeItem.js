@@ -70,6 +70,12 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
                 component = this.editor.projectModules[component.path];
             }
 
+            if (this.getAttr("Component Data", "Component").class == "ComponentController") {
+                component.controller = this.getAttr("Component Data", "Component");
+            } else {
+                component.controller = this.getAttr("Component Data", "Component").controller;
+            }
+
             const item = new FIRENEF.UiElement("Component Tree Item");
             item.setNonAsyncAttr("Ui", "html", this.storedItemUi[0], "text");
             item.setNonAsyncAttr("Ui", "css", this.storedItemUi[1], "text");

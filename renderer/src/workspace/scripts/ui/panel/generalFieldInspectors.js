@@ -453,6 +453,7 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
         scriptAttribute.addField("Default Type", "object", null);
         scriptAttribute.addField("Field", "object", null);
         scriptAttribute.addField("Is Last", "boolean", false);
+        scriptAttribute.addField("Component", "object", null);
         this.attributes.push(scriptAttribute);
 
         this.element = null;
@@ -480,6 +481,10 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
         if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
 
         this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
+
+        if (this.getAttr("Script", "Field").type == "refrence") {
+            const classObject = this.editor.getClassFromRefrence(this.getAttr("Script", "Field").value, this.getAttr("Script", "Component").controller);
+        }
     }
 
     removeAllIcons() {
