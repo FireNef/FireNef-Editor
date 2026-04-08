@@ -9,7 +9,7 @@ export class RapierRoundConeCollider extends RapierCollider {
         const shapeAttribute = new Attribute("Shape");
         shapeAttribute.addField("Height", "number", 1.0, { min: 0 });
         shapeAttribute.addField("Radius", "number", 1.0, { min: 0 });
-        shapeAttribute.addField("Round Radius", "number", 1.0, { min: 0 });
+        shapeAttribute.addField("Round Radius", "number", 0.1, { min: 0 });
         this.attributes.push(shapeAttribute);
     }
 

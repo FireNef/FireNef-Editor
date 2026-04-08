@@ -114,7 +114,11 @@ export class StandardMaterialComponent extends Component {
 
     updateCoreMaterialProperties() {
         this.material.visible = this.getAttr("Core", "Visible");
-        this.material.color.set(this.getAttr("Core", "Color"));
+        if (this.material.color.set) {
+            this.material.color.set(this.getAttr("Core", "Color"));
+        } else {
+            this.material.color = new THREE.Color(this.getAttr("Core", "Color"));
+        }
         this.material.opacity = this.getAttr("Core", "Opacity");
         this.material.transparent = this.getAttr("Core", "Transparent");
         this.material.map = this.getAttr("Core", "Texture")?.texture ?? null;

@@ -38,7 +38,7 @@ export class Field {
                 const [key, value] = p.split(":");
                 decodedPath.push({ type: key, value });
             } else {
-                decodedPath.push({ type: "index", value })
+                decodedPath.push({ type: "index", value: p })
             }
 
         });

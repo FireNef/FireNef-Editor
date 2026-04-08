@@ -148,7 +148,11 @@ export class FirenefEditor {
     cleanComponent(component) {
         if (component.treeShown) delete component.treeShown;
         if (component.controller) delete component.controller;
+        if (component.baseType) delete component.baseType;
+        if (component.parent) delete component.parent;
 
+        if (!component.children) return;
+        
         for (const child of component.children) {
             this.cleanComponent(child);
         }
@@ -609,16 +613,52 @@ export class FirenefEditor {
         return true;
     }
 
-    getClassFromRefrence(refrence, controller) {
+    getClassFromReference(reference, controller) {
 
-        const decodedPath = this.decodeComponentPath(refrence);
+        if (!reference) return null;
+        if (!controller) return null;
+
+        const decodedPath = this.decodeComponentPath(reference);
 
         let component = controller;
         
         for (const i in decodedPath) {
             const pathPart = decodedPath[i];
-            
+            if (pathPart.type == "index") {
+                component = component.children[pathPart.value];
+                if (component.type == "module") component = this.projectModules[component.path];
+            }
+            if (pathPart.type == "name") {
+                let success = false;
+                for (let child of component.children) {
+                    if (child.type == "module") child = this.projectModules[child.path];
+                    if (child.name == pathPart.value) {
+                        component = child;
+                        success = true;
+                        break;
+                    }
+                }
+                if (!success) return null;
+            }
+            if (pathPart.type == "type") {
+                let success = false;
+                for (let child of component.children) {
+                    if (child.type == "module") child = this.projectModules[child.path];
+                    if (child.baseType == pathPart.value) {
+                        component = child;
+                        success = true;
+                        break;
+                    }
+                }
+                if (!success) return null;
+            }
+
+            if (!component) return null;
         }
+
+        if (!component) return null;
+        
+        return component;
     }
 
     decodeComponentPath(path) {
@@ -629,10 +669,27 @@ export class FirenefEditor {
                 const [key, value] = p.split(":");
                 decodedPath.push({ type: key, value });
             } else {
-                decodedPath.push({ type: "index", value })
+                decodedPath.push({ type: "index", value: p })
             }
 
         });
         return decodedPath;
+    }
+
+    getRefrencePathFromComponent(component) {
+        const path = [];
+        while (component) {
+            if (component.class == "ComponentController") return path.join("/");
+            if (component.parent) {
+                const parentCopy = structuredClone(component.parent);
+                for (let i = 0; i < parentCopy.children.length; i++) {
+                    if (parentCopy.children[i].type == "component") parentCopy.children[i] = component.parent.children[i];
+                    if (parentCopy.children[i].type == "module") parentCopy.children[i] = this.projectModules[parentCopy.children[i].path];
+                }
+                path.unshift(parentCopy.children.indexOf(component));
+            }
+            component = component.parent;
+        }
+        return path.join("/");
     }
 }

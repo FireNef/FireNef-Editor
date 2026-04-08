@@ -49,6 +49,9 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             this.classNameElement.textContent = this.editor.getClassBaseType(this.getAttr("Component Data", "Component").class);
         }
 
+        this.getAttr("Component Data", "Component").name = this.nameElement.textContent;
+        this.getAttr("Component Data", "Component").baseType = this.classNameElement.textContent;
+
         this.removeAllItemChildren();
 
         if (!this.getAttr("Component Data", "Component")?.children || this.getAttr("Component Data", "Component").children.length == 0) {
@@ -75,6 +78,8 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
             } else {
                 component.controller = this.getAttr("Component Data", "Component").controller;
             }
+
+            component.parent = this.getAttr("Component Data", "Component");
 
             const item = new FIRENEF.UiElement("Component Tree Item");
             item.setNonAsyncAttr("Ui", "html", this.storedItemUi[0], "text");

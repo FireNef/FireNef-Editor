@@ -178,13 +178,13 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
                 fieldComponentSlot.name = `c${childIndex++}`;
                 attributeContainer.appendChild(fieldComponentSlot);
 
-                const fieldComponent = this.getFieldComponent(defaultField, field, fieldIndex == defaultAttribute.fields.length - 1);
+                const fieldComponent = this.getFieldComponent(defaultField, field, fieldIndex == defaultAttribute.fields.length - 1, component);
                 this.parent.appendChild(fieldComponent);
             }
         }
     }
 
-    getFieldComponent(defaultField, field, isLast = false) {
+    getFieldComponent(defaultField, field, isLast = false, component = null) {
 
         if (defaultField?.inputs?.options) {
             const fieldComponent = this.newUiElement("Option Field", "./src/workspace/ui/html/panel/inspectors/dropdownInspector.html", "./src/workspace/ui/css/panel/inspectors/dropdownInspector.css");
@@ -265,7 +265,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
             return fieldComponent;
         }
-        if (defaultField.setType == "component" || defaultField.setType.includes("texture")) {
+        if (defaultField.setType == "component" || defaultField.setType == "material" || defaultField.setType.includes("texture")) {
             const fieldComponent = this.newUiElement("Texture Field", "./src/workspace/ui/html/panel/inspectors/refrenceInspector.html", "./src/workspace/ui/css/panel/inspectors/refrenceInspector.css");
         
             const script = new RefrenceInspectorScript();

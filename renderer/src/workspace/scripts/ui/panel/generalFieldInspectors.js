@@ -462,6 +462,8 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
         this.nameElement = null;
         this.spacerElement = null;
 
+        this.backgroundElement = null;
+
         this.componentDisplayElement = null;
         this.componentNameElement = null;
         this.componentClassNameElement = null;
@@ -474,6 +476,8 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
         this.nameElement = this.element.querySelector("#name");
         this.spacerElement = this.element.querySelector("#spacer");
 
+        this.backgroundElement = this.element.querySelector(".background");
+
         this.componentDisplayElement = this.element.querySelector("#componentDisplay");
         this.componentNameElement = this.element.querySelector("#componentName");
         this.componentClassNameElement = this.element.querySelector("#componentClassName");
@@ -482,13 +486,88 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
 
         this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
 
-        if (this.getAttr("Script", "Field").type == "refrence") {
-            const classObject = this.editor.getClassFromRefrence(this.getAttr("Script", "Field").value, this.getAttr("Script", "Component").controller);
+        this.backgroundElement.addEventListener("mouseup", (e) => {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (this.editor.currentDrag != "componentTreeItem") return;
+
+            const refrencePath = this.editor.getRefrencePathFromComponent(this.editor.dragInputs.component);
+
+            if (refrencePath) {
+                this.getAttr("Script", "Field").value = refrencePath;
+                this.getAttr("Script", "Field").type = "reference";
+
+                this.updateComponent();
+            } else {
+                this.getAttr("Script", "Field").value = null;
+            }
+
+            this.editor.clearDrag();
+        });
+
+        this.componentDisplayElement.addEventListener("click", () => {
+            delete this.getAttr("Script", "Field").value
+            delete this.getAttr("Script", "Field").type
+
+            this.updateComponent();
+        });
+
+        this.updateComponent();
+    }
+
+    updateComponent() {
+        this.removeAllIcons();
+        this.componentNameElement.textContent = "None";
+        this.componentClassNameElement.textContent = "";
+        if (this.getAttr("Script", "Field").value === null) return;
+        if (this.getAttr("Script", "Field").type == "reference") {
+            const componentJson = this.editor.getClassFromReference(this.getAttr("Script", "Field").value, this.getAttr("Script", "Component").controller);
+            const classObject = this.editor.getClassObjectFromComponentJson(componentJson);
+
+            if (classObject) {
+                this.componentNameElement.textContent = componentJson.name || this.editor.getClassNameFromClass(classObject);
+                this.componentClassNameElement.textContent = classObject.baseType;
+                
+                const componentIcon = new FIRENEF.SvgElement("Component Icon");
+                componentIcon.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "string");
+                this.parent.appendChild(componentIcon);
+            }
+            return;
+        }
+        if (!this.getAttr("Script", "Field").type) {
+            if (this.getAttr("Script", "Default Type").value) {
+                const component = this.getAttr("Script", "Default Type").value;
+                if (component instanceof FIRENEF.Component) {
+                    this.componentNameElement.textContent = component.name;
+                    this.componentClassNameElement.textContent = component.constructor.baseType;
+
+                    const componentIcon = new FIRENEF.SvgElement("Component Icon");
+                    componentIcon.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.projectComponentIcons[component.constructor.icon[0]], "string");
+                    this.parent.appendChild(componentIcon);
+                }
+            }
+            return;
+        }
+        if (this.getAttr("Script", "Field").type == "component") {
+            const componentJson = this.getAttr("Script", "Field");
+            const classObject = this.editor.getClassObjectFromComponentJson(componentJson);
+
+            if (classObject) {
+                this.componentNameElement.textContent = componentJson.name || this.editor.getClassNameFromClass(classObject);
+                this.componentClassNameElement.textContent = classObject.baseType;
+                
+                const componentIcon = new FIRENEF.SvgElement("Component Icon");
+                componentIcon.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "string");
+                this.parent.appendChild(componentIcon);
+            }
+            return;
         }
     }
 
     removeAllIcons() {
-        for (let i = this.parent.children.length - 1; i > 1; i--) {
+        for (let i = this.parent.children.length - 1; i > 0; i--) {
             this.parent.removeChild(this.parent.children[i]);
         }
     }
