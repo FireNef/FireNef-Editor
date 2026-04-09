@@ -1,5 +1,5 @@
 import * as FIRENEF from "firenef";
-import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript, Vector2InspectorScript, Vector3InspectorScript, ColorInspectorScript, DropdownInspectorScript, RefrenceInspectorScript } from "./generalFieldInspectors.js";
+import { BooleanInspectorScript, NumberInspectorScript, StringInspectorScript, Vector2InspectorScript, Vector3InspectorScript, ColorInspectorScript, DropdownInspectorScript, RefrenceInspectorScript, EulerInspectorScript } from "./generalFieldInspectors.js";
 
 export default class ComponentInspoectorScript extends FIRENEF.Script {
     constructor(name = "Component Inspector Script") {
@@ -247,6 +247,17 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             const fieldComponent = this.newUiElement("Vec2 Field", "./src/workspace/ui/html/panel/inspectors/vec2Inspector.html", "./src/workspace/ui/css/panel/inspectors/vectorInspector.css");
         
             const script = new Vector2InspectorScript();
+            script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
+            script.setNonAsyncAttr("Script", "Field", field, "object");
+            script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");
+            fieldComponent.appendChild(script);
+
+            return fieldComponent;
+        }
+        if (defaultField.setType == "euler") {
+            const fieldComponent = this.newUiElement("Euler Field", "./src/workspace/ui/html/panel/inspectors/eulerInspector.html", "./src/workspace/ui/css/panel/inspectors/eulerInspector.css");
+        
+            const script = new EulerInspectorScript();
             script.setNonAsyncAttr("Script", "Default Type", defaultField, "object");
             script.setNonAsyncAttr("Script", "Field", field, "object");
             script.setNonAsyncAttr("Script", "Is Last", isLast, "boolean");

@@ -572,3 +572,87 @@ export class RefrenceInspectorScript extends FIRENEF.Script {
         }
     }
 }
+
+export class EulerInspectorScript extends FIRENEF.Script {
+    constructor(name = "Euler Inspector Script") {
+        super(name);
+
+        const scriptAttribute = new FIRENEF.Attribute("Script");
+        scriptAttribute.addField("Default Type", "object", null);
+        scriptAttribute.addField("Field", "object", null);
+        scriptAttribute.addField("Is Last", "boolean", false);
+        this.attributes.push(scriptAttribute);
+
+        this.element = null;
+
+        this.nameElement = null;
+        this.spacerElement = null;
+
+        this.vecXInputElement = null;
+        this.vecYInputElement = null;
+        this.vecZInputElement = null;
+
+        this.menuButtonElement = null;
+        this.dropMenuElement = null;
+    }
+
+    start() {
+        this.element = this.parent.element;
+
+        this.nameElement = this.element.querySelector("#name");
+        this.spacerElement = this.element.querySelector("#spacer");
+
+        this.vecXInputElement = this.element.querySelector("#vecXInput");
+        this.vecYInputElement = this.element.querySelector("#vecYInput");
+        this.vecZInputElement = this.element.querySelector("#vecZInput");
+
+        this.menuButtonElement = this.element.querySelector("#menuButton");
+        this.dropMenuElement = this.element.querySelector("#dropMenu");
+
+        if (this.getAttr("Script", "Is Last")) this.spacerElement.style.display = "none";
+
+        this.nameElement.textContent = this.getAttr("Script", "Default Type").name;
+        
+        this.vecXInputElement.value = this.getAttr("Script", "Field").value.x;
+        this.vecYInputElement.value = this.getAttr("Script", "Field").value.y;
+        this.vecZInputElement.value = this.getAttr("Script", "Field").value.z;
+
+        this.vecXInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.x = Number(this.vecXInputElement.value));
+        this.vecYInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.y = Number(this.vecYInputElement.value));
+        this.vecZInputElement.addEventListener("change", () => this.getAttr("Script", "Field").value.z = Number(this.vecZInputElement.value));
+
+        this.menuButtonElement.textContent = this.getAttr("Script", "Field").value.order;
+
+        const options = [
+            "XYZ",
+            "XZY",
+            "YXZ",
+            "YZX",
+            "ZXY",
+            "ZYX",
+        ]
+
+        for (const option of options) {
+            const optionElement = document.createElement("div");
+            optionElement.textContent = option;
+            optionElement.addEventListener("click", (e) => {
+                e.stopPropagation();
+                this.menuButtonElement.textContent = option;
+                this.getAttr("Script", "Field").value.order = option;
+                this.dropMenuElement.classList.remove("show");
+            });
+            this.dropMenuElement.appendChild(optionElement);
+        }
+
+        this.menuButtonElement.addEventListener("click", (e) => {
+            e.stopPropagation();
+            this.dropMenuElement.classList.toggle("show");
+        });
+        
+        window.addEventListener("click", (event) => {
+            if (!event.target.matches('#menuButton')) {
+                this.dropMenuElement.classList.remove("show");
+            }
+        });
+    }
+}

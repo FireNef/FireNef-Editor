@@ -1,0 +1,141 @@
+.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    overflow: visible;
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.background:hover {
+    background-color: var(--current-surface0);
+    border-radius: 5px;
+}
+
+.singleVec {
+    width: calc(100% - 10px);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    overflow: visible;
+    margin: 0px;
+    margin-left: 10px;
+}
+
+p {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 4px 0px;
+    padding: 0px;
+}
+
+.vecText {
+    vertical-align: middle;
+}
+
+input[type="number"] {
+    font-family: Ubuntu;
+    font-size: 16px;
+    height: 17px;
+    width: calc(100% - 25px);
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    margin: 5px;
+    color: var(--current-text);
+    overflow: hidden;
+}
+
+input[type="number"]:focus {
+    border: none;
+    outline: var(--current-accent) 1px solid;
+}
+
+input[type="number"]::placeholder {
+    color: var(--current-subtext0);
+}
+
+input[type="number"]::selection {
+    background-color: color-mix(in srgb, var(--current-accent) 40%, transparent);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+hr {
+    width: calc(100% - 20px);
+    height: 1px;
+    min-height: 1px;
+    overflow: visible;
+    background-color: var(--current-surface0);
+    border: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+button {
+    font-family: Ubuntu;
+    font-size: 16px;
+    height: 27px;
+    width: fit-content;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--current-surface1);
+    padding: 5px;
+    color: var(--current-text);
+    overflow: visible;
+    cursor: pointer;
+    text-align: left;
+}
+
+button:hover {
+    background-color: var(--current-overlay0);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--current-surface1);
+    border-radius: 4px;
+    min-width: 140px;
+    box-shadow: 0 8px 8px rgba(0,0,0,0.5);
+    z-index: 200;
+}
+
+.container {
+    position: relative;
+    height: 27px;
+    width: fit-content;
+    margin: 5px;
+}
+
+.dropdown-content div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.dropdown-content div:hover {
+    background-color: var(--current-overlay0);
+    border-radius: 4px;
+}
+
+.show {
+    display: block;
+}
+
+.container p {
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 4px 0px;
+    padding: 0px;
+}

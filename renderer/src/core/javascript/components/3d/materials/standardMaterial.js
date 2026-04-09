@@ -158,9 +158,9 @@ export class StandardMaterialComponent extends Component {
 
     updateDisplacementMaterialProperties() {
         if (!this.usesDisplacement) return;
-        this.material.displacementMap = this.getAttr("Displacement", "Map")?.texture ?? null;
-        this.material.displacementScale = this.getAttr("Displacement", "Scale");
-        this.material.displacementBias = this.getAttr("Displacement", "Bias");
+        this.material.displacementMap = this.getAttr("Displacement", "Displacement Map")?.texture ?? null;
+        this.material.displacementScale = this.getAttr("Displacement", "Displacement Scale");
+        this.material.displacementBias = this.getAttr("Displacement", "Displacement Bias");
         this.material.needsUpdate = true;
     }
 
@@ -173,8 +173,8 @@ export class StandardMaterialComponent extends Component {
 
     updateAmbientMaterialProperties() {
         if (!this.usesAmbient) return;
-        this.material.aoMap = this.getAttr("Ambient", "AO Map")?.texture ?? null;
-        this.material.aoMapIntensity = this.getAttr("Ambient", "AO Intensity");
+        this.material.aoMap = this.getAttr("Ambient Occlusion", "AO Map")?.texture ?? null;
+        this.material.aoMapIntensity = this.getAttr("Ambient Occlusion", "AO Intensity");
         this.material.needsUpdate = true;
     }
 
