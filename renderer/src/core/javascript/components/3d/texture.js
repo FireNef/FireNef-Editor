@@ -1,9 +1,10 @@
 import { Component } from "../component.js";
 import { Attribute } from "../attributes.js";
+import { Renderer3D } from "../renderer3D.js";
 import * as THREE from "three";
 
 export class TextureComponent extends Component {
-    static loader = new THREE.TextureLoader();
+    static ktx2Loader = null;
 
     constructor(name = "Texture") {
         super(name);
@@ -35,7 +36,7 @@ export class TextureComponent extends Component {
         const advancedTextureAttribute = new Attribute("Advanced");
         advancedTextureAttribute.addField("Color Space", "three", "auto", { defaultValue: "auto", options: ["auto", "THREE.NoColorSpace", "THREE.SRGBColorSpace", "THREE.LinearSRGBColorSpace"] });
         advancedTextureAttribute.addField("Mag Filter", "three", THREE.LinearFilter, { defaultValue: "THREE.LinearFilter", options: ["THREE.LinearFilter", "THREE.NearestFilter"] });
-        advancedTextureAttribute.addField("Min Filter", "three", THREE.LinearMipMapLinearFilter, { defaultValue: "THREE.LinearMipMapLinearFilter", options: ["THREE.LinearMipMapNearestFilter", "THREE.LinearMipMapLinearFilter"] });
+        advancedTextureAttribute.addField("Min Filter", "three", THREE.LinearMipmapLinearFilter, { defaultValue: "THREE.LinearMipmapLinearFilter", options: ["THREE.LinearMipmapLinearFilter", "THREE.LinearMipmapNearestFilter"] });
         advancedTextureAttribute.addField("Type", "three", THREE.UnsignedByteType, { defaultValue: "THREE.UnsignedByteType", options: ["THREE.UnsignedByteType", "THREE.UnsignedShortType", "THREE.FloatType"] });
         advancedTextureAttribute.addField("Anisotropy", "number", 1, { min: 1, max: 16, step: 1 });
         advancedTextureAttribute.addField("Generate Mipmaps", "string", "auto", { defaultValue: "auto", options: ["auto", "true", "false"] });
@@ -43,6 +44,9 @@ export class TextureComponent extends Component {
         advancedTextureAttribute.addField("Matrix Auto Update", "boolean", true);
 
         this.attributes.push(advancedTextureAttribute);
+        this.rendererComponent = null;
+
+        this.maxTextureSize = "global";
     }
 
     static group = "General 3D";
@@ -52,12 +56,89 @@ export class TextureComponent extends Component {
 
     async updateTexture() {
         const rawValue = this.getAttr("Texture", "Image");
-        this.texture = await TextureComponent.loader.loadAsync(rawValue); 
-        this.texture.needsUpdate = true;
+        if (!rawValue || rawValue === THREE.Texture.DEFAULT_IMAGE) return;
 
+        if (!this.rendererComponent) {
+            this.rendererComponent = this.getFirstParentOfType(Renderer3D);
+        }
+
+        const isKTX2 = rawValue.toLowerCase().endsWith('.ktx2');
+        let maxSize = this.maxTextureSize || 2048;
+        if (this.maxTextureSize == 'global') {
+            maxSize = this.rendererComponent?.maxTextureSize ?? 2048;
+            console.log(this.rendererComponent);
+        }
+
+        if (isKTX2) {
+            if (!TextureComponent.ktx2Loader) this.initKTX2Loader();
+            this.texture = await TextureComponent.ktx2Loader.loadAsync(rawValue);
+        } else {
+            const image = await this.loadImage(rawValue);
+            
+            const isPOT = THREE.MathUtils.isPowerOfTwo(image.width) && THREE.MathUtils.isPowerOfTwo(image.height);
+            const isTooLarge = image.width > maxSize || image.height > maxSize;
+
+            if (isTooLarge || !isPOT) {
+                this.texture = this.processAndCompressImage(image, maxSize);
+            } else {
+                this.texture = new THREE.Texture(image);
+            }
+        }
+
+        // WebGPU / Linux Compatibility Fixes
+        this.texture.forceArrayTexture = false;
+        this.texture.needsUpdate = true;
+        
         this.updateUV();
         this.updateTransform();
         this.updateAdvanced();
+    }
+
+    initKTX2Loader() {
+        if (!this.rendererComponent || !this.rendererComponent.renderer) {
+            console.warn("TextureComponent: Renderer3D not found, KTX2 might fail to transcode.");
+            return;
+        }
+
+        TextureComponent.ktx2Loader = new THREE.KTX2Loader();
+        TextureComponent.ktx2Loader.setTranscoderPath('./src/core/three.js/addons/libs/basis/');
+        TextureComponent.ktx2Loader.detectSupport(this.rendererComponent.renderer);
+    }
+
+    loadImage(url) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = url;
+        });
+    }
+
+    processAndCompressImage(image, maxSize) {
+        let width = image.width;
+        let height = image.height;
+
+        if (width > maxSize || height > maxSize) {
+            const scale = Math.min(maxSize / width, maxSize / height);
+            width = Math.floor(width * scale);
+            height = Math.floor(height * scale);
+        }
+
+        width = THREE.MathUtils.floorPowerOfTwo(width);
+        height = THREE.MathUtils.floorPowerOfTwo(height);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.drawImage(image, 0, 0, width, height);
+        
+        console.log(`Texture optimized: ${image.width}x${image.height} -> ${width}x${height}`);
+        
+        const tex = new THREE.CanvasTexture(canvas);
+        return tex;
     }
 
     updateAllProperties() {

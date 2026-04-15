@@ -155,12 +155,13 @@ export class SceneComponent extends Object3d {
     }
 
     updateFog() {
-        if (!this.getAttr("Fog", "Enabled")) {
+        console.log(this.getAttr("Fog", "Fog Enabled"));
+        if (!this.getAttr("Fog", "Fog Enabled")) {
             this.object3D.fog = null;
             return;
         }
 
-        if (this.getAttr("Fog", "Type") === "linear") {
+        if (this.getAttr("Fog", "Fog Type") === "linear") {
             this.object3D.fog = new THREE.Fog(new THREE.Color(this.getAttr("Fog", "Fog Color")), this.getAttr("Fog", "Fog Near"), this.getAttr("Fog", "Fog Far"));
         } else {
             this.object3D.fog = new THREE.FogExp2(new THREE.Color(this.getAttr("Fog", "Fog Color")), this.getAttr("Fog", "Fog Near"), this.getAttr("Fog", "Fog Far"));
