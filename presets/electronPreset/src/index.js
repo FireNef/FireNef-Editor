@@ -39,6 +39,11 @@ const createWindow = () => {
 app.commandLine.appendSwitch("ignore-gpu-blocklist");
 app.commandLine.appendSwitch("enable-unsafe-webgpu");
 
+if (process.platform == "linux") {
+    app.commandLine.appendSwitch('use-vulkan');
+    app.commandLine.appendSwitch('enable-features', 'Vulkan,DefaultANGLEVulkan,VulkanFromANGLE');
+}
+
 app.whenReady().then(() => {
     createWindow();
 
