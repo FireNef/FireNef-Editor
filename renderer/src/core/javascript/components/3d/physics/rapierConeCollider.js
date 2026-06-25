@@ -1,6 +1,6 @@
 import { Attribute } from "../../attributes.js";
 import { RapierCollider } from "./rapierCollider.js";
-import * as RAPIER from "rapier";
+import * as RAPIER from "rapier3d";
 
 export class RapierConeCollider extends RapierCollider {
     constructor(name = "Rapier Cone Collider") {

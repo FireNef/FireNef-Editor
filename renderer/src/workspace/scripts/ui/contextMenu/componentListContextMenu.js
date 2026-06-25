@@ -36,8 +36,10 @@ export default class ComponentListContextMenuScript extends FIRENEF.Script {
                 }
             });
 
+            let iconHTML = this.editor.getIconAsHTML(classObject.icon);
+
             const template = document.createElement("template");
-            template.innerHTML = this.editor.projectComponentIcons[classObject.icon[0]] || "";
+            template.innerHTML = iconHTML.trim();
             componentElement.appendChild(template.content.firstElementChild);
 
             const componentNameElement = document.createElement("p");

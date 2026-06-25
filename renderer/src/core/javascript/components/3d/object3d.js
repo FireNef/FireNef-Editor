@@ -6,7 +6,7 @@ export class Object3d extends Component {
     constructor(name = "Object 3D", allowTransform = true) {
         super(name);
 
-        this.allowTransform = allowTransform
+        this.allowTransform = allowTransform;
         this.object3D = new THREE.Object3D();
         this.object3D.name = name;
 

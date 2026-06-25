@@ -106,10 +106,10 @@ export default class ComponentTreeItemScript extends FIRENEF.Script {
                 const classObject = this.editor.imports[fullPath];
 
                 if (classObject) {
-                    icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "text");
+                    icon.setNonAsyncAttr("Ui", "html", this.editor.getIconAsHTML(classObject.icon), "text");
                 }
             } else {
-                icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
+                icon.setNonAsyncAttr("Ui", "html", this.editor.getIconAsHTML(this.editor.getClassIcon(component.class)), "text");
             }
 
             icon.setNonAsyncAttr("Ui", "css", this.storedItemUi[4], "text");

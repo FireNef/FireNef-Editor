@@ -70,7 +70,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
             this.typeTextElement.textContent = `Type: ${classObject.type}`;
 
             const iconComponent = new FIRENEF.SvgElement("Component Icon");
-            iconComponent.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.projectComponentIcons[classObject.icon[0]], "text");
+            iconComponent.setNonAsyncAttributeFieldValue("Ui", "html", this.editor.getIconAsHTML(classObject.icon), "text");
             this.parent.appendChild(iconComponent);
 
             this.nameInputElement.style.display = "block";
@@ -210,7 +210,7 @@ export default class ComponentInspoectorScript extends FIRENEF.Script {
 
             return fieldComponent;
         }
-        if (defaultField.setType == "number") {
+        if (defaultField.setType == "number" || defaultField.setType == "int" || defaultField.setType == "float") {
             const fieldComponent = this.newUiElement("Number Field", "./src/workspace/ui/html/panel/inspectors/numberInspector.html", "./src/workspace/ui/css/panel/inspectors/numberInspector.css");
 
             const script = new NumberInspectorScript();

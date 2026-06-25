@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Object3d } from "./object3d.js";
-import { SceneComponent } from "./scene.js";
+import { Scene3DComponent as SceneComponent } from "./scene3d.js";
 import { Attribute } from "../attributes.js";
 import { Renderer3D } from "../renderer3D.js";
 

@@ -3,10 +3,10 @@ import { Attribute } from "../attributes.js";
 import { Renderer3D } from "../renderer3D.js";
 import * as THREE from "three";
 
-export class TextureComponent extends Component {
+export class Texture3DComponent extends Component {
     static ktx2Loader = null;
 
-    constructor(name = "Texture") {
+    constructor(name = "Texture 3D") {
         super(name);
         this.texture = null;
 
@@ -51,8 +51,8 @@ export class TextureComponent extends Component {
 
     static group = "General 3D";
 
-    static baseType = "texture"
-    static type = "texture"
+    static baseType = "texture3D"
+    static type = "texture3D"
 
     async updateTexture() {
         const rawValue = this.getAttr("Texture", "Image");

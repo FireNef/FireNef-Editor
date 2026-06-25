@@ -4,10 +4,10 @@ import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
 import { ComponentController } from "../component.js";
 import { Renderer3D } from "../renderer3D.js";
-import { TextureComponent } from "./texture.js";
+import { Texture3DComponent as TextureComponent } from "./texture3d.js";
 
-export class SceneComponent extends Object3d {
-    constructor(name = "Scene") {
+export class Scene3DComponent extends Object3d {
+    constructor(name = "Scene 3D") {
         super(name, false); // disable transform attributes
 
         this.object3D = new THREE.Scene();
@@ -45,8 +45,8 @@ export class SceneComponent extends Object3d {
         this.updateDepthLimit = 100000;
     }
 
-    static baseType = "scene";
-    static type = "scene";
+    static baseType = "scene3D";
+    static type = "scene3D";
 
     updateAllProperties() {
         this.updateScene();

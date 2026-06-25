@@ -67,7 +67,7 @@ export default class ComponentTreeScript extends FIRENEF.Script {
             item.appendChild(openArrow);
 
             const icon = new FIRENEF.SvgElement("Icon SVG");
-            icon.setNonAsyncAttr("Ui", "html", this.editor.projectComponentIcons[this.editor.getClassIcon(component.class)[0]], "text");
+            icon.setNonAsyncAttr("Ui", "html", this.editor.getIconAsHTML(this.editor.getClassIcon(component.class)), "text");
             icon.setNonAsyncAttr("Ui", "css", this.storedItemUi[4], "text");
             item.appendChild(icon);
 

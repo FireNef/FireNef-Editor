@@ -1,11 +1,16 @@
 {
     "compilerOptions": {
+        "ignoreDeprecations": "6.0",
         "baseUrl": ".",
         "paths": {
-            "firenef": ["src/core/javascript/firenef.js"],
-            "three": ["src/core/three.js/three.js"],
-            "rapier": ["src/core/rapier.js/rapier.js"]
-        }
+            "firenef": ["javascript/firenef.js"],
+            "three": ["three.js/three.js"],
+            "rapier3d": ["rapier3d"],
+            "rapier2d": ["rapier.js/rapier2d.js"],
+            "pixi": ["pixi.js/pixi.js"]
+        },
+        "allowJs": true,
+        "moduleResolution": "node"
     },
     "include": ["src/**/*"],
     "exclude": ["src/core/three.js/addons/**/*"]

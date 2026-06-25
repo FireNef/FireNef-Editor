@@ -1,6 +1,6 @@
 import { Component } from "../../component.js";
 import { Attribute } from "../../attributes.js";
-import * as RAPIER from "rapier";
+import * as RAPIER from "rapier3d";
 
 export class RapierController extends Component {
     constructor(name = "Rapier Controller") {

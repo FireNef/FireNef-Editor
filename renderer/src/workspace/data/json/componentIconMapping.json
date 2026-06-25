@@ -10,5 +10,8 @@
     "group": "./assets/svgs/componentIcons/group.svg",
     "object3d": "./assets/svgs/componentIcons/object3d.svg",
     "group3d": "./assets/svgs/componentIcons/group3d.svg",
-    "renderer3d": "./assets/svgs/componentIcons/renderer3d.svg"
+    "renderer3d": "./assets/svgs/componentIcons/renderer3d.svg",
+    "renderer2d": "./assets/svgs/componentIcons/renderer2d.svg",
+    "object2d": "./assets/svgs/componentIcons/object2d.svg",
+    "group2d": "./assets/svgs/componentIcons/group2d.svg"
 }

@@ -2,7 +2,7 @@ import { Component } from "../../component.js";
 import { Attribute } from "../../attributes.js";
 import { Object3d } from "../object3d.js";
 import { RapierController } from "./rapierController.js";
-import * as RAPIER from "rapier";
+import * as RAPIER from "rapier3d";
 import * as THREE from "three";
 
 export class RapierRigidBody extends Component {

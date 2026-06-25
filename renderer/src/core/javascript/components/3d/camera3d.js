@@ -1,6 +1,6 @@
 import { Object3d } from "./object3d.js";
 import { Attribute } from "../attributes.js";
-import { SceneComponent } from "./scene.js";
+import { Scene3DComponent as SceneComponent } from "./scene3d.js";
 import { Renderer3D } from "../renderer3D.js";
 import * as THREE from "three";
 
@@ -8,7 +8,7 @@ export class PerspectiveCameraComponent extends Object3d {
     constructor(name = "Perspective Camera") {
         super(name);
 
-        const cameraAttribute = new Attribute("Perspective Camera");
+        const cameraAttribute = new Attribute("Camera");
         cameraAttribute.addField("Current Camera", "boolean", false);
         cameraAttribute.addField("FOV", "number", 60, { min: 1, max: 179, step: 1 });
         cameraAttribute.addField("Near", "number", 0.1, { min: 0 });
@@ -23,16 +23,16 @@ export class PerspectiveCameraComponent extends Object3d {
         this.sceneComponent = null;
     }
 
-    static baseType = "camera"
-    static type = "camera"
+    static baseType = "camera3D"
+    static type = "perspectiveCamera3D"
 
-    static group = "Cameras";
+    static group = "General 3D";
 
     updateCamera() {
-        const fov = this.getAttr("Perspective Camera", "FOV");
+        const fov = this.getAttr("Camera", "FOV");
         const aspect = this.renderer ? this.renderer.resolution.width / this.renderer.resolution.height : 16 / 9;
-        const near = this.getAttr("Perspective Camera", "Near");
-        const far = this.getAttr("Perspective Camera", "Far");
+        const near = this.getAttr("Camera", "Near");
+        const far = this.getAttr("Camera", "Far");
         this.object3D.fov = fov;
         this.object3D.aspect = aspect;
         this.object3D.near = near;
@@ -52,10 +52,13 @@ export class PerspectiveCameraComponent extends Object3d {
         super.update();
 
         if (this.sceneComponent) {
-            const usedCamera = this.getAttr("Perspective Camera", "Current Camera");
+            const usedCamera = this.getAttr("Camera", "Current Camera");
             if (this.sceneComponent.currentCamera === this && !usedCamera) {
                 this.sceneComponent.currentCamera = null;
             } else if (usedCamera) {
+                if (this.sceneComponent.currentCamera !== this) {
+                    this.sceneComponent.currentCamera.setAttr("Camera", "Current Camera", false);
+                }
                 this.sceneComponent.currentCamera = this;
             }
         }
@@ -63,6 +66,6 @@ export class PerspectiveCameraComponent extends Object3d {
 
     async setAttributeFieldValue(attribute, field, value, type, inputs = {}) {
         await super.setAttributeFieldValue(attribute, field, value, type, inputs);
-        if (attribute == "Perspective Camera") this.updateCamera();
+        if (attribute == "Camera") this.updateCamera();
     }
 }

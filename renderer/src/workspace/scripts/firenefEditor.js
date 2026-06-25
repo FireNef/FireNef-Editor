@@ -437,6 +437,14 @@ export class FirenefEditor {
         return sourcePath + path;
     }
 
+    getIconAsHTML(iconNames = []) {
+        for (const icon of iconNames) {
+            if (!this.projectComponentIcons[icon]) continue;
+            return this.projectComponentIcons[icon];
+        }
+        return this.projectComponentIcons["component"];
+    }
+
     getClassIcon(className) {
         if (FIRENEF[className]) {
             return FIRENEF[className].icon;
