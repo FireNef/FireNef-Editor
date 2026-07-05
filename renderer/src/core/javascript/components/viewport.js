@@ -20,6 +20,7 @@ export class Viewport extends Component {
         this.startAmount = 0;
 
         this.resolutionUpdateList = [];
+        this.elementChangeUpdateList = [];
 
         this.viewportElement = document.createElement('div');
         this.viewportElement.id = "viewport";
@@ -70,6 +71,11 @@ export class Viewport extends Component {
             this.positionElementsAspectRatio(this.viewportElement, this.aspectRatio);
         } else {
             this.positionElementsFreeForm(this.viewportElement);
+        }
+
+        if (this.viewportElement.firstElementChild) {
+            const rect = this.viewportElement.firstElementChild.getBoundingClientRect();
+            this.elementChangeUpdateList.forEach(callback => callback(rect.width, rect.height, rect.left, rect.top));
         }
 
         if (this.oldResolution.width != this.actualResolution.width || this.oldResolution.height != this.actualResolution.height) {

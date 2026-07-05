@@ -537,6 +537,10 @@ export class FirenefEditor {
         newComponent.params = [];
         newComponent.children = [];
 
+        if (classObject?.defaultID) {
+            newComponent.id = classObject.defaultID;
+        }
+
         const defaultAttributes = this.getClassDefaultAttributes(classObject);
         const formatedAttributes = [];
         for (const attribute of defaultAttributes) {

@@ -8,6 +8,8 @@ export * from "./components/attributes.js";
 export * from "./components/storage.js";
 export * from "./components/group.js";
 
+export * from "./components/inputHandeler.js";
+
 export * from "./components/ui/uiController.js";
 export * from "./components/ui/uiElement.js";
 export * from "./components/ui/svgElement.js";
